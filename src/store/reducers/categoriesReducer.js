@@ -1,5 +1,3 @@
-import Categories from "../../screens/Categories";
-
 const categoriesReducer = (state={data: [], selectedCategoryId: null}, action) => {
     switch (action.type) {
         case 'NEW_CATEGORY': {
