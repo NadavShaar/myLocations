@@ -12,7 +12,6 @@ import {
     Switch,
     Route
 } from "react-router-dom";
-
 import WebFont from "webfontloader";
 WebFont.load({google: {families: ["Roboto:300,400,500"]}});
 import './index.css';
@@ -20,14 +19,14 @@ import './index.css';
 const createStoreWithMiddleware = applyMiddleware(
     save({ states: ["categories"], namespace: "myLocations" }) // Saving done here
 )(createStore);
-const store = createStoreWithMiddleware(reducers, load(), composeWithDevTools());
+const store = createStoreWithMiddleware(reducers, load({ states: ["categories"], namespace: "myLocations" }), composeWithDevTools());
 
 const App = () => (
     <Router>
         <Switch>
             <Route path="/new" component={() => <Category mode="new" />} />
             <Route path="/edit" component={() => <Category mode="edit" />} />
-            <Route path="/viewDetails" component={() => <Category mode="viewDetails" />} />
+            <Route path="/view-details" component={() => <Category mode="viewDetails" />} />
             <Route path="/" component={Categories} />
         </Switch>
     </Router>
