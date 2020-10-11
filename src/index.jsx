@@ -22,7 +22,7 @@ const createStoreWithMiddleware = applyMiddleware(
 const store = createStoreWithMiddleware(reducers, load({ states: ["categories"], namespace: "myLocations" }), composeWithDevTools());
 
 const App = () => (
-    <Router>
+    <Router basename='/myLocations'>
         <Switch>
             <Route path="/new" component={() => <Category mode="new" />} />
             <Route path="/edit" component={() => <Category mode="edit" />} />
