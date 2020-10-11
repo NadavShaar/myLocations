@@ -14,12 +14,14 @@ const Category = props => {
     
     const inputRef = useRef(null);
     
-    const categories = useSelector(state => state.categories);
+    const selectedCategoryId = useSelector(state => state.categories.selectedCategoryId);
+    const categoriesData = useSelector(state => state.categories.data);
+    
+    let categoryIndex = categoriesData.findIndex(category => category.id === selectedCategoryId);
+    const selectedCategory = useSelector(state => state.categories.data[categoryIndex]);
 
-    let categoryIndex = categories.data.findIndex(category => category.id === categories.selectedCategoryId);
-
-    const [categoryName, setCategoryName] = useState(categoryIndex > -1 ? categories.data[categoryIndex]?.name : "");
-    let isCategoryExist = !!categories.data.find(category => category.name === categoryName);
+    const [categoryName, setCategoryName] = useState(categoryIndex > -1 ? selectedCategory?.name : "");
+    let isCategoryExist = !!categoriesData.find(category => category.name === categoryName);
 
     const {
         mode,
@@ -29,7 +31,7 @@ const Category = props => {
     const createCategory = () => {
 
         if(!isCategoryExist) {
-            dispatch(createNewCategory({id: categories.data.length + 1, name: categoryName})); 
+            dispatch(createNewCategory({id: categoriesData.length + 1, name: categoryName})); 
             setCategoryName("");
         }
 
@@ -43,7 +45,7 @@ const Category = props => {
     }
 
     const editCategory = () => {
-        let currentCategory = categories.data[categoryIndex];
+        let currentCategory = categoriesData[categoryIndex];
         dispatch(updateCategory({ ...currentCategory, name: categoryName }));
 
         dispatch(setSnackbarProps({
@@ -53,54 +55,33 @@ const Category = props => {
         }));
     }
 
+    const renderBigInput = ({callback, children}) => (
+        <React.Fragment>
+            <TextField 
+                autoFocus={true}
+                className={classes.input}
+                placeholder="Type here"
+                InputProps={{ disableUnderline: true }}
+                inputProps={{ ref: inputRef }}
+                value={categoryName}
+                onChange={e => setCategoryName(e.target.value)}
+            />
+            <Button 
+                disabled={!categoryName} 
+                className={classes.submitButton}
+                color="secondary" 
+                variant="contained"
+                onClick={callback}
+            >
+                {children}
+            </Button>
+        </React.Fragment>
+    )
+
     const renderContentByMode = () => {
         switch (mode) {
-            case 'new': return (
-                <React.Fragment>
-                    <TextField 
-                        autoFocus={true}
-                        className={classes.input}
-                        placeholder="Type here"
-                        InputProps={{ disableUnderline: true }}
-                        inputProps={{ ref: inputRef }}
-                        value={categoryName}
-                        onChange={e => setCategoryName(e.target.value)}
-                    />
-                    <Button 
-                        disabled={!categoryName} 
-                        className={classes.submitButton}
-                        color="secondary" 
-                        variant="contained"
-                        onClick={createCategory}
-                    >
-                        +
-                    </Button>
-                </React.Fragment>
-            )
-            case 'edit': {
-                return (
-                    <React.Fragment>
-                        <TextField 
-                            autoFocus={true}
-                            className={classes.input}
-                            placeholder="Type here"
-                            InputProps={{ disableUnderline: true }}
-                            inputProps={{ ref: inputRef }}
-                            value={categoryName}
-                            onChange={e => setCategoryName(e.target.value)}
-                        />
-                        <Button 
-                            disabled={!categoryName || (categories.data[categoryIndex]?.name === categoryName)} 
-                            className={classes.submitButton}
-                            color="secondary" 
-                            variant="contained"
-                            onClick={editCategory}
-                        >
-                            EDIT
-                        </Button>
-                    </React.Fragment>
-                )
-            }
+            case 'new': return renderBigInput({callback: createCategory, children: '+'})
+            case 'edit': return renderBigInput({callback: editCategory, children: <React.Fragment>&#10003;</React.Fragment>})
             default: return null;
         }
     }
