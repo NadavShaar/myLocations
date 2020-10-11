@@ -4,13 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button, TextField } from '@material-ui/core';
 import Toolbar from './../components/Toolbar';
 import LinkButton from '../components/LinkButton';
-import Snackbar from '../components/Snackbar';
-import { createNewCategory } from './../store/actions';
+import { createNewCategory, setSnackbarProps } from './../store/actions';
 
 const Category = props => {
 
     const [categoryName, setCategoryName] = useState("");
-    const [snackbarProps, setSnackbarProps] = useState({open: false});
 
     const classes = useStyles();
     const dispatch = useDispatch(); 
@@ -27,12 +25,11 @@ const Category = props => {
             setCategoryName("");
         }
 
-        setSnackbarProps({
+        dispatch(setSnackbarProps({
             open: true, 
             message: isCategoryExist ? `'${categoryName}' is already exist` : `'${categoryName}' added successfully`, 
             type: isCategoryExist ? 'error' : 'success', 
-            onClose: () => setSnackbarProps({open: false})
-        });
+        }));
 
         setTimeout(() => { inputRef.current.focus() }, 0);
     }
@@ -76,7 +73,6 @@ const Category = props => {
                     { renderContentByMode() }
                 </div>
             </div>
-            <Snackbar { ...snackbarProps } />
         </div>
     )
 }

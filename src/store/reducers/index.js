@@ -1,8 +1,10 @@
-import categoriesReducer from './categoriesReducer';
 import { combineReducers } from 'redux';
+import categoriesReducer from './categoriesReducer';
+import snackbarReducer from './snackbarReducer';
 
 const reducers = combineReducers({
-    categories: categoriesReducer
+    categories: categoriesReducer,
+    snackbar: snackbarReducer
 });
 
 export default reducers;

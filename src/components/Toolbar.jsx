@@ -16,7 +16,7 @@ const Toolbar = props => {
     return (
         <AppBar position="static">
             <AppToolbar>
-                <Typography variant="h5" className={classes.title}>{title}</Typography>
+                <Typography variant="h6" className={classes.title}>{title}</Typography>
                 { buttons }
             </AppToolbar>
         </AppBar>
