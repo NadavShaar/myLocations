@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, TextField } from '@material-ui/core';
@@ -14,6 +14,8 @@ const Category = props => {
 
     const classes = useStyles();
     const dispatch = useDispatch(); 
+
+    const inputRef = useRef(null);
 
     const categories = useSelector(state => state.categories);
     let isCategoryExist = !!categories.find(category => category.name === categoryName);
@@ -32,6 +34,7 @@ const Category = props => {
             onClose: () => setSnackbarProps({open: false})
         });
 
+        setTimeout(() => { inputRef.current.focus() }, 0);
     }
 
     const renderContentByMode = () => {
@@ -39,20 +42,22 @@ const Category = props => {
             case 'new': return (
                 <React.Fragment>
                     <TextField 
-                            className={classes.input}
-                            placeholder="Type here"
-                            InputProps={{ disableUnderline: true }}
-                            value={categoryName}
-                            onChange={e => setCategoryName(e.target.value)}
-                        />
-                        <Button 
-                            disabled={!categoryName} 
-                            className={classes.submitButton}
-                            color="secondary" 
-                            variant="contained"
-                            onClick={submitNewCategory}
-                        >
-                            +
+                        autoFocus={true}
+                        className={classes.input}
+                        placeholder="Type here"
+                        InputProps={{ disableUnderline: true }}
+                        inputProps={{ ref: inputRef }}
+                        value={categoryName}
+                        onChange={e => setCategoryName(e.target.value)}
+                    />
+                    <Button 
+                        disabled={!categoryName} 
+                        className={classes.submitButton}
+                        color="secondary" 
+                        variant="contained"
+                        onClick={submitNewCategory}
+                    >
+                        +
                     </Button>
                 </React.Fragment>
             )
