@@ -4,24 +4,32 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button, TextField } from '@material-ui/core';
 import Toolbar from './../components/Toolbar';
 import LinkButton from '../components/LinkButton';
-import { createNewCategory, setSnackbarProps } from './../store/actions';
+import { createNewCategory, setSnackbarProps, updateCategory } from './../store/actions';
 
 const Category = props => {
 
-    const [categoryName, setCategoryName] = useState("");
-
+    
     const classes = useStyles();
     const dispatch = useDispatch(); 
-
+    
     const inputRef = useRef(null);
-
+    
     const categories = useSelector(state => state.categories);
-    let isCategoryExist = !!categories.find(category => category.name === categoryName);
 
-    const submitNewCategory = () => {
+    let categoryIndex = categories.data.findIndex(category => category.id === categories.selectedCategoryId);
+
+    const [categoryName, setCategoryName] = useState(categoryIndex > -1 ? categories.data[categoryIndex]?.name : "");
+    let isCategoryExist = !!categories.data.find(category => category.name === categoryName);
+
+    const {
+        mode,
+        title
+    } = props;
+
+    const createCategory = () => {
 
         if(!isCategoryExist) {
-            dispatch(createNewCategory({name: categoryName})); 
+            dispatch(createNewCategory({id: categories.data.length + 1, name: categoryName})); 
             setCategoryName("");
         }
 
@@ -34,8 +42,19 @@ const Category = props => {
         setTimeout(() => { inputRef.current.focus() }, 0);
     }
 
+    const editCategory = () => {
+        let currentCategory = categories.data[categoryIndex];
+        dispatch(updateCategory({ ...currentCategory, name: categoryName }));
+
+        dispatch(setSnackbarProps({
+            open: true, 
+            message: currentCategory ? 'Category updated successfully' : 'Failed to update category', 
+            type: currentCategory ? 'success' : 'error', 
+        }));
+    }
+
     const renderContentByMode = () => {
-        switch (props.mode) {
+        switch (mode) {
             case 'new': return (
                 <React.Fragment>
                     <TextField 
@@ -52,12 +71,36 @@ const Category = props => {
                         className={classes.submitButton}
                         color="secondary" 
                         variant="contained"
-                        onClick={submitNewCategory}
+                        onClick={createCategory}
                     >
                         +
                     </Button>
                 </React.Fragment>
             )
+            case 'edit': {
+                return (
+                    <React.Fragment>
+                        <TextField 
+                            autoFocus={true}
+                            className={classes.input}
+                            placeholder="Type here"
+                            InputProps={{ disableUnderline: true }}
+                            inputProps={{ ref: inputRef }}
+                            value={categoryName}
+                            onChange={e => setCategoryName(e.target.value)}
+                        />
+                        <Button 
+                            disabled={!categoryName || (categories.data[categoryIndex]?.name === categoryName)} 
+                            className={classes.submitButton}
+                            color="secondary" 
+                            variant="contained"
+                            onClick={editCategory}
+                        >
+                            EDIT
+                        </Button>
+                    </React.Fragment>
+                )
+            }
             default: return null;
         }
     }
@@ -65,7 +108,7 @@ const Category = props => {
     return (
         <div className={classes.pageContainer}>
             <Toolbar 
-                title="Add new category"
+                title={title}
                 buttons={ <LinkButton to="/">BACK</LinkButton> }
             />
             <div className={classes.contentContainer}>

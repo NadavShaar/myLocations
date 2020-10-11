@@ -4,3 +4,17 @@ export const createNewCategory = (newCategory) => {
         payload: newCategory 
     }
 }
+
+export const setCategory = (categoryId) => {
+    return { 
+        type: 'SET_CATEGORY',
+        payload: categoryId 
+    }
+}
+
+export const updateCategory = (category) => {
+    return { 
+        type: 'UPDATE_CATEGORY',
+        payload: category 
+    }
+}

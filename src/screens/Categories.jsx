@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Toolbar from './../components/Toolbar';
 import LinkButton from '../components/LinkButton';
+import { setCategory } from './../store/actions';
 
 const Categories = props => {
+    
+    let categoriesData = useSelector(state => state.categories.data);
+    let selectedCategoryId = useSelector(state => state.categories.selectedCategoryId);
 
-    const [selectedCategory, setSelectedCategory] = useState(null);
-
-    const categories = useSelector(state => state.categories);
+    const dispatch = useDispatch();
     const classes = useStyles();
+
+    const selectCategory = (isCurrentCategorySelected, categoryId) => {
+        let categoryToSet = isCurrentCategorySelected ? null : categoryId;
+        dispatch(setCategory(categoryToSet)); 
+    }
+
+    useEffect(() => {
+        dispatch(setCategory(null));
+    }, [])
 
     return (
         <div className={classes.pageContainer}>
             <Toolbar 
                 title="Categories"
                 buttons={
-                    selectedCategory ?
+                    selectedCategoryId ?
                         <React.Fragment>
                             <LinkButton to="/edit">EDIT</LinkButton>
                             <LinkButton to="/view-details">VIEW DETAILS</LinkButton>
@@ -29,9 +40,24 @@ const Categories = props => {
             />
             <div className={classes.contentContainer}>
                 {
-                    categories.length ?
+                    categoriesData.length ?
                         <div className={classes.categoriesList}>
-                            { categories.map((category, idx) => <span key={idx} className={classes.category}>{category.name}</span>) }
+                            { 
+                                categoriesData.map((category, idx) => {
+
+                                    const isCurrentCategorySelected = selectedCategoryId === category.id;
+
+                                    return (
+                                        <span 
+                                            key={idx} 
+                                            className={`${classes.category} ${isCurrentCategorySelected ? classes.highlightedCategory : ''}`.trim()} 
+                                            onClick={e => selectCategory(isCurrentCategorySelected, category.id)}
+                                        >
+                                            {category.name}
+                                        </span>
+                                    )
+                                })
+                            }
                         </div>
                         :
                         <span className={classes.noResultsLabel}>No Categories</span>
@@ -75,6 +101,9 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             backgroundColor: '#eee'
         }
+    },
+    highlightedCategory: {
+        background: 'yellow !important'
     },
     noResultsLabel: {
         fontSize: 48,

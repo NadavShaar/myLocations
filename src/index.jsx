@@ -27,9 +27,9 @@ const App = () => {
         <React.Fragment>
             <Router basename='/myLocations'>
                 <Switch>
-                    <Route path="/new" component={() => <Category mode="new" />} />
-                    <Route path="/edit" component={() => <Category mode="edit" />} />
-                    <Route path="/view-details" component={() => <Category mode="viewDetails" />} />
+                    <Route path="/new" component={() => <Category mode="new" title="Add new category" />} />
+                    <Route path="/edit" component={() => <Category mode="edit"  title="Edit category" />} />
+                    <Route path="/view-details" component={() => <Category mode="viewDetails" title="Category details" />} />
                     <Route path="/" component={Categories} />
                 </Switch>
             </Router>

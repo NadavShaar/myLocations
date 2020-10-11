@@ -1,7 +1,9 @@
-import { createNewCategory } from './categoriesActions';
+import { createNewCategory, updateCategory, setCategory } from './categoriesActions';
 import { setSnackbarProps } from './snackbarActions';
 
 export { 
     createNewCategory,
-    setSnackbarProps
+    setSnackbarProps,
+    updateCategory,
+    setCategory
 };

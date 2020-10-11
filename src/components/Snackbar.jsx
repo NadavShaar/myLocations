@@ -8,7 +8,7 @@ const Snackbar = props => {
 
     const dispatch = useDispatch();
     const snackbarState = useSelector(state => state.snackbar); 
-
+if(!snackbarState) return null;
     const { 
         open=false, 
         message='',
@@ -21,6 +21,7 @@ const Snackbar = props => {
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') return;
         dispatch(setSnackbarProps({ ...snackbarState, open: false }));
+        setTimeout(() => { dispatch(setSnackbarProps(null)) }, duration);
     };
 
     return (
