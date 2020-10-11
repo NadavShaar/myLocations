@@ -2,7 +2,7 @@
   "name": "react-setup",
   "version": "1.0.0",
   "description": "A Webpack + Babel + React Starter bolerplate ",
-  "homepage": "https://nadavshaar.github.io/myLocations",
+  "homepage": "https://nadavshaar.github.io/myLocations/",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
