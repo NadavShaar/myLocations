@@ -28,9 +28,14 @@ const Categories = props => {
                 }
             />
             <div className={classes.contentContainer}>
-                <div className={classes.categoriesList}>
-                    { categories.map((category, idx) => <span key={idx} className={classes.category}>{category.name}</span>) }
-                </div>
+                {
+                    categories.length ?
+                        <div className={classes.categoriesList}>
+                            { categories.map((category, idx) => <span key={idx} className={classes.category}>{category.name}</span>) }
+                        </div>
+                        :
+                        <span className={classes.noResultsLabel}>No Categories</span>
+                }
             </div>
         </div>
     )
@@ -47,8 +52,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1, 
-        height: '100%',
-        padding: 20
+        height: 'calc(100% - 64px)',
+        padding: 20,
+        position: 'relative'
     },
     categoriesList: {
         display: 'flex',
@@ -57,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 500,
         maxHeight: 600,
         overflow: 'auto',
+        height: '100%',
         cursor: 'pointer'
     },
     category: {
@@ -64,7 +71,14 @@ const useStyles = makeStyles((theme) => ({
         padding: 20,
         display: 'flex',
         height: 60,
-        boxShadow: '1px 1px 1px 1px rgb(0 0 0 / 0.3)'
+        borderBottom: '1px solid #eee',
+        "&:hover": {
+            backgroundColor: '#eee'
+        }
+    },
+    noResultsLabel: {
+        fontSize: 48,
+        color: '#a9a9a9'
     }
 }));
 

@@ -10,7 +10,7 @@ import { createNewCategory } from './../store/actions';
 const Category = props => {
 
     const [categoryName, setCategoryName] = useState("");
-    const [snackbarProps, setSnackbarProps] = useState(null);
+    const [snackbarProps, setSnackbarProps] = useState({open: false});
 
     const classes = useStyles();
     const dispatch = useDispatch(); 
@@ -19,17 +19,45 @@ const Category = props => {
     let isCategoryExist = !!categories.find(category => category.name === categoryName);
 
     const submitNewCategory = () => {
+
         if(!isCategoryExist) {
             dispatch(createNewCategory({name: categoryName})); 
             setCategoryName("");
         }
+
         setSnackbarProps({
             open: true, 
-            setOpen: () => setSnackbarProps({ ...snackbarProps, open: false }), 
             message: isCategoryExist ? `'${categoryName}' is already exist` : `'${categoryName}' added successfully`, 
             type: isCategoryExist ? 'error' : 'success', 
-            callback: () => setSnackbarProps(null)
+            onClose: () => setSnackbarProps({open: false})
         });
+
+    }
+
+    const renderContentByMode = () => {
+        switch (props.mode) {
+            case 'new': return (
+                <React.Fragment>
+                    <TextField 
+                            className={classes.input}
+                            placeholder="Type here"
+                            InputProps={{ disableUnderline: true }}
+                            value={categoryName}
+                            onChange={e => setCategoryName(e.target.value)}
+                        />
+                        <Button 
+                            disabled={!categoryName} 
+                            className={classes.submitButton}
+                            color="secondary" 
+                            variant="contained"
+                            onClick={submitNewCategory}
+                        >
+                            +
+                    </Button>
+                </React.Fragment>
+            )
+            default: return null;
+        }
     }
 
     return (
@@ -40,22 +68,7 @@ const Category = props => {
             />
             <div className={classes.contentContainer}>
                 <div className={classes.inputWrapper}>
-                    <TextField 
-                        className={classes.input}
-                        placeholder="Type here"
-                        InputProps={{ disableUnderline: true }}
-                        value={categoryName}
-                        onChange={e => setCategoryName(e.target.value)}
-                    />
-                    <Button 
-                        disabled={!categoryName} 
-                        className={classes.submitButton}
-                        color="secondary" 
-                        variant="contained"
-                        onClick={submitNewCategory}
-                    >
-                        +
-                    </Button>
+                    { renderContentByMode() }
                 </div>
             </div>
             <Snackbar { ...snackbarProps } />
@@ -71,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     },
     contentContainer: {
         flex: 1, 
-        height: '100%',
+        height: 'calc(100% - 64px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

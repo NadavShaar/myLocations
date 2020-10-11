@@ -6,19 +6,17 @@ const Snackbar = props => {
 
     const { 
         open=false, 
-        setOpen,
         message='',
         type='success',
         duration=3000,
-        callback
+        onClose
     } = props;
 
     const Alert = props => <MuiAlert elevation={6} variant="filled" {...props} />;
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') return;
-        setOpen(false);
-        callback && callback();
+        onClose();
     };
 
     return (
