@@ -14,7 +14,7 @@ const Snackbar = props => {
         message='',
         type='success',
         duration=3000
-    } = props;
+    } = snackbarState;
 
     const Alert = props => <MuiAlert elevation={6} variant="filled" {...props} />;
 

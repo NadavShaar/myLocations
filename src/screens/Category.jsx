@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'inline-flex'
     },
     input: {
-        height: 120,
+        height: 80,
         background: '#fff',
         maxWidth: 400,
         width: '100%',
@@ -103,15 +103,17 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: 'inset 1px 1px 2px 1px rgb(0 0 0 / 0.3)',
         "& .MuiInputBase-root": {
             height: '100%',
-            fontSize: 40
+            fontSize: 30
         },
         "& .MuiInputBase-input": {
             textAlign: 'center'
         },
     },
     submitButton: {
-        width: 120, 
-        fontSize: 48,
+        minWidth: 80, 
+        maxWidth: 80, 
+        height: 80, 
+        fontSize: 30,
         borderRadius: '0 4px 4px 0'
     }
 }));
