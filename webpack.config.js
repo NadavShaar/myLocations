@@ -11,7 +11,7 @@ module.exports = (env, argv) => {
             path: path.resolve(__dirname, 'dist'),
             filename: 'bundle.js',
             chunkFilename: '[id].js',
-            publicPath: '/'
+            publicPath: '/myLocations'
         },
         devtool: devMode ? 'inline-source-map' : false,
         resolve: {
