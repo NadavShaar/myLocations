@@ -33,7 +33,7 @@ const App = () => {
                     <Route path="/myLocations/categories/" component={ () =>
                         {
                             var { url } = useRouteMatch();
-                            const categories = useSelector(state => state.categories.data);
+                            const categories = useSelector(state => state.categories.data) || [];
 
                             return (
                                 <Switch>
