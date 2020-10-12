@@ -32,7 +32,7 @@ const App = () => {
         <React.Fragment>
             <Router>
                 <Switch>
-                    <Route path="/myLocations/categories/" component={ () =>
+                    <Route path="/categories/" component={ () =>
                         {
                             var { url } = useRouteMatch();
 
@@ -54,7 +54,7 @@ const App = () => {
                             )
                         }
                     }/>
-                    {/* <Redirect from='*' to='/myLocations/categories/' /> */}
+                    <Redirect from='*' to='/categories/' />
                 </Switch>
             </Router>
             <Snackbar />
