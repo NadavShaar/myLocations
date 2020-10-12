@@ -1,27 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Toolbar from './../components/Toolbar';
 import LinkButton from '../components/LinkButton';
-import { setCategory } from './../store/actions';
 
 const Categories = props => {
     
-    let categoriesData = useSelector(state => state.categories.data);
-    let selectedCategoryId = useSelector(state => state.categories.selectedCategoryId);
+    const { categories } = props;
 
-    const dispatch = useDispatch();
+    const [selectedCategoryId, setSelectedCategoryid] = useState(null);
+
     const classes = useStyles();
 
     const selectCategory = (isCurrentCategorySelected, categoryId) => {
         let categoryToSet = isCurrentCategorySelected ? null : categoryId;
-        dispatch(setCategory(categoryToSet)); 
+        setSelectedCategoryid(categoryToSet); 
     }
-
-    useEffect(() => {
-        dispatch(setCategory(null));
-    }, [])
 
     return (
         <div className={classes.pageContainer}>
@@ -30,20 +25,20 @@ const Categories = props => {
                 buttons={
                     selectedCategoryId ?
                         <React.Fragment>
-                            <LinkButton to="/edit">EDIT</LinkButton>
-                            <LinkButton to="/view-details">VIEW DETAILS</LinkButton>
+                            <LinkButton to={`/categories/${selectedCategoryId}/edit`}>EDIT</LinkButton>
+                            <LinkButton to={`/categories/${selectedCategoryId}/details`}>VIEW DETAILS</LinkButton>
                             <Button color="inherit">DELETE</Button>
                         </React.Fragment>
                         :
-                        <LinkButton to="/new">NEW</LinkButton>
+                        <LinkButton to="/categories/new">NEW</LinkButton>
                 }
             />
             <div className={classes.contentContainer}>
                 {
-                    categoriesData.length ?
+                    categories.length ?
                         <div className={classes.categoriesList}>
                             { 
-                                categoriesData.map((category, idx) => {
+                                categories.map((category, idx) => {
 
                                     const isCurrentCategorySelected = selectedCategoryId === category.id;
 

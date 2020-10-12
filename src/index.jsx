@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createStore, applyMiddleware } from 'redux';
 import reducers from './store/reducers';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { save, load } from "redux-localstorage-simple";
 import Categories from './screens/Categories';
@@ -10,7 +10,9 @@ import Category from './screens/Category';
 import {
     BrowserRouter as Router,
     Switch,
-    Route
+    Redirect,
+    Route,
+    useRouteMatch
 } from "react-router-dom";
 import WebFont from "webfontloader";
 WebFont.load({google: {families: ["Roboto:300,400,500"]}});
@@ -23,14 +25,35 @@ const createStoreWithMiddleware = applyMiddleware(
 const store = createStoreWithMiddleware(reducers, load({ states: ["categories"], namespace: "myLocations" }), composeWithDevTools());
 
 const App = () => {
+    
     return (
         <React.Fragment>
-            <Router basename='/myLocations'>
+            <Router>
                 <Switch>
-                    <Route path="/new" component={() => <Category mode="new" title="Add new category" />} />
-                    <Route path="/edit" component={() => <Category mode="edit"  title="Edit category" />} />
-                    <Route path="/view-details" component={() => <Category mode="viewDetails" title="Category details" />} />
-                    <Route path="/" component={Categories} />
+                    <Route path="/categories/" component={ () =>
+                        {
+                            var { url } = useRouteMatch();
+                            const categories = useSelector(state => state.categories.data);
+
+                            return (
+                                <Switch>
+                                    <Route path={`${url}/new`} >
+                                        <Category mode="new" categories={categories} />
+                                    </Route>
+                                    <Route path={`${url}/:id/edit`} >
+                                        <Category mode="edit" categories={categories} />
+                                    </Route>
+                                    <Route path={`${url}/:id/details`} >
+                                        <Category mode="details" categories={categories} />
+                                    </Route>
+                                    <Route exact path={url} >
+                                        <Categories categories={categories} />
+                                    </Route>
+                                </Switch>
+                            )
+                        }
+                    }/>
+                    <Redirect from='*' to='/categories/' />
                 </Switch>
             </Router>
             <Snackbar />

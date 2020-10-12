@@ -8,7 +8,8 @@ const Snackbar = props => {
 
     const dispatch = useDispatch();
     const snackbarState = useSelector(state => state.snackbar); 
-if(!snackbarState) return null;
+    if(!snackbarState) return null;
+
     const { 
         open=false, 
         message='',
@@ -25,7 +26,7 @@ if(!snackbarState) return null;
     };
 
     return (
-        <MuiSnack open={open} autoHideDuration={duration} onClose={handleClose}>
+        <MuiSnack key={message} open={open} autoHideDuration={duration} onClose={handleClose}>
             <Alert onClose={handleClose} severity={type}>
                 { message }
             </Alert>

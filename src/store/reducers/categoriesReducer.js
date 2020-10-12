@@ -1,11 +1,7 @@
-const categoriesReducer = (state={data: [], selectedCategoryId: null}, action) => {
+const categoriesReducer = (state={data: []}, action) => {
     switch (action.type) {
         case 'NEW_CATEGORY': {
             state.data.push(action.payload);
-            return state;
-        }
-        case 'SET_CATEGORY': {
-            state.selectedCategoryId = action.payload;
             return state;
         }
         case 'UPDATE_CATEGORY': {

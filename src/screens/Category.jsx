@@ -5,33 +5,33 @@ import { Button, TextField } from '@material-ui/core';
 import Toolbar from './../components/Toolbar';
 import LinkButton from '../components/LinkButton';
 import { createNewCategory, setSnackbarProps, updateCategory } from './../store/actions';
+import { useParams } from "react-router-dom";
 
 const Category = props => {
 
     
     const classes = useStyles();
     const dispatch = useDispatch(); 
+    let { id } = useParams();
     
     const inputRef = useRef(null);
     
-    const selectedCategoryId = useSelector(state => state.categories.selectedCategoryId);
-    const categoriesData = useSelector(state => state.categories.data);
+    const { categories } = props;
     
-    let categoryIndex = categoriesData.findIndex(category => category.id === selectedCategoryId);
+    let categoryIndex = categories.findIndex(category => category.id == id);
     const selectedCategory = useSelector(state => state.categories.data[categoryIndex]);
 
     const [categoryName, setCategoryName] = useState(categoryIndex > -1 ? selectedCategory?.name : "");
-    let isCategoryExist = !!categoriesData.find(category => category.name === categoryName);
+    let isCategoryExist = !!categories.find(category => category.name === categoryName);
 
     const {
-        mode,
-        title
+        mode
     } = props;
 
     const createCategory = () => {
 
         if(!isCategoryExist) {
-            dispatch(createNewCategory({id: categoriesData.length + 1, name: categoryName})); 
+            dispatch(createNewCategory({id: categories.length + 1, name: categoryName})); 
             setCategoryName("");
         }
 
@@ -45,17 +45,29 @@ const Category = props => {
     }
 
     const editCategory = () => {
-        let currentCategory = categoriesData[categoryIndex];
-        dispatch(updateCategory({ ...currentCategory, name: categoryName }));
-
+        
+        let currentCategory = categories[categoryIndex];
+        if(!isCategoryExist) dispatch(updateCategory({ ...currentCategory, name: categoryName }));
+        
         dispatch(setSnackbarProps({
             open: true, 
-            message: currentCategory ? 'Category updated successfully' : 'Failed to update category', 
-            type: currentCategory ? 'success' : 'error', 
+            message: isCategoryExist ? `'${categoryName}' is already exist` : `'${categoryName}' updated successfully`, 
+            type: isCategoryExist ? 'error' : 'success', 
         }));
+
+        setTimeout(() => { inputRef.current.focus() }, 0);
     }
 
-    const renderBigInput = ({callback, children}) => (
+    const getTitleByMode = () => {
+        switch (mode) {
+            case 'new': return 'New category'
+            case 'edit': return 'Edit category'
+            case 'details': return 'Details'
+            default: return null;
+        }
+    }
+
+    const renderBigInput = ({callback, children, disabled}) => (
         <React.Fragment>
             <TextField 
                 autoFocus={true}
@@ -64,10 +76,11 @@ const Category = props => {
                 InputProps={{ disableUnderline: true }}
                 inputProps={{ ref: inputRef }}
                 value={categoryName}
+                onKeyPress={e => { if(e.key === 'Enter') callback(); } }
                 onChange={e => setCategoryName(e.target.value)}
             />
             <Button 
-                disabled={!categoryName} 
+                disabled={disabled} 
                 className={classes.submitButton}
                 color="secondary" 
                 variant="contained"
@@ -80,8 +93,9 @@ const Category = props => {
 
     const renderContentByMode = () => {
         switch (mode) {
-            case 'new': return renderBigInput({callback: createCategory, children: '+'})
-            case 'edit': return renderBigInput({callback: editCategory, children: <React.Fragment>&#10003;</React.Fragment>})
+            case 'new': return renderBigInput({callback: createCategory, children: '+', disabled: !categoryName})
+            case 'edit': return renderBigInput({callback: editCategory, children: <React.Fragment>&#10003;</React.Fragment>, disabled: !categoryName})
+            case 'details': return <span className={classes.categoryName}>{categoryName}</span>;
             default: return null;
         }
     }
@@ -89,8 +103,8 @@ const Category = props => {
     return (
         <div className={classes.pageContainer}>
             <Toolbar 
-                title={title}
-                buttons={ <LinkButton to="/">BACK</LinkButton> }
+                title={getTitleByMode()}
+                buttons={ <LinkButton to="/categories/">BACK</LinkButton> }
             />
             <div className={classes.contentContainer}>
                 <div className={classes.inputWrapper}>
@@ -139,6 +153,9 @@ const useStyles = makeStyles((theme) => ({
         height: 80, 
         fontSize: 30,
         borderRadius: '0 4px 4px 0'
+    },
+    categoryName: {
+        fontSize: 48
     }
 }));
 
