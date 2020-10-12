@@ -100,7 +100,7 @@ const Category = props => {
         <div className={classes.pageContainer}>
             <Toolbar 
                 title={getTitleByMode()}
-                buttons={ <LinkButton to="/myLocations/categories/">BACK</LinkButton> }
+                buttons={ <LinkButton to="/">BACK</LinkButton> }
             />
             <div className={classes.contentContainer}>
                 <div className={classes.inputWrapper}>
