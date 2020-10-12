@@ -1,25 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Toolbar from './../components/Toolbar';
 import LinkButton from '../components/LinkButton';
-import { deleteCategories, setSnackbarProps } from './../store/actions';
+import { deleteCategories } from './../store/actions';
 
 const Categories = props => {
     
-    const { categories } = props;
-
+    
     const [selectedCategoryIds, setSelectedCategoriesIds] = useState([]);
-
+    
     const classes = useStyles();
-
+    
     const dispatch = useDispatch();
 
+    const buttonRef = useRef(null);
+    
+    const { categories } = props;
+    
     const selectCategory = (isCurrentCategorySelected, categoryId, categoryIndex) => {
         
         let selectedCategoryIdsClone = [ ...selectedCategoryIds ];
-        console.log(isCurrentCategorySelected)
+
         if(isCurrentCategorySelected) selectedCategoryIdsClone.splice(categoryIndex, 1);
         else selectedCategoryIdsClone.push(categoryId);
 
@@ -29,11 +32,16 @@ const Categories = props => {
     const removeCategory = () => {
         dispatch(deleteCategories(selectedCategoryIds));
 
-        dispatch(setSnackbarProps({
-            open: true, 
-            message: `${selectedCategoryIds.length + (selectedCategoryIds.length === 1 ? ' category' : ' categories')} deleted successfully`, 
-            type: 'success', 
-        }));
+        const event = new CustomEvent('displaySnackbar', {
+            bubbles: true,
+            detail: {
+                open: true, 
+                message: `${selectedCategoryIds.length + (selectedCategoryIds.length === 1 ? ' category' : ' categories')} deleted successfully`, 
+                type: 'success'
+            }
+        });
+
+        buttonRef.current.dispatchEvent(event);
 
         setSelectedCategoriesIds([]); 
     }
@@ -54,7 +62,7 @@ const Categories = props => {
                                     :
                                     null
                             }
-                            <Button color="inherit" onClick={removeCategory}>DELETE</Button>
+                            <Button ref={buttonRef} color="inherit" onClick={removeCategory}>DELETE</Button>
                         </React.Fragment>
                         :
                         <LinkButton to="/myLocations/categories/new">NEW</LinkButton>

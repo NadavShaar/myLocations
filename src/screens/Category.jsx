@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button, TextField } from '@material-ui/core';
 import Toolbar from './../components/Toolbar';
 import LinkButton from '../components/LinkButton';
-import { createNewCategory, setSnackbarProps, updateCategory } from './../store/actions';
+import { createNewCategory, updateCategory } from './../store/actions';
 import { useParams } from "react-router-dom";
 
 const Category = props => {
@@ -15,6 +15,7 @@ const Category = props => {
     let { id } = useParams();
     
     const inputRef = useRef(null);
+    const buttonRef = useRef(null);
     
     const { mode, categories } = props;
     
@@ -32,26 +33,36 @@ const Category = props => {
             setCategoryName("");
         }
 
-        dispatch(setSnackbarProps({
-            open: true, 
-            message: isCategoryExist ? `'${categoryName}' is already exist` : `'${categoryName}' added successfully`, 
-            type: isCategoryExist ? 'error' : 'success', 
-        }));
+        const event = new CustomEvent('displaySnackbar', {
+            bubbles: true,
+            detail: {
+                open: true, 
+                message: isCategoryExist ? `${categoryName} is already exist` : `${categoryName} added successfully`, 
+                type: isCategoryExist ? 'error' : 'success', 
+            }
+        });
+
+        buttonRef.current.dispatchEvent(event);
 
         setTimeout(() => { inputRef.current.focus() }, 0);
     }
 
     const editCategory = () => {
         if(!categoryName) return;
-        
+
         let currentCategory = categories[categoryIndex];
         if(!isCategoryExist) dispatch(updateCategory({ ...currentCategory, name: categoryName }));
-        
-        dispatch(setSnackbarProps({
-            open: true, 
-            message: isCategoryExist ? `'${categoryName}' is already exist` : `'${categoryName}' updated successfully`, 
-            type: isCategoryExist ? 'error' : 'success', 
-        }));
+
+        const event = new CustomEvent('displaySnackbar', {
+            bubbles: true,
+            detail: {
+                open: true, 
+                message: isCategoryExist ? `${categoryName} is already exist` : `${categoryName} saved successfully`, 
+                type: isCategoryExist ? 'error' : 'success'
+            } 
+        });
+
+        buttonRef.current.dispatchEvent(event);
 
         setTimeout(() => { inputRef.current.focus() }, 0);
     }
@@ -78,6 +89,7 @@ const Category = props => {
                 onChange={e => setCategoryName(e.target.value)}
             />
             <Button 
+                ref={buttonRef}
                 disabled={disabled} 
                 className={classes.submitButton}
                 color="secondary" 

@@ -1,28 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Snackbar as MuiSnack } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
 import MuiAlert from '@material-ui/lab/Alert';
-import { setSnackbarProps } from './../store/actions';
+
+const Alert = props => <MuiAlert elevation={6} variant="filled" {...props} />;
 
 const Snackbar = props => {
 
-    const dispatch = useDispatch();
-    const snackbarState = useSelector(state => state.snackbar); 
-    if(!snackbarState) return null;
+    const [snackbarData, setSnackbarData] = useState(null); 
+
+    useEffect(() => {
+        window.addEventListener('displaySnackbar', getData);
+        return () => { window.removeEventListener('displaySnackbar', getData) }
+    }, [])
+
+    const getData = (e) => {
+        setSnackbarData(e.detail)
+    }
+
+    if(!snackbarData) return null;
 
     const { 
         open=false, 
         message='',
         type='success',
-        duration=3000
-    } = snackbarState;
-
-    const Alert = props => <MuiAlert elevation={6} variant="filled" {...props} />;
+        duration=5000
+    } = snackbarData;
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') return;
-        dispatch(setSnackbarProps({ ...snackbarState, open: false }));
-        setTimeout(() => { dispatch(setSnackbarProps(null)) }, duration);
+        setSnackbarData({ ...snackbarData, open: false });
     };
 
     return (
