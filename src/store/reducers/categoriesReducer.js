@@ -21,7 +21,7 @@ const categoriesReducer = (state={data: []}, action) => {
             
             return { data: [ ...state.data ] };
         }
-        default: return { data: [ ...state.data ] };
+        default: return state;
     }
 }
 
