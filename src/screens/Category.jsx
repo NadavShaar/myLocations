@@ -27,7 +27,7 @@ const Category = props => {
     const createCategory = () => {
 
         if(!isCategoryExist) {
-            dispatch(createNewCategory({id: categories.length + 1, name: categoryName})); 
+            dispatch(createNewCategory({id: Date.now(), name: categoryName})); 
             setCategoryName("");
         }
 
@@ -100,7 +100,7 @@ const Category = props => {
         <div className={classes.pageContainer}>
             <Toolbar 
                 title={getTitleByMode()}
-                buttons={ <LinkButton to="/categories/">BACK</LinkButton> }
+                buttons={ <LinkButton to="/myLocations/categories/">BACK</LinkButton> }
             />
             <div className={classes.contentContainer}>
                 <div className={classes.inputWrapper}>

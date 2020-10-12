@@ -1,21 +1,39 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Toolbar from './../components/Toolbar';
 import LinkButton from '../components/LinkButton';
+import { deleteCategories, setSnackbarProps } from './../store/actions';
 
 const Categories = props => {
     
     const { categories } = props;
 
-    const [selectedCategoryId, setSelectedCategoryid] = useState(null);
+    const [selectedCategoryIds, setSelectedCategoriesIds] = useState([]);
 
     const classes = useStyles();
 
-    const selectCategory = (isCurrentCategorySelected, categoryId) => {
-        let categoryToSet = isCurrentCategorySelected ? null : categoryId;
-        setSelectedCategoryid(categoryToSet); 
+    const dispatch = useDispatch();
+
+    const selectCategory = (isCurrentCategorySelected, categoryId, categoryIndex) => {
+        let selectedCategoryIdsClone = [ ...selectedCategoryIds ];
+        if(isCurrentCategorySelected) selectedCategoryIdsClone.splice(categoryIndex, 1);
+        else selectedCategoryIdsClone.push(categoryId);
+
+        setSelectedCategoriesIds(selectedCategoryIdsClone); 
+    }
+
+    const removeCategory = () => {
+        dispatch(deleteCategories(selectedCategoryIds));
+
+        dispatch(setSnackbarProps({
+            open: true, 
+            message: `${selectedCategoryIds.length + (selectedCategoryIds.length === 1 ? ' category' : ' categories')} deleted successfully`, 
+            type: 'success', 
+        }));
+
+        setSelectedCategoriesIds([]); 
     }
 
     return (
@@ -23,14 +41,21 @@ const Categories = props => {
             <Toolbar 
                 title="Categories"
                 buttons={
-                    selectedCategoryId ?
+                    selectedCategoryIds.length ?
                         <React.Fragment>
-                            <LinkButton to={`/categories/${selectedCategoryId}/edit`}>EDIT</LinkButton>
-                            <LinkButton to={`/categories/${selectedCategoryId}/details`}>VIEW DETAILS</LinkButton>
-                            <Button color="inherit">DELETE</Button>
+                            {
+                                selectedCategoryIds.length === 1 ?
+                                    <React.Fragment>
+                                        <LinkButton to={`/myLocations/categories/${selectedCategoryIds}/edit`}>EDIT</LinkButton>
+                                        <LinkButton to={`/myLocations/categories/${selectedCategoryIds}/details`}>VIEW DETAILS</LinkButton>
+                                    </React.Fragment>
+                                    :
+                                    null
+                            }
+                            <Button color="inherit" onClick={removeCategory}>DELETE</Button>
                         </React.Fragment>
                         :
-                        <LinkButton to="/categories/new">NEW</LinkButton>
+                        <LinkButton to="/myLocations/categories/new">NEW</LinkButton>
                 }
             />
             <div className={classes.contentContainer}>
@@ -39,14 +64,13 @@ const Categories = props => {
                         <div className={classes.categoriesList}>
                             { 
                                 categories.map((category, idx) => {
-
-                                    const isCurrentCategorySelected = selectedCategoryId === category.id;
+                                    const isCurrentCategorySelected = selectedCategoryIds[idx] === category.id;
 
                                     return (
                                         <span 
                                             key={idx} 
                                             className={`${classes.category} ${isCurrentCategorySelected ? classes.highlightedCategory : ''}`.trim()} 
-                                            onClick={e => selectCategory(isCurrentCategorySelected, category.id)}
+                                            onClick={e => selectCategory(isCurrentCategorySelected, category.id, idx)}
                                         >
                                             {category.name}
                                         </span>
