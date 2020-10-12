@@ -16,17 +16,13 @@ const Category = props => {
     
     const inputRef = useRef(null);
     
-    const { categories } = props;
+    const { mode, categories } = props;
     
     let categoryIndex = categories.findIndex(category => category.id == id);
     const selectedCategory = useSelector(state => state.categories.data[categoryIndex]);
 
     const [categoryName, setCategoryName] = useState(categoryIndex > -1 ? selectedCategory?.name : "");
     let isCategoryExist = !!categories.find(category => category.name === categoryName);
-
-    const {
-        mode
-    } = props;
 
     const createCategory = () => {
 

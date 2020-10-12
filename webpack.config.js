@@ -13,7 +13,7 @@ module.exports = (env, argv) => {
             chunkFilename: '[id].js',
             // publicPath: '/'
         },
-        devtool: devMode ? 'inline-source-map' : false,
+        devtool: devMode ? 'inline-source-map' : 'source-map',
         resolve: {
             extensions: ['.js', '.jsx']
         },
