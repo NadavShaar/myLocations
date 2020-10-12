@@ -19,12 +19,13 @@ const Category = props => {
     const { mode, categories } = props;
     
     let categoryIndex = categories.findIndex(category => category.id == id);
-    const selectedCategory = useSelector(state => state.categories.data[categoryIndex]);
+    const selectedCategory = categoryIndex > -1 && useSelector(state => state.categories.data[categoryIndex]);
 
     const [categoryName, setCategoryName] = useState(categoryIndex > -1 ? selectedCategory?.name : "");
     let isCategoryExist = !!categories.find(category => category.name === categoryName);
 
     const createCategory = () => {
+        if(!categoryName) return;
 
         if(!isCategoryExist) {
             dispatch(createNewCategory({id: Date.now(), name: categoryName})); 
@@ -41,6 +42,7 @@ const Category = props => {
     }
 
     const editCategory = () => {
+        if(!categoryName) return;
         
         let currentCategory = categories[categoryIndex];
         if(!isCategoryExist) dispatch(updateCategory({ ...currentCategory, name: categoryName }));
