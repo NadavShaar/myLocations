@@ -17,7 +17,9 @@ const Categories = props => {
     const dispatch = useDispatch();
 
     const selectCategory = (isCurrentCategorySelected, categoryId, categoryIndex) => {
+        
         let selectedCategoryIdsClone = [ ...selectedCategoryIds ];
+        console.log(isCurrentCategorySelected)
         if(isCurrentCategorySelected) selectedCategoryIdsClone.splice(categoryIndex, 1);
         else selectedCategoryIdsClone.push(categoryId);
 
@@ -64,13 +66,15 @@ const Categories = props => {
                         <div className={classes.categoriesList}>
                             { 
                                 categories.map((category, idx) => {
-                                    const isCurrentCategorySelected = selectedCategoryIds[idx] === category.id;
+                                    
+                                    const currentCategoryIndex = selectedCategoryIds.findIndex(selectedCategoryId => selectedCategoryId === category.id);
+                                    const isCurrentCategorySelected = currentCategoryIndex > -1;
 
                                     return (
                                         <span 
                                             key={idx} 
                                             className={`${classes.category} ${isCurrentCategorySelected ? classes.highlightedCategory : ''}`.trim()} 
-                                            onClick={e => selectCategory(isCurrentCategorySelected, category.id, idx)}
+                                            onClick={e => selectCategory(isCurrentCategorySelected, category.id, currentCategoryIndex)}
                                         >
                                             {category.name}
                                         </span>
