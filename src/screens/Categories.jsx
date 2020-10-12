@@ -25,12 +25,12 @@ const Categories = props => {
                 buttons={
                     selectedCategoryId ?
                         <React.Fragment>
-                            <LinkButton to={`/categories/${selectedCategoryId}/edit`}>EDIT</LinkButton>
-                            <LinkButton to={`/categories/${selectedCategoryId}/details`}>VIEW DETAILS</LinkButton>
+                            <LinkButton to={`/myLocations/categories/${selectedCategoryId}/edit`}>EDIT</LinkButton>
+                            <LinkButton to={`/myLocations/categories/${selectedCategoryId}/details`}>VIEW DETAILS</LinkButton>
                             <Button color="inherit">DELETE</Button>
                         </React.Fragment>
                         :
-                        <LinkButton to="/categories/new">NEW</LinkButton>
+                        <LinkButton to="/myLocations/categories/new">NEW</LinkButton>
                 }
             />
             <div className={classes.contentContainer}>
