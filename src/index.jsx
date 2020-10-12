@@ -25,7 +25,7 @@ const createStoreWithMiddleware = applyMiddleware(
 const store = createStoreWithMiddleware(reducers, load({ states: ["categories"], namespace: "myLocations" }), composeWithDevTools());
 
 const App = () => {
-    
+
     const categories = useSelector(state => state.categories.data) || [];
 
     return (
@@ -54,7 +54,7 @@ const App = () => {
                             )
                         }
                     }/>
-                    <Redirect from='*' to='/myLocations/categories/' />
+                    {/* <Redirect from='*' to='/myLocations/categories/' /> */}
                 </Switch>
             </Router>
             <Snackbar />
