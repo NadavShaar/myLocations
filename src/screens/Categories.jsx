@@ -46,8 +46,8 @@ const Categories = props => {
                             {
                                 selectedCategoryIds.length === 1 ?
                                     <React.Fragment>
-                                        <LinkButton to={`/${selectedCategoryIds}/edit`}>EDIT</LinkButton>
-                                        <LinkButton to={`/${selectedCategoryIds}/details`}>VIEW DETAILS</LinkButton>
+                                        <LinkButton to={`/myLocations/categories/${selectedCategoryIds}/edit`}>EDIT</LinkButton>
+                                        <LinkButton to={`/myLocations/categories/${selectedCategoryIds}/details`}>VIEW DETAILS</LinkButton>
                                     </React.Fragment>
                                     :
                                     null
@@ -55,7 +55,7 @@ const Categories = props => {
                             <Button color="inherit" onClick={removeCategory}>DELETE</Button>
                         </React.Fragment>
                         :
-                        <LinkButton to="/new">NEW</LinkButton>
+                        <LinkButton to="/myLocations/categories/new">NEW</LinkButton>
                 }
             />
             <div className={classes.contentContainer}>

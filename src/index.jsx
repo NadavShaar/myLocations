@@ -25,27 +25,11 @@ const createStoreWithMiddleware = applyMiddleware(
 const store = createStoreWithMiddleware(reducers, load({ states: ["categories"], namespace: "myLocations" }), composeWithDevTools());
 
 const App = () => {
-    const categories = useSelector(state => state.categories.data) || [];
 
     return (
         <React.Fragment>
-            <Router basename={process.env.PUBLIC_URL}>
+            <Router >
                 <Switch>
-                    <Route path={`/new`} >
-                        <Category mode="new" categories={categories} />
-                    </Route>
-                    <Route path={`/:id/edit`} >
-                        <Category mode="edit" categories={categories} />
-                    </Route>
-                    <Route path={`/:id/details`} >
-                        <Category mode="details" categories={categories} />
-                    </Route>
-                    <Route exact path={`/`} >
-                        <Categories categories={categories} />
-                    </Route>
-                    <Redirect from='*' to='/' />
-                </Switch>
-                {/* <Switch>
                     <Route path="/myLocations/categories/" component={ () =>
                         {
                             var { url } = useRouteMatch();
@@ -71,7 +55,7 @@ const App = () => {
                         }
                     }/>
                     <Redirect from='*' to='/myLocations/categories/' />
-                </Switch> */}
+                </Switch>
             </Router>
             <Snackbar />
         </React.Fragment>
