@@ -25,7 +25,9 @@ const createStoreWithMiddleware = applyMiddleware(
 const store = createStoreWithMiddleware(reducers, load({ states: ["categories"], namespace: "myLocations" }), composeWithDevTools());
 
 const App = () => {
-    
+    console.log(store)
+    const categories = useSelector(state => state.categories.data) || [];
+
     return (
         <React.Fragment>
             <Router>
@@ -33,7 +35,6 @@ const App = () => {
                     <Route path="/myLocations/categories/" component={ () =>
                         {
                             var { url } = useRouteMatch();
-                            const categories = useSelector(state => state.categories.data) || [];
 
                             return (
                                 <Switch>
@@ -53,7 +54,7 @@ const App = () => {
                             )
                         }
                     }/>
-                    <Redirect from='*' to='/myLocations/categories/' />
+                    {/* <Redirect from='*' to='/myLocations/categories/' /> */}
                 </Switch>
             </Router>
             <Snackbar />
