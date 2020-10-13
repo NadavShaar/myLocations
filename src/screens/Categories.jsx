@@ -1,15 +1,21 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import { makeStyles, Button, TextField, InputAdornment  } from '@material-ui/core';
 import Toolbar from './../components/Toolbar';
 import LinkButton from '../components/LinkButton';
 import { deleteCategories } from './../store/actions';
+import DeleteIcon from '@material-ui/icons/Delete';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@material-ui/icons/Add';
+import CloseIcon from '@material-ui/icons/Close';
+import SearchIcon from '@material-ui/icons/Search';
 
 const Categories = props => {
     
     
     const [selectedCategoryIds, setSelectedCategoriesIds] = useState([]);
+    const [searchText, setSearchText] = useState('');
     
     const classes = useStyles();
     
@@ -18,6 +24,11 @@ const Categories = props => {
     const buttonRef = useRef(null);
     
     const { categories } = props;
+    let filteredCategories = categories.filter(category => category.name.toLowerCase().includes(searchText.toLowerCase()))
+
+    let selectedCategory = selectedCategoryIds.length === 1 ? filteredCategories.find(cat => cat.id === selectedCategoryIds[0]) : null;
+
+
     
     const selectCategory = (isCurrentCategorySelected, categoryId, categoryIndex) => {
         
@@ -30,20 +41,35 @@ const Categories = props => {
     }
 
     const removeCategory = () => {
-        dispatch(deleteCategories(selectedCategoryIds));
 
-        const event = new CustomEvent('displaySnackbar', {
+        let isSingleCategory = selectedCategoryIds.length === 1;
+
+        const event = new CustomEvent('displayConfirm', {
             bubbles: true,
             detail: {
-                open: true, 
-                message: `${selectedCategoryIds.length + (selectedCategoryIds.length === 1 ? ' category' : ' categories')} deleted successfully`, 
-                type: 'success'
+                description: `Are you sure you want to delete ${isSingleCategory ? selectedCategory.name : 'the selected categories'}?`,
+                onSubmit: () => {
+                    const event = new CustomEvent('displaySnackbar', {
+                        bubbles: true,
+                        detail: {
+                            open: true, 
+                            message: `${isSingleCategory ? selectedCategory.name : (selectedCategoryIds.length + ' categories')} deleted successfully`, 
+                            type: 'success',
+                        }
+                    });
+
+                    dispatch(deleteCategories(selectedCategoryIds));
+            
+                    setSelectedCategoriesIds([]); 
+
+                    buttonRef.current.dispatchEvent(event);
+            
+                }
             }
         });
 
         buttonRef.current.dispatchEvent(event);
 
-        setSelectedCategoriesIds([]); 
     }
 
     return (
@@ -53,46 +79,77 @@ const Categories = props => {
                 buttons={
                     selectedCategoryIds.length ?
                         <React.Fragment>
+                            <span className={classes.clearSelectionButton}><CloseIcon className={classes.icon} onClick={e => setSelectedCategoriesIds([])} />{`${selectedCategoryIds.length} selected`}</span>
                             {
                                 selectedCategoryIds.length === 1 ?
                                     <React.Fragment>
-                                        <LinkButton to={`/myLocations/categories/${selectedCategoryIds}/edit`}>EDIT</LinkButton>
-                                        <LinkButton to={`/myLocations/categories/${selectedCategoryIds}/details`}>VIEW DETAILS</LinkButton>
+                                        <LinkButton className={classes.button} to={`/myLocations/categories/${selectedCategoryIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
+                                        <LinkButton className={classes.button} to={`/myLocations/categories/${selectedCategoryIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
                                     </React.Fragment>
                                     :
                                     null
                             }
-                            <Button ref={buttonRef} color="inherit" onClick={removeCategory}>DELETE</Button>
+                            <Button ref={buttonRef} className={classes.button} color="inherit" onClick={removeCategory} startIcon={<DeleteIcon className={classes.icon} />}>DELETE</Button>
                         </React.Fragment>
                         :
-                        <LinkButton to="/myLocations/categories/new">NEW</LinkButton>
+                        <LinkButton className={classes.button} to="/myLocations/categories/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
                 }
             />
             <div className={classes.contentContainer}>
-                {
-                    categories.length ?
-                        <div className={classes.categoriesList}>
-                            { 
-                                categories.map((category, idx) => {
-                                    
-                                    const currentCategoryIndex = selectedCategoryIds.findIndex(selectedCategoryId => selectedCategoryId === category.id);
-                                    const isCurrentCategorySelected = currentCategoryIndex > -1;
+                <div className={classes.categoriesListContainer}>
+                    <TextField 
+                        autoFocus={true}
+                        label="Search category"
+                        className={classes.search}
+                        value={searchText}
+                        onChange={e => setSearchText(e.target.value)}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon className={classes.icon} />
+                                </InputAdornment>
+                            ),
+                            endAdornment: (
+                                <React.Fragment>
+                                    {
+                                        searchText ?
+                                            <InputAdornment position="end">
+                                                <CloseIcon className={`${classes.icon} ${classes.clickable}`} onClick={e => setSearchText('')} />
+                                            </InputAdornment>
+                                            :
+                                            null
+                                    }
+                                </React.Fragment>
+                            )
+                        }}
+                    />
+                    <div className={classes.categoriesContainer}>
+                        {
+                            filteredCategories.length ?
+                                <div className={classes.categoriesList}>
+                                    { 
+                                        filteredCategories.map((category, idx) => {
+                                            
+                                            const currentCategoryIndex = selectedCategoryIds.findIndex(selectedCategoryId => selectedCategoryId === category.id);
+                                            const isCurrentCategorySelected = currentCategoryIndex > -1;
 
-                                    return (
-                                        <span 
-                                            key={idx} 
-                                            className={`${classes.category} ${isCurrentCategorySelected ? classes.highlightedCategory : ''}`.trim()} 
-                                            onClick={e => selectCategory(isCurrentCategorySelected, category.id, currentCategoryIndex)}
-                                        >
-                                            {category.name}
-                                        </span>
-                                    )
-                                })
-                            }
-                        </div>
-                        :
-                        <span className={classes.noResultsLabel}>No Categories</span>
-                }
+                                            return (
+                                                <span 
+                                                    key={idx} 
+                                                    className={`${classes.category} ${isCurrentCategorySelected ? classes.highlightedCategory : ''}`.trim()} 
+                                                    onClick={e => selectCategory(isCurrentCategorySelected, category.id, currentCategoryIndex)}
+                                                >
+                                                    {category.name}
+                                                </span>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            :
+                            <span className={classes.noResultsLabel}>No Categories</span>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -113,17 +170,23 @@ const useStyles = makeStyles((theme) => ({
         padding: 20,
         position: 'relative'
     },
-    categoriesList: {
+    categoriesListContainer: {
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
         maxWidth: 500,
         maxHeight: 600,
+        height: '100%',
+    },
+    categoriesList: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
         overflow: 'auto',
         height: '100%',
-        cursor: 'pointer'
     },
     category: {
+        cursor: 'pointer',
         background: '#ffff',
         padding: 20,
         display: 'flex',
@@ -134,11 +197,48 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     highlightedCategory: {
-        background: 'yellow !important'
+        background: `${theme.palette.secondary.main} !important`
+    },
+    categoriesContainer: {
+        width: '100%',
+        height: 'calc(100% - 60px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#fff',
+        boxShadow: '1px 1px 1px 0px rgb(0 0 0 / .3)',
+        borderRadius: 4
     },
     noResultsLabel: {
-        fontSize: 48,
-        color: '#a9a9a9'
+        fontSize: 36,
+        color: '#78909C',
+        fontStyle: 'italic'
+    },
+    button: {
+        display: 'inline-flex',
+        whiteSpace: 'nowrap',
+        marginLeft: 10,
+        color: '#fff'
+    },
+    icon: {
+        fontSize: 18,
+        // marginBottom: 2
+    },
+    clearSelectionButton: {
+        display: 'inline-flex',
+        marginLeft: 30,
+        "& > svg": {
+            cursor: 'pointer'
+        }
+    },
+    search: {
+        marginBottom: 10,
+        "& .MuiInput-underline:after": {
+            borderColor: theme.palette.secondary.main
+        }
+    },
+    clickable: {
+        cursor: 'pointer'
     }
 }));
 

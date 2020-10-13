@@ -14,7 +14,7 @@ const Toolbar = props => {
     } = props;
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" className={classes.toolbar}>
             <AppToolbar>
                 <Typography variant="h6" className={classes.title}>{title}</Typography>
                 { buttons }
@@ -24,6 +24,12 @@ const Toolbar = props => {
 }
 
 const useStyles = makeStyles((theme) => ({
+    toolbar: {
+        overflow: 'auto',
+        "& .MuiToolbar-root": {
+            minWidth: 'max-content'
+        }
+    },
     title: {
         flexGrow: 1 
     },

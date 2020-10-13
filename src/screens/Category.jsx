@@ -6,12 +6,15 @@ import Toolbar from './../components/Toolbar';
 import LinkButton from '../components/LinkButton';
 import { createNewCategory, updateCategory } from './../store/actions';
 import { useParams } from "react-router-dom";
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 
 const Category = props => {
 
     
     const classes = useStyles();
+    
     const dispatch = useDispatch(); 
+
     let { id } = useParams();
     
     const inputRef = useRef(null);
@@ -76,36 +79,40 @@ const Category = props => {
         }
     }
 
-    const renderBigInput = ({callback, children, disabled}) => (
-        <React.Fragment>
-            <TextField 
-                autoFocus={true}
-                className={classes.input}
-                placeholder="Type here"
-                InputProps={{ disableUnderline: true }}
-                inputProps={{ ref: inputRef }}
-                value={categoryName}
-                onKeyPress={e => { if(e.key === 'Enter') callback(); } }
-                onChange={e => setCategoryName(e.target.value)}
-            />
-            <Button 
-                ref={buttonRef}
-                disabled={disabled} 
-                className={classes.submitButton}
-                color="secondary" 
-                variant="contained"
-                onClick={callback}
-            >
-                {children}
-            </Button>
-        </React.Fragment>
+    const renderBigInput = ({callback, children, disabled, title, hint}) => (
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+            <span className={classes.bigInputTitle}>{title}</span>
+            <div style={{display: 'flex'}}>
+                <TextField 
+                    autoFocus={true}
+                    className={classes.input}
+                    placeholder="Type here"
+                    InputProps={{ disableUnderline: true }}
+                    inputProps={{ ref: inputRef }}
+                    value={categoryName}
+                    onKeyPress={e => { if(e.key === 'Enter') callback(); } }
+                    onChange={e => setCategoryName(e.target.value)}
+                />
+                <Button 
+                    ref={buttonRef}
+                    disabled={disabled} 
+                    className={classes.submitButton}
+                    color="secondary" 
+                    variant="contained"
+                    onClick={callback}
+                >
+                    {children}
+                </Button>
+            </div>
+            <span className={classes.bigInputHint}>{hint}</span>
+        </div>
     )
 
     const renderContentByMode = () => {
         switch (mode) {
-            case 'new': return renderBigInput({callback: createCategory, children: '+', disabled: !categoryName})
-            case 'edit': return renderBigInput({callback: editCategory, children: <React.Fragment>&#10003;</React.Fragment>, disabled: !categoryName})
-            case 'details': return <span className={classes.categoryName}>{categoryName}</span>;
+            case 'new': return renderBigInput({callback: createCategory, children: '+', disabled: !categoryName, title: 'Add new category', hint: 'Hint: you can also submit using the Enter key.'})
+            case 'edit': return renderBigInput({callback: editCategory, children: <React.Fragment>&#10003;</React.Fragment>, disabled: !categoryName, title: 'Update new category', hint: 'Hint: you can also submit using the Enter key.'})
+            case 'details': return <div className={classes.paper}><span className={classes.detailType}>Category name:</span><span className={classes.categoryName}>{categoryName}</span></div>;
             default: return null;
         }
     }
@@ -114,7 +121,7 @@ const Category = props => {
         <div className={classes.pageContainer}>
             <Toolbar 
                 title={getTitleByMode()}
-                buttons={ <LinkButton to="/myLocations/categories/">BACK</LinkButton> }
+                buttons={ <LinkButton to="/myLocations/categories/" startIcon={<KeyboardBackspaceIcon className={classes.icon} />}>BACK</LinkButton> }
             />
             <div className={classes.contentContainer}>
                 <div className={classes.inputWrapper}>
@@ -143,7 +150,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'inline-flex'
     },
     input: {
-        height: 80,
+        height: 60,
         background: '#fff',
         maxWidth: 400,
         width: '100%',
@@ -151,21 +158,52 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: 'inset 1px 1px 2px 1px rgb(0 0 0 / 0.3)',
         "& .MuiInputBase-root": {
             height: '100%',
-            fontSize: 30
+            fontSize: 24
         },
         "& .MuiInputBase-input": {
             textAlign: 'center'
         },
     },
     submitButton: {
-        minWidth: 80, 
-        maxWidth: 80, 
-        height: 80, 
-        fontSize: 30,
+        minWidth: 60, 
+        maxWidth: 60, 
+        height: 60, 
+        fontSize: 24,
         borderRadius: '0 4px 4px 0'
     },
     categoryName: {
-        fontSize: 48
+        fontSize: 48,
+        color: '#607D8B',
+        padding: '0px 20px 10px',
+    },
+    paper: {
+        display: 'inline-flex',
+        flexDirection: 'column',
+        boxShadow: '1px 1px 1px 0px rgb(0 0 0 / .3)',
+        background: '#fff',
+        borderRadius: 4
+
+    },
+    detailType: {
+        fontSize: 14,
+        padding: '10px 10px  5px',
+        fontStyle: 'italic',
+        color: '#808080'
+    },
+    icon: {
+        fontSize: 18,
+        marginBottom: 2
+    },
+    bigInputTitle: {
+        padding: '7px 0',
+        color: '#808080',
+        fontSize: 18
+    },
+    bigInputHint: {
+        fontSize: 14,
+        padding: '7px 0',
+        fontStyle: 'italic',
+        color: '#78909C'
     }
 }));
 

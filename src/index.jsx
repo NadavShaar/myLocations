@@ -18,6 +18,8 @@ import WebFont from "webfontloader";
 WebFont.load({google: {families: ["Roboto:300,400,500"]}});
 import './index.css';
 import Snackbar from './components/Snackbar';
+import Confirm from './components/Confirm';
+import Theme from "./theme";
 
 const createStoreWithMiddleware = applyMiddleware(
     save({ states: ["categories"], namespace: "myLocations" })
@@ -27,7 +29,7 @@ const store = createStoreWithMiddleware(reducers, load({ states: ["categories"],
 const App = () => {
 
     return (
-        <React.Fragment>
+        <Theme darkMode={false}>
             <Router >
                 <Switch>
                     <Route path="/myLocations/categories/" component={ () =>
@@ -58,7 +60,8 @@ const App = () => {
                 </Switch>
             </Router>
             <Snackbar />
-        </React.Fragment>
+            <Confirm />
+        </Theme>
     )
 };
 
