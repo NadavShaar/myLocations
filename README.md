@@ -1,7 +1,7 @@
 # myLocations
 > An interview test project.
 
-Link to [requirements](https://drive.google.com/file/d/1mS_QGfTcY5Tpqo_78V-gCJSCThfjczIN/view?usp=sharing)
+**Link to [requirements](https://drive.google.com/file/d/1mS_QGfTcY5Tpqo_78V-gCJSCThfjczIN/view?usp=sharing)**
 
 **Step-1:** Category entity.
 
