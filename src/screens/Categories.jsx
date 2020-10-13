@@ -232,7 +232,7 @@ const useStyles = makeStyles((theme) => ({
     },
     noResultsLabel: {
         fontSize: 36,
-        color: theme.palette.color5,
+        color: theme.palette.color6,
         fontStyle: 'italic'
     },
     button: {
