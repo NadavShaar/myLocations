@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, TextField } from '@material-ui/core';
+import TextField from './../components/TextField';
+import Button from './../components/Button';
 import Toolbar from './../components/Toolbar';
 import LinkButton from '../components/LinkButton';
 import { createNewCategory, updateCategory } from './../store/actions';
