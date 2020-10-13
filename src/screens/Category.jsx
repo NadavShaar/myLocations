@@ -73,8 +73,8 @@ const Category = props => {
     const getTitleByMode = () => {
         switch (mode) {
             case 'new': return 'New category'
-            case 'edit': return 'Edit category'
-            case 'details': return 'Details'
+            case 'edit': return `Edit category - ${selectedCategory.name}`
+            case 'details': return `Details - ${selectedCategory.name}`
             default: return null;
         }
     }
@@ -155,11 +155,11 @@ const useStyles = makeStyles((theme) => ({
     },
     input: {
         height: 60,
-        background: '#fff',
+        background: theme.palette.background1,
         maxWidth: 400,
         width: '100%',
         borderRadius: '4px 0 0 4px',
-        boxShadow: 'inset 1px 1px 2px 1px rgb(0 0 0 / 0.3)',
+        boxShadow: theme.shadow.insetShadow1,
         "& .MuiInputBase-root": {
             height: '100%',
             fontSize: 24
@@ -177,26 +177,27 @@ const useStyles = makeStyles((theme) => ({
     },
     categoryName: {
         fontSize: 40,
-        color: '#607D8B',
+        color: theme.palette.color6,
         padding: '10px 20px',
         textAlign: 'center'
     },
     paper: {
         display: 'inline-flex',
         flexDirection: 'column',
-        boxShadow: '1px 1px 1px 0px rgb(0 0 0 / .3)',
-        background: '#fff',
+        boxShadow: theme.shadows[1],
+        background: theme.palette.background1,
         borderRadius: 4,
         overflow: 'hidden',
         minWidth: 200
     },
     detailType: {
         fontSize: 14,
-        padding: '10px 10px  5px',
+        padding: '7px 10px',
         fontStyle: 'italic',
-        color: '#808080',
-        background: 'aliceblue',
-        borderBottom: '1px solid #eee'
+        color: theme.palette.color1,
+        fontWeight: 500,
+        background: theme.palette.background4,
+        borderBottom: `1px solid ${theme.palette.border1}` 
     },
     icon: {
         fontSize: 18,
@@ -208,14 +209,14 @@ const useStyles = makeStyles((theme) => ({
     },
     bigInputTitle: {
         padding: '7px 0',
-        color: '#808080',
+        color: theme.palette.color4,
         fontSize: 18
     },
     bigInputHint: {
         fontSize: 14,
         padding: '7px 0',
         fontStyle: 'italic',
-        color: '#78909C'
+        color: theme.palette.color5,
     },
     bigInputContainer: {
         display: 'flex'

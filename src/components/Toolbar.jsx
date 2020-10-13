@@ -26,6 +26,8 @@ const Toolbar = props => {
 const useStyles = makeStyles((theme) => ({
     toolbar: {
         overflow: 'auto',
+        backgroundColor: theme.palette.primary.main,
+        backgroundImage: theme.palette.gradient1,
         "& .MuiToolbar-root": {
             minWidth: 'max-content'
         }

@@ -203,14 +203,14 @@ const useStyles = makeStyles((theme) => ({
     },
     category: {
         cursor: 'pointer',
-        background: '#ffff',
+        background: theme.palette.background1,
         padding: 20,
         display: 'flex',
         height: 60,
-        borderBottom: '1px solid #eee',
-        transition: 'background .1s ease-in-out',
+        borderBottom: `1px solid ${theme.palette.border1}`,
+        transition: `background .2s ${theme.transitions.easing.easeInOut}`,
         "&:hover": {
-            backgroundColor: '#eee'
+            backgroundColor: theme.palette.background3
         }
     },
     highlightedCategory: {
@@ -222,25 +222,24 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#fff',
-        boxShadow: '1px 1px 1px 0px rgb(0 0 0 / .3)',
+        background: theme.palette.background1,
+        boxShadow: theme.shadows[1],
         borderRadius: 4,
         overflow: 'hidden'
     },
     noResultsLabel: {
         fontSize: 36,
-        color: '#78909C',
+        color: theme.palette.color5,
         fontStyle: 'italic'
     },
     button: {
         display: 'inline-flex',
         whiteSpace: 'nowrap',
         marginLeft: 10,
-        color: '#fff'
+        color: theme.palette.color1
     },
     icon: {
-        fontSize: 18,
-        // marginBottom: 2
+        fontSize: 18
     },
     clearSelectionButton: {
         display: 'inline-flex',
