@@ -1,6 +1,7 @@
 # myLocations
 An interview test project.
-Step-1: Category entity.
+
+**Step-1:** Category entity.
 
 **Live [Demo](https://nadavshaar.github.io/myLocations/)**
 
