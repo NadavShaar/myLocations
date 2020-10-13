@@ -20,6 +20,7 @@ const lightTheme = createMuiTheme({
         background2: 'aliceblue',
         background3: '#ECEFF1',
         background4: '#607D8B',
+        background5: '#3edc8b',
         border1: '#eee',
         gradient1: 'linear-gradient(315deg, #3edc8b 0%, #009688 74%)',
         highlight1: '#ffdb07'

@@ -189,7 +189,7 @@ const useStyles = makeStyles((theme) => ({
         background: theme.palette.background1,
         borderRadius: 4,
         overflow: 'hidden',
-        minWidth: 200
+        minWidth: 250
     },
     detailType: {
         fontSize: 14,
