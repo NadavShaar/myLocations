@@ -112,7 +112,7 @@ const Category = props => {
     const renderContentByMode = () => {
         switch (mode) {
             case 'new': return renderBigInput({callback: createCategory, children: '+', disabled: !categoryName, title: 'Add new category', hint: 'Hint: you can also submit using the Enter key.'})
-            case 'edit': return renderBigInput({callback: editCategory, children: <React.Fragment>&#10003;</React.Fragment>, disabled: !categoryName, title: 'Update new category', hint: 'Hint: you can also submit using the Enter key.'})
+            case 'edit': return renderBigInput({callback: editCategory, children: <React.Fragment>&#10003;</React.Fragment>, disabled: !categoryName, title: 'Update category', hint: 'Hint: you can also submit using the Enter key.'})
             case 'details': return <div className={classes.paper}><span className={classes.detailType}>Category name:</span><span className={classes.categoryName}>{categoryName}</span></div>;
             default: return null;
         }
@@ -177,7 +177,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '0 4px 4px 0'
     },
     categoryName: {
-        fontSize: 40,
+        fontSize: 36,
         color: theme.palette.color6,
         padding: '10px 20px',
         textAlign: 'center'
