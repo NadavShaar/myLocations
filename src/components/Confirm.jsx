@@ -21,7 +21,9 @@ const Confirm = props => {
         open=false,
         title='Attention!',
         description='',
-        onSubmit
+        onSubmit,
+        cancelLabel='Cancel',
+        submitLabel='OK'
     } = confirmData;
 
     const handleClose = () => {
@@ -40,12 +42,8 @@ const Confirm = props => {
                 <DialogContentText>{description}</DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                    Disagree
-                </Button>
-                <Button onClick={handleSubmit} color="primary" autoFocus>
-                    Agree
-                </Button>
+                <Button onClick={handleClose} color="primary">{cancelLabel}</Button>
+                <Button onClick={handleSubmit} color="primary" autoFocus>{submitLabel}</Button>
             </DialogActions>
         </Dialog>
     )

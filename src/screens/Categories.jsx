@@ -50,6 +50,7 @@ const Categories = props => {
             bubbles: true,
             detail: {
                 description: `Are you sure you want to delete ${isSingleCategory ? selectedCategory.name : 'the selected categories'}?`,
+                submitLabel: 'Delete',
                 onSubmit: () => {
                     const event = new CustomEvent('displaySnackbar', {
                         bubbles: true,
