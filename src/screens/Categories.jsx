@@ -85,8 +85,8 @@ const Categories = props => {
                         {
                             selectedCategoryIds.length === 1 ?
                                 <React.Fragment>
-                                    <LinkButton className={classes.button} to={`/myLocations/categories/${selectedCategoryIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
-                                    <LinkButton className={classes.button} to={`/myLocations/categories/${selectedCategoryIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
+                                    <LinkButton className={classes.button} to={`/${selectedCategoryIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
+                                    <LinkButton className={classes.button} to={`/${selectedCategoryIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
                                 </React.Fragment>
                                 :
                                 null
@@ -94,7 +94,7 @@ const Categories = props => {
                         <Button ref={buttonRef} className={classes.button} color="inherit" onClick={removeCategory} startIcon={<DeleteIcon className={classes.icon} />}>DELETE</Button>
                     </React.Fragment>
                     :
-                    <LinkButton className={classes.button} to="/myLocations/categories/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
+                    <LinkButton className={classes.button} to="/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
             }
         />
     )

@@ -3,11 +3,9 @@ import { BrowserRouter, Switch, Redirect } from "react-router-dom";
 import CategoriesRoutes from './routes/CategoriesRoutes';
 
 const Router = () => (
-    <BrowserRouter>
-        <Switch>
-            <CategoriesRoutes />
-            {/* <Redirect from='*' to='/myLocations/categories/' /> */}
-        </Switch>
+    <BrowserRouter basename='/myLocations/categories'>
+        <CategoriesRoutes />
+        <Redirect from='*' to='/' />
     </BrowserRouter>
 );
 
