@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { makeStyles, Button, TextField, InputAdornment  } from '@material-ui/core';
+import { makeStyles, Button, TextField, InputAdornment } from '@material-ui/core';
 import Toolbar from './../components/Toolbar';
 import LinkButton from '../components/LinkButton';
 import { deleteCategories } from './../store/actions';
