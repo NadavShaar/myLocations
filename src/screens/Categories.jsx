@@ -75,7 +75,7 @@ const Categories = props => {
     return (
         <div className={classes.pageContainer}>
             <Toolbar 
-                title="Categories"
+                title={`Categories${categories.length ? (' (' + categories.length + ')') : ''}`}
                 buttons={
                     selectedCategoryIds.length ?
                         <React.Fragment>
@@ -176,7 +176,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         maxWidth: 500,
         maxHeight: 600,
-        height: '100%',
+        height: '100%'
     },
     categoriesList: {
         display: 'flex',
@@ -192,6 +192,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         height: 60,
         borderBottom: '1px solid #eee',
+        transition: 'background .1s ease-in-out',
         "&:hover": {
             backgroundColor: '#eee'
         }
@@ -207,7 +208,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         background: '#fff',
         boxShadow: '1px 1px 1px 0px rgb(0 0 0 / .3)',
-        borderRadius: 4
+        borderRadius: 4,
+        overflow: 'hidden'
     },
     noResultsLabel: {
         fontSize: 36,
@@ -227,6 +229,7 @@ const useStyles = makeStyles((theme) => ({
     clearSelectionButton: {
         display: 'inline-flex',
         marginLeft: 30,
+        marginRight: 8,
         "& > svg": {
             cursor: 'pointer'
         }

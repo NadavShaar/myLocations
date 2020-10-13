@@ -80,9 +80,9 @@ const Category = props => {
     }
 
     const renderBigInput = ({callback, children, disabled, title, hint}) => (
-        <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div className={classes.bigInputWrapper}>
             <span className={classes.bigInputTitle}>{title}</span>
-            <div style={{display: 'flex'}}>
+            <div className={classes.bigInputContainer}>
                 <TextField 
                     autoFocus={true}
                     className={classes.input}
@@ -172,27 +172,35 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '0 4px 4px 0'
     },
     categoryName: {
-        fontSize: 48,
+        fontSize: 40,
         color: '#607D8B',
-        padding: '0px 20px 10px',
+        padding: '10px 20px',
+        textAlign: 'center'
     },
     paper: {
         display: 'inline-flex',
         flexDirection: 'column',
         boxShadow: '1px 1px 1px 0px rgb(0 0 0 / .3)',
         background: '#fff',
-        borderRadius: 4
-
+        borderRadius: 4,
+        overflow: 'hidden',
+        minWidth: 200
     },
     detailType: {
         fontSize: 14,
         padding: '10px 10px  5px',
         fontStyle: 'italic',
-        color: '#808080'
+        color: '#808080',
+        background: 'aliceblue',
+        borderBottom: '1px solid #eee'
     },
     icon: {
         fontSize: 18,
         marginBottom: 2
+    },
+    bigInputWrapper: {
+        display: 'flex', 
+        flexDirection: 'column'
     },
     bigInputTitle: {
         padding: '7px 0',
@@ -204,6 +212,9 @@ const useStyles = makeStyles((theme) => ({
         padding: '7px 0',
         fontStyle: 'italic',
         color: '#78909C'
+    },
+    bigInputContainer: {
+        display: 'flex'
     }
 }));
 

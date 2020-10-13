@@ -25,7 +25,7 @@ const Confirm = props => {
     } = confirmData;
 
     const handleClose = () => {
-        setConfirmData({ open: false });
+        setConfirmData({ ...confirmData, open: false });
     };
 
     const handleSubmit = () => {
