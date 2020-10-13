@@ -1,11 +1,6 @@
 import React from "react";
 import { useSelector } from 'react-redux';
-import {
-    Switch,
-    Redirect,
-    Route,
-    useRouteMatch
-} from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Categories from './../../screens/Categories';
 import Category from './../../screens/Category';
 
