@@ -31,7 +31,7 @@ const CategoriesRoutes = () => {
                         <Route exact path={url} >
                             <Categories categories={categories} />
                         </Route>
-                        <Redirect from='*' to='/myLocations/categories/' />
+                        {/* <Redirect from='*' to='/myLocations/categories/' /> */}
                     </Switch>
                 )
             }

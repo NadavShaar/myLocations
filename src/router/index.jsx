@@ -6,7 +6,7 @@ const Router = () => (
     <BrowserRouter>
         <Switch>
             <CategoriesRoutes />
-            <Redirect from='*' to='/myLocations/categories/' />
+            {/* <Redirect from='*' to='/myLocations/categories/' /> */}
         </Switch>
     </BrowserRouter>
 );
