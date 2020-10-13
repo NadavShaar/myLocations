@@ -197,7 +197,8 @@ const useStyles = makeStyles((theme) => ({
         fontStyle: 'italic',
         color: theme.palette.color1,
         fontWeight: 500,
-        background: theme.palette.background4,
+        background: theme.palette.primary.main,
+        backgroundImage: theme.palette.gradient1,
         borderBottom: `1px solid ${theme.palette.border1}` 
     },
     icon: {

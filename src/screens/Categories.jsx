@@ -216,7 +216,7 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     highlightedCategory: {
-        background: `${theme.palette.secondary.main} !important`
+        background: `${theme.palette.highlight1} !important`
     },
     categoriesContainer: {
         width: '100%',
