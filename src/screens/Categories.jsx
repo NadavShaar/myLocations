@@ -28,7 +28,7 @@ const Categories = props => {
     const { categories } = props;
     let filteredCategories = categories.filter(category => category.name.toLowerCase().includes(searchText.toLowerCase()))
 
-    let selectedCategory = selectedCategoryIds.length === 1 ? filteredCategories.find(cat => cat.id === selectedCategoryIds[0]) : null;
+    let selectedCategory = selectedCategoryIds.length === 1 && filteredCategories.find(cat => cat.id === selectedCategoryIds[0]);
 
 
     
