@@ -5,7 +5,7 @@
 
 ## Step-1: Category entity.
 
-**Live Demo [here](https://nadavshaar.github.io/myLocations/)** 
+**Live demo [here](https://nadavshaar.github.io/myLocations/)** 
 
 **Note:** Github pages doesn't support client routing like react router therefor when refreshing the page you'll get a 404.
 
