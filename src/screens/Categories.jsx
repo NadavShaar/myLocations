@@ -72,81 +72,97 @@ const Categories = props => {
 
     }
 
+    const renderToolbar = () => (
+        <Toolbar 
+            title={`Categories${categories.length ? (' (' + categories.length + ')') : ''}`}
+            buttons={
+                selectedCategoryIds.length ?
+                    <React.Fragment>
+                        <span className={classes.clearSelectionButton}><CloseIcon className={classes.icon} onClick={e => setSelectedCategoriesIds([])} />{`${selectedCategoryIds.length} selected`}</span>
+                        {
+                            selectedCategoryIds.length === 1 ?
+                                <React.Fragment>
+                                    <LinkButton className={classes.button} to={`/myLocations/categories/${selectedCategoryIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
+                                    <LinkButton className={classes.button} to={`/myLocations/categories/${selectedCategoryIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
+                                </React.Fragment>
+                                :
+                                null
+                        }
+                        <Button ref={buttonRef} className={classes.button} color="inherit" onClick={removeCategory} startIcon={<DeleteIcon className={classes.icon} />}>DELETE</Button>
+                    </React.Fragment>
+                    :
+                    <LinkButton className={classes.button} to="/myLocations/categories/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
+            }
+        />
+    )
+
+    const renderSearch = () => (
+        <TextField 
+            autoFocus={true}
+            label="Search category"
+            className={classes.search}
+            value={searchText}
+            onChange={e => setSearchText(e.target.value)}
+            InputProps={{
+                startAdornment: (
+                    <InputAdornment position="start">
+                        <SearchIcon className={classes.icon} />
+                    </InputAdornment>
+                ),
+                endAdornment: (
+                    <React.Fragment>
+                        {
+                            searchText ?
+                                <InputAdornment position="end">
+                                    <CloseIcon className={`${classes.icon} ${classes.clickable}`} onClick={e => setSearchText('')} />
+                                </InputAdornment>
+                                :
+                                null
+                        }
+                    </React.Fragment>
+                )
+            }}
+        />
+    )
+
+    const renderCategoriesList = () => (
+        <div className={classes.categoriesList}>
+            { 
+                filteredCategories.map((category, idx) => {
+                    
+                    const currentCategoryIndex = selectedCategoryIds.findIndex(selectedCategoryId => selectedCategoryId === category.id);
+                    const isCurrentCategorySelected = currentCategoryIndex > -1;
+
+                    return (
+                        <span 
+                            key={idx} 
+                            className={`${classes.category} ${isCurrentCategorySelected ? classes.highlightedCategory : ''}`.trim()} 
+                            onClick={e => selectCategory(isCurrentCategorySelected, category.id, currentCategoryIndex)}
+                        >
+                            {category.name}
+                        </span>
+                    )
+                })
+            }
+        </div>
+    )
+
+    const renderNoResults = () => (
+        <span className={classes.noResultsLabel}>No Categories</span>
+    )
+
     return (
         <div className={classes.pageContainer}>
-            <Toolbar 
-                title={`Categories${categories.length ? (' (' + categories.length + ')') : ''}`}
-                buttons={
-                    selectedCategoryIds.length ?
-                        <React.Fragment>
-                            <span className={classes.clearSelectionButton}><CloseIcon className={classes.icon} onClick={e => setSelectedCategoriesIds([])} />{`${selectedCategoryIds.length} selected`}</span>
-                            {
-                                selectedCategoryIds.length === 1 ?
-                                    <React.Fragment>
-                                        <LinkButton className={classes.button} to={`/myLocations/categories/${selectedCategoryIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
-                                        <LinkButton className={classes.button} to={`/myLocations/categories/${selectedCategoryIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
-                                    </React.Fragment>
-                                    :
-                                    null
-                            }
-                            <Button ref={buttonRef} className={classes.button} color="inherit" onClick={removeCategory} startIcon={<DeleteIcon className={classes.icon} />}>DELETE</Button>
-                        </React.Fragment>
-                        :
-                        <LinkButton className={classes.button} to="/myLocations/categories/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
-                }
-            />
+            { renderToolbar() }
             <div className={classes.contentContainer}>
                 <div className={classes.categoriesListContainer}>
-                    <TextField 
-                        autoFocus={true}
-                        label="Search category"
-                        className={classes.search}
-                        value={searchText}
-                        onChange={e => setSearchText(e.target.value)}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon className={classes.icon} />
-                                </InputAdornment>
-                            ),
-                            endAdornment: (
-                                <React.Fragment>
-                                    {
-                                        searchText ?
-                                            <InputAdornment position="end">
-                                                <CloseIcon className={`${classes.icon} ${classes.clickable}`} onClick={e => setSearchText('')} />
-                                            </InputAdornment>
-                                            :
-                                            null
-                                    }
-                                </React.Fragment>
-                            )
-                        }}
-                    />
+                    { renderSearch() }
                     <div className={classes.categoriesContainer}>
                         {
                             filteredCategories.length ?
-                                <div className={classes.categoriesList}>
-                                    { 
-                                        filteredCategories.map((category, idx) => {
-                                            
-                                            const currentCategoryIndex = selectedCategoryIds.findIndex(selectedCategoryId => selectedCategoryId === category.id);
-                                            const isCurrentCategorySelected = currentCategoryIndex > -1;
-
-                                            return (
-                                                <span 
-                                                    key={idx} 
-                                                    className={`${classes.category} ${isCurrentCategorySelected ? classes.highlightedCategory : ''}`.trim()} 
-                                                    onClick={e => selectCategory(isCurrentCategorySelected, category.id, currentCategoryIndex)}
-                                                >
-                                                    {category.name}
-                                                </span>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            :
-                            <span className={classes.noResultsLabel}>No Categories</span>
+                                renderCategoriesList()
+                                :
+                                renderNoResults()
                         }
                     </div>
                 </div>

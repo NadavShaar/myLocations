@@ -117,12 +117,16 @@ const Category = props => {
         }
     }
 
+    const renderToolbar = () => (
+        <Toolbar 
+            title={getTitleByMode()}
+            buttons={ <LinkButton to="/myLocations/categories/" startIcon={<KeyboardBackspaceIcon className={classes.icon} />}>BACK</LinkButton> }
+        />
+    )
+
     return (
         <div className={classes.pageContainer}>
-            <Toolbar 
-                title={getTitleByMode()}
-                buttons={ <LinkButton to="/myLocations/categories/" startIcon={<KeyboardBackspaceIcon className={classes.icon} />}>BACK</LinkButton> }
-            />
+            { renderToolbar() }
             <div className={classes.contentContainer}>
                 <div className={classes.inputWrapper}>
                     { renderContentByMode() }
