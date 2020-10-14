@@ -1,9 +1,11 @@
 # myLocations
 > An interview test project.
 
-**Step-1:** Category entity.
+**Link to [requirements](https://drive.google.com/file/d/1mS_QGfTcY5Tpqo_78V-gCJSCThfjczIN/view?usp=sharing)**
 
-**Live [Demo](https://nadavshaar.github.io/myLocations/)** 
+## Step-1: Category entity.
+
+**Live demo [here](https://nadavshaar.github.io/myLocations/)** 
 
 **Note:** Github pages doesn't support client routing like react router therefor when refreshing the page you'll get a 404.
 
