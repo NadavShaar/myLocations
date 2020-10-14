@@ -211,7 +211,8 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
-        height: 60,
+        minHeight: 60,
+        maxHeight: 60,
         borderBottom: `1px solid ${theme.palette.border1}`,
         transition: `background .2s ${theme.transitions.easing.easeInOut}`,
         "&:hover": {
@@ -244,12 +245,16 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.color1
     },
     icon: {
-        fontSize: 18
+        fontSize: 20
     },
     clearSelectionButton: {
         display: 'inline-flex',
+        alignItems: 'center',
         marginLeft: 30,
         marginRight: 8,
+        fontWeight: 500,
+        textTransform: 'uppercase',
+        fontSize: '0.875rem',
         "& > svg": {
             cursor: 'pointer'
         }
