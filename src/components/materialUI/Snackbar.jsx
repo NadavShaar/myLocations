@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Snackbar as MuiSnack } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import useEventListener from './../hooks/useEventListener';
+import useEventListener from './../../hooks/useEventListener';
 
 const Alert = props => <MuiAlert elevation={6} variant="filled" {...props} />;
 

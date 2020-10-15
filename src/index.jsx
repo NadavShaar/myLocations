@@ -8,8 +8,7 @@ import { save, load } from "redux-localstorage-simple";
 import WebFont from "webfontloader";
 WebFont.load({google: {families: ["Roboto:400,500"]}});
 import './index.css';
-import Snackbar from './components/Snackbar';
-import Confirm from './components/Confirm';
+import { Snackbar, Confirm } from './components/materialUI';
 import Theme from "./theme";
 import Router from "./router";
 

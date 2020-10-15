@@ -1,10 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import TextField from './../components/TextField';
-import Button from './../components/Button';
-import Toolbar from './../components/Toolbar';
-import LinkButton from '../components/LinkButton';
+import { Toolbar, LinkButton } from './../components/materialUI';
+import { BigInput } from './../components/ui';
 import { createNewCategory, updateCategory } from './../store/actions';
 import { useParams } from "react-router-dom";
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
@@ -80,39 +78,25 @@ const Category = props => {
         }
     }
 
-    const renderBigInput = ({callback, children, disabled, title, hint}) => (
-        <div className={classes.bigInputWrapper}>
-            <span className={classes.bigInputTitle}>{title}</span>
-            <div className={classes.bigInputContainer}>
-                <TextField 
-                    autoFocus={true}
-                    className={classes.input}
-                    placeholder="Type here"
-                    InputProps={{ disableUnderline: true }}
-                    inputProps={{ ref: inputRef }}
-                    value={categoryName}
-                    onKeyPress={e => { if(e.key === 'Enter') callback(); } }
-                    onChange={e => setCategoryName(e.target.value)}
-                />
-                <Button 
-                    ref={buttonRef}
-                    disabled={disabled} 
-                    className={classes.submitButton}
-                    color="secondary" 
-                    variant="contained"
-                    onClick={callback}
-                >
-                    {children}
-                </Button>
-            </div>
-            <span className={classes.bigInputHint}>{hint}</span>
-        </div>
+    const renderBigInput = ({callback, buttonChildren, disabled, title, hint}) => (
+        <BigInput 
+            title={title}
+            hint={hint}
+            inputRef={inputRef}
+            buttonRef={buttonRef}
+            value={categoryName}
+            callback={callback}
+            buttonChildren={buttonChildren}
+            onChange={setCategoryName}
+            disabledSubmit={disabled}
+            textFieldProps={{autoFocus: true}}
+        />
     )
 
     const renderContentByMode = () => {
         switch (mode) {
-            case 'new': return renderBigInput({callback: createCategory, children: '+', disabled: !categoryName, title: 'Add new category', hint: 'Hint: you can also submit using the Enter key.'})
-            case 'edit': return renderBigInput({callback: editCategory, children: <React.Fragment>&#10003;</React.Fragment>, disabled: !categoryName, title: 'Update category', hint: 'Hint: you can also submit using the Enter key.'})
+            case 'new': return renderBigInput({callback: createCategory, buttonChildren: '+', disabled: !categoryName, title: 'Add new category', hint: 'Hint: you can also submit using the Enter key.'})
+            case 'edit': return renderBigInput({callback: editCategory, buttonChildren: <React.Fragment>&#10003;</React.Fragment>, disabled: !categoryName, title: 'Update category', hint: 'Hint: you can also submit using the Enter key.'})
             case 'details': return <div className={classes.paper}><span className={classes.detailType}>Category name:</span><span className={classes.categoryName}>{categoryName}</span></div>;
             default: return null;
         }
@@ -154,28 +138,6 @@ const useStyles = makeStyles((theme) => ({
     inputWrapper: {
         display: 'inline-flex'
     },
-    input: {
-        height: 60,
-        background: theme.palette.background1,
-        maxWidth: 400,
-        width: '100%',
-        borderRadius: '4px 0 0 4px',
-        boxShadow: theme.shadow.insetShadow1,
-        "& .MuiInputBase-root": {
-            height: '100%',
-            fontSize: 24
-        },
-        "& .MuiInputBase-input": {
-            textAlign: 'center'
-        },
-    },
-    submitButton: {
-        minWidth: 60, 
-        maxWidth: 60, 
-        height: 60, 
-        fontSize: 24,
-        borderRadius: '0 4px 4px 0'
-    },
     categoryName: {
         fontSize: 36,
         color: theme.palette.color6,
@@ -204,24 +166,6 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         fontSize: 18,
         marginBottom: 2
-    },
-    bigInputWrapper: {
-        display: 'flex', 
-        flexDirection: 'column'
-    },
-    bigInputTitle: {
-        padding: '7px 0',
-        color: theme.palette.color4,
-        fontSize: 18
-    },
-    bigInputHint: {
-        fontSize: 14,
-        padding: '7px 0',
-        fontStyle: 'italic',
-        color: theme.palette.color5,
-    },
-    bigInputContainer: {
-        display: 'flex'
     }
 }));
 

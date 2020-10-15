@@ -1,17 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { makeStyles, InputAdornment } from '@material-ui/core';
-import TextField from './../components/TextField';
-import Button from './../components/Button';
-import Toolbar from './../components/Toolbar';
-import LinkButton from '../components/LinkButton';
+import { makeStyles } from '@material-ui/core';
+import { Button, Toolbar, LinkButton } from './../components/materialUI';
 import { deleteCategories } from './../store/actions';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
-import SearchIcon from '@material-ui/icons/Search';
+import { Search, List } from './../components/ui';
 
 const Categories = props => {
     
@@ -100,54 +97,20 @@ const Categories = props => {
     )
 
     const renderSearch = () => (
-        <TextField 
+        <Search 
             autoFocus={true}
             label="Search category"
-            className={classes.search}
             value={searchText}
             onChange={e => setSearchText(e.target.value)}
-            InputProps={{
-                startAdornment: (
-                    <InputAdornment position="start">
-                        <SearchIcon className={classes.icon} />
-                    </InputAdornment>
-                ),
-                endAdornment: (
-                    <React.Fragment>
-                        {
-                            searchText ?
-                                <InputAdornment position="end">
-                                    <CloseIcon className={`${classes.icon} ${classes.clickable}`} onClick={e => setSearchText('')} />
-                                </InputAdornment>
-                                :
-                                null
-                        }
-                    </React.Fragment>
-                )
-            }}
         />
     )
 
     const renderCategoriesList = () => (
-        <div className={classes.categoriesList}>
-            { 
-                filteredCategories.map((category, idx) => {
-                    
-                    const currentCategoryIndex = selectedCategoryIds.findIndex(selectedCategoryId => selectedCategoryId === category.id);
-                    const isCurrentCategorySelected = currentCategoryIndex > -1;
-
-                    return (
-                        <span 
-                            key={idx} 
-                            className={`${classes.category} ${isCurrentCategorySelected ? classes.highlightedCategory : ''}`.trim()} 
-                            onClick={e => selectCategory(isCurrentCategorySelected, category.id, currentCategoryIndex)}
-                        >
-                            {category.name}
-                        </span>
-                    )
-                })
-            }
-        </div>
+        <List 
+            items={filteredCategories}
+            selectedItemsIds={selectedCategoryIds}
+            onSelectionChange={selectCategory}
+        />
     )
 
     const renderNoResults = () => (
@@ -197,31 +160,6 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: 600,
         height: '100%'
     },
-    categoriesList: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        overflow: 'auto',
-        height: '100%',
-    },
-    category: {
-        cursor: 'pointer',
-        background: theme.palette.background1,
-        padding: 20,
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
-        minHeight: 60,
-        maxHeight: 60,
-        borderBottom: `1px solid ${theme.palette.border1}`,
-        transition: `background .2s ${theme.transitions.easing.easeInOut}`,
-        "&:hover": {
-            backgroundColor: theme.palette.background3
-        }
-    },
-    highlightedCategory: {
-        background: `${theme.palette.highlight1} !important`
-    },
     categoriesContainer: {
         width: '100%',
         height: 'calc(100% - 60px)',
@@ -258,15 +196,6 @@ const useStyles = makeStyles((theme) => ({
         "& > svg": {
             cursor: 'pointer'
         }
-    },
-    search: {
-        marginBottom: 10,
-        "& .MuiInput-underline:after": {
-            borderColor: theme.palette.secondary.main
-        }
-    },
-    clickable: {
-        cursor: 'pointer'
     }
 }));
 
