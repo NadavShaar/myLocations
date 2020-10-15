@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from 'react-redux';
 import { Switch, Route } from "react-router-dom";
-import Categories from './../../screens/Categories';
-import Category from './../../screens/Category';
+import Categories from './../../screens/categories/Categories';
+import Category from './../../screens/categories/Category';
 
 const CategoriesRoutes = () => {
 

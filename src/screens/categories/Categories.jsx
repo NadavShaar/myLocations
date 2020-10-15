@@ -1,14 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
-import { Button, Toolbar, LinkButton } from './../components/materialUI';
-import { deleteCategories } from './../store/actions';
+import { Button, Toolbar, LinkButton } from './../../components/materialUI';
+import { deleteCategories } from './../../store/actions';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
-import { Search, List } from './../components/ui';
+import { Search, List } from './../../components/ui';
 
 const Categories = props => {
     

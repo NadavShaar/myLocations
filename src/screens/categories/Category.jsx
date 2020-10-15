@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { Toolbar, LinkButton } from './../components/materialUI';
-import { BigInput } from './../components/ui';
-import { createNewCategory, updateCategory } from './../store/actions';
+import { Toolbar, LinkButton } from './../../components/materialUI';
+import { BigInput } from './../../components/ui';
+import { createNewCategory, updateCategory } from './../../store/actions';
 import { useParams } from "react-router-dom";
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 
