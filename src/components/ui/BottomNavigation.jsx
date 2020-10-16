@@ -6,7 +6,9 @@ import { useHistory } from "react-router-dom";
 
 const BottomNavigation = props => {
 
-    const [value, setValue] = useState(0);
+    let initialSelected = location.pathname.indexOf('categor') > -1 ? 1 : 0;
+    const [value, setValue] = useState(initialSelected);
+    
     const history = useHistory();
     
     let buttons = [
