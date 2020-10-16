@@ -18,10 +18,3 @@ export const deleteCategories = (categoryIds) => {
         payload: categoryIds 
     }
 }
-
-export const assignCategory = (categoryId) => {
-    return { 
-        type: 'ASSIGN_CATEGORY',
-        payload: categoryId 
-    }
-}

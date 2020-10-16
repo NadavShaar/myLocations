@@ -12,7 +12,7 @@ html {
 
 body {
     margin: 0;
-    height: 100%;
+    height: calc(100% - 56px);
     font-family: roboto;
     background: var(--background-color);
 }

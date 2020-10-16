@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import { Search, List } from './../../components/ui';
 
-const Categories = props => {
+const Locations = props => {
     
     
     const [selectedCategoryIds, setSelectedCategoriesIds] = useState([]);
@@ -74,7 +74,7 @@ const Categories = props => {
 
     const renderToolbar = () => (
         <Toolbar 
-            title={`Categories${categories.length ? (' (' + categories.length + ')') : ''}`}
+            title={`Locations${categories.length ? (' (' + categories.length + ')') : ''}`}
             buttons={
                 selectedCategoryIds.length ?
                     <React.Fragment>
@@ -82,8 +82,8 @@ const Categories = props => {
                         {
                             selectedCategoryIds.length === 1 ?
                                 <React.Fragment>
-                                    <LinkButton className={classes.button} to={`/categories/${selectedCategoryIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
-                                    <LinkButton className={classes.button} to={`/categories/${selectedCategoryIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
+                                    <LinkButton className={classes.button} to={`/category/${selectedCategoryIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
+                                    <LinkButton className={classes.button} to={`/category/${selectedCategoryIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
                                 </React.Fragment>
                                 :
                                 null
@@ -91,7 +91,7 @@ const Categories = props => {
                         <Button ref={buttonRef} className={classes.button} color="inherit" onClick={removeCategory} startIcon={<DeleteIcon className={classes.icon} />}>DELETE</Button>
                     </React.Fragment>
                     :
-                    <LinkButton className={classes.button} to="/categories/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
+                    <LinkButton className={classes.button} to="/category/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
             }
         />
     )
@@ -199,4 +199,4 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default Categories;
+export default Locations;

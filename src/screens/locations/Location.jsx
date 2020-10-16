@@ -7,7 +7,7 @@ import { createNewCategory, updateCategory } from './../../store/actions';
 import { useParams } from "react-router-dom";
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 
-const Category = props => {
+const Location = props => {
 
     
     const classes = useStyles();
@@ -19,7 +19,7 @@ const Category = props => {
     const inputRef = useRef(null);
     const buttonRef = useRef(null);
     
-    const { mode, categories, history } = props;
+    const { mode, categories } = props;
     
     let categoryIndex = categories.findIndex(category => category.id == id);
     const selectedCategory = categoryIndex > -1 && useSelector(state => state.categories.data[categoryIndex]);
@@ -105,7 +105,7 @@ const Category = props => {
     const renderToolbar = () => (
         <Toolbar 
             title={getTitleByMode()}
-            buttons={ <LinkButton to="/categories" startIcon={<KeyboardBackspaceIcon className={classes.icon} />}>CATEGORIES</LinkButton> }
+            buttons={ <LinkButton to="/" startIcon={<KeyboardBackspaceIcon className={classes.icon} />}>BACK</LinkButton> }
         />
     )
 
@@ -169,4 +169,4 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default Category;
+export default Location;
