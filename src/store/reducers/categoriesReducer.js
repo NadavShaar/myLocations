@@ -21,6 +21,9 @@ const categoriesReducer = (state={data: []}, action) => {
             
             return { data: [ ...state.data ] };
         }
+        case 'ASSIGN_CATEGORY': {
+
+        }
         default: return state;
     }
 }

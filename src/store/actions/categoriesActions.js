@@ -12,9 +12,16 @@ export const updateCategory = (category) => {
     }
 }
 
-export const deleteCategories = (categoryId) => {
+export const deleteCategories = (categoryIds) => {
     return { 
         type: 'DELETE_CATEGORY',
+        payload: categoryIds 
+    }
+}
+
+export const assignCategory = (categoryId) => {
+    return { 
+        type: 'ASSIGN_CATEGORY',
         payload: categoryId 
     }
 }
