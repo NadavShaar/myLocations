@@ -31,7 +31,7 @@ const Location = props => {
         if(!locationName) return;
 
         if(!isLocationExist) {
-            dispatch(addLocation({id: Date.now(), name: locationName})); 
+            dispatch(addLocation({id: Date.now(), name: locationName, address: '', coords: [], categories: []})); 
             setLocationName("");
         }
 
