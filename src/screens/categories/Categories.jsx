@@ -8,7 +8,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
-import { Search, List } from './../../components/ui';
+import { Search, CollapsableList } from './../../components/ui';
 
 const Categories = props => {
     
@@ -106,8 +106,15 @@ const Categories = props => {
     )
 
     const renderCategoriesList = () => (
-        <List 
-            items={filteredCategories}
+        <CollapsableList 
+            listConfig={
+                filteredCategories.map(category => {
+                    return {
+                        id: category.id,
+                        text: category.name,
+                    }
+                })
+            }
             selectedItemsIds={selectedCategoryIds}
             onSelectionChange={selectCategory}
         />

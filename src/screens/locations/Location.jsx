@@ -21,17 +21,19 @@ const Location = props => {
     
     let locationIndex = locations.findIndex(location => location.id == id);
     const selectedLocation = locationIndex > -1 && useSelector(state => state.locations.data[locationIndex]);
-
+    
     const [locationName, setLocationName] = useState(locationIndex > -1 ? selectedLocation?.name : "");
     let isLocationExist = !!locations.find(location => location.name === locationName);
-
+    
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedLocation;
+
+    
 
     const createLocation = () => {
         if(!locationName) return;
 
         if(!isLocationExist) {
-            dispatch(addLocation({id: Date.now(), name: locationName, address: '', coords: [], categories: []})); 
+            dispatch(addLocation({id: Date.now(), name: locationName, address: '', coords: [], categoriesIds: []})); 
             setLocationName("");
         }
 

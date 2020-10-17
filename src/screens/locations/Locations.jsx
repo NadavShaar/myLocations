@@ -8,13 +8,14 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
-import { Search, List } from './../../components/ui';
+import { Search, CollapsableList } from './../../components/ui';
 
 const Locations = props => {
     
     
     const [selectedLocationIds, setSelectedLocationsIds] = useState([]);
     const [searchText, setSearchText] = useState('');
+    const [groupedBy, setGroupedBy] = useState(null);
     
     const classes = useStyles();
     
@@ -22,12 +23,28 @@ const Locations = props => {
 
     const buttonRef = useRef(null);
     
-    const { locations } = props;
-    let filteredLocations = locations.filter(location => location.name.toLowerCase().includes(searchText.toLowerCase()))
+    const { locations, categories } = props;
+    let filteredLocations = locations.filter(location => location.name.toLowerCase().includes(searchText.toLowerCase()) || location.categoriesIds.some(categoryId => categories.find(category => category.id === categoryId)?.name.toLowerCase().includes(searchText.toLowerCase()) ))
 
     let selectedLocation = selectedLocationIds.length === 1 && filteredLocations.find(loc => loc.id === selectedLocationIds[0]);
 
 
+    const getListConfig = () => {
+        switch (groupedBy) {
+            case 'categories': {
+                let categorizedList = categories.map(category => { 
+                    return { 
+                        id: category.id, 
+                        text: category.name, 
+                        nestedItems: filteredLocations.filter(loc => !!loc.categoriesIds.find(catId => category.id === catId)).map(location => { return { id: location.id, text: location.name } })
+                    } 
+                });
+
+                return categorizedList.filter(category => !!category.nestedItems.length);
+            }
+            default: return filteredLocations.map(location => { return { id: location.id, text: location.name } })
+        }
+    }
     
     const selectLocation = (isCurrentLocationSelected, locationId, locationIndex) => {
         
@@ -106,8 +123,8 @@ const Locations = props => {
     )
 
     const renderLocationsList = () => (
-        <List 
-            items={filteredLocations}
+        <CollapsableList 
+            listConfig={ getListConfig() }
             selectedItemsIds={selectedLocationIds}
             onSelectionChange={selectLocation}
         />
