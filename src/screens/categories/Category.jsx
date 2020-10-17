@@ -23,7 +23,7 @@ const Category = props => {
     let categoryIndex = categories.findIndex(category => category.id == id);
     const selectedCategory = categoryIndex > -1 && useSelector(state => state.categories.data[categoryIndex]);
     
-    const [categoryName, setCategoryName] = useState(categoryIndex > -1 ? selectedCategory?.name : "");
+    const [categoryName, setCategoryName] = useState(selectedCategory?.name || "");
     let isCategoryExist = !!categories.find(category => category.name === categoryName);
     
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedCategory;
