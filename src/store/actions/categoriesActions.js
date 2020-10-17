@@ -12,9 +12,9 @@ export const updateCategory = (category) => {
     }
 }
 
-export const deleteCategories = (categoryIds) => {
+export const deleteCategories = (categoriesIds) => {
     return { 
-        type: 'DELETE_CATEGORY',
-        payload: categoryIds 
+        type: 'DELETE_CATEGORIES',
+        payload: categoriesIds 
     }
 }

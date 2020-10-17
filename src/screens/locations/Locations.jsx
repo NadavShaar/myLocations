@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import { Button, Toolbar, LinkButton } from './../../components/materialUI';
-import { deleteCategories } from './../../store/actions';
+import { deleteLocations } from './../../store/actions';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
@@ -13,7 +13,7 @@ import { Search, List } from './../../components/ui';
 const Locations = props => {
     
     
-    const [selectedCategoryIds, setSelectedCategoriesIds] = useState([]);
+    const [selectedLocationIds, setSelectedLocationsIds] = useState([]);
     const [searchText, setSearchText] = useState('');
     
     const classes = useStyles();
@@ -22,45 +22,45 @@ const Locations = props => {
 
     const buttonRef = useRef(null);
     
-    const { categories } = props;
-    let filteredCategories = categories.filter(category => category.name.toLowerCase().includes(searchText.toLowerCase()))
+    const { locations } = props;
+    let filteredLocations = locations.filter(location => location.name.toLowerCase().includes(searchText.toLowerCase()))
 
-    let selectedCategory = selectedCategoryIds.length === 1 && filteredCategories.find(cat => cat.id === selectedCategoryIds[0]);
+    let selectedLocation = selectedLocationIds.length === 1 && filteredLocations.find(loc => loc.id === selectedLocationIds[0]);
 
 
     
-    const selectCategory = (isCurrentCategorySelected, categoryId, categoryIndex) => {
+    const selectLocation = (isCurrentLocationSelected, locationId, locationIndex) => {
         
-        let selectedCategoryIdsClone = [ ...selectedCategoryIds ];
+        let selectedLocationIdsClone = [ ...selectedLocationIds ];
 
-        if(isCurrentCategorySelected) selectedCategoryIdsClone.splice(categoryIndex, 1);
-        else selectedCategoryIdsClone.push(categoryId);
+        if(isCurrentLocationSelected) selectedLocationIdsClone.splice(locationIndex, 1);
+        else selectedLocationIdsClone.push(locationId);
 
-        setSelectedCategoriesIds(selectedCategoryIdsClone); 
+        setSelectedLocationsIds(selectedLocationIdsClone); 
     }
 
-    const removeCategory = () => {
+    const removeLocation = () => {
 
-        let isSingleCategory = selectedCategoryIds.length === 1;
+        let isSingleLocation = selectedLocationIds.length === 1;
 
         const event = new CustomEvent('displayConfirm', {
             bubbles: true,
             detail: {
-                description: `Are you sure you want to delete ${isSingleCategory ? selectedCategory.name : 'the selected categories'}?`,
+                description: `Are you sure you want to delete ${isSingleLocation ? selectedLocation.name : 'the selected locations'}?`,
                 submitLabel: 'Delete',
                 onSubmit: () => {
                     const event = new CustomEvent('displaySnackbar', {
                         bubbles: true,
                         detail: {
                             open: true, 
-                            message: `${isSingleCategory ? selectedCategory.name : (selectedCategoryIds.length + ' categories')} deleted successfully`, 
+                            message: `${isSingleLocation ? selectedLocation.name : (selectedLocationIds.length + ' locations')} deleted successfully`, 
                             type: 'success',
                         }
                     });
 
-                    dispatch(deleteCategories(selectedCategoryIds));
+                    dispatch(deleteLocations(selectedLocationIds));
             
-                    setSelectedCategoriesIds([]); 
+                    setSelectedLocationsIds([]); 
 
                     buttonRef.current.dispatchEvent(event);
             
@@ -74,24 +74,24 @@ const Locations = props => {
 
     const renderToolbar = () => (
         <Toolbar 
-            title={`Locations${categories.length ? (' (' + categories.length + ')') : ''}`}
+            title={`Locations${locations.length ? (' (' + locations.length + ')') : ''}`}
             buttons={
-                selectedCategoryIds.length ?
+                selectedLocationIds.length ?
                     <React.Fragment>
-                        <span className={classes.clearSelectionButton}><CloseIcon className={classes.icon} onClick={e => setSelectedCategoriesIds([])} />{`${selectedCategoryIds.length} selected`}</span>
+                        <span className={classes.clearSelectionButton}><CloseIcon className={classes.icon} onClick={e => setSelectedLocationsIds([])} />{`${selectedLocationIds.length} selected`}</span>
                         {
-                            selectedCategoryIds.length === 1 ?
+                            selectedLocationIds.length === 1 ?
                                 <React.Fragment>
-                                    <LinkButton className={classes.button} to={`/category/${selectedCategoryIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
-                                    <LinkButton className={classes.button} to={`/category/${selectedCategoryIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
+                                    <LinkButton className={classes.button} to={`/locations/${selectedLocationIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
+                                    <LinkButton className={classes.button} to={`/locations/${selectedLocationIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
                                 </React.Fragment>
                                 :
                                 null
                         }
-                        <Button ref={buttonRef} className={classes.button} color="inherit" onClick={removeCategory} startIcon={<DeleteIcon className={classes.icon} />}>DELETE</Button>
+                        <Button ref={buttonRef} className={classes.button} color="inherit" onClick={removeLocation} startIcon={<DeleteIcon className={classes.icon} />}>DELETE</Button>
                     </React.Fragment>
                     :
-                    <LinkButton className={classes.button} to="/category/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
+                    <LinkButton className={classes.button} to="/locations/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
             }
         />
     )
@@ -99,34 +99,34 @@ const Locations = props => {
     const renderSearch = () => (
         <Search 
             autoFocus={true}
-            label="Search category"
+            label="Search location"
             value={searchText}
             onChange={e => setSearchText(e.target.value)}
         />
     )
 
-    const renderCategoriesList = () => (
+    const renderLocationsList = () => (
         <List 
-            items={filteredCategories}
-            selectedItemsIds={selectedCategoryIds}
-            onSelectionChange={selectCategory}
+            items={filteredLocations}
+            selectedItemsIds={selectedLocationIds}
+            onSelectionChange={selectLocation}
         />
     )
 
     const renderNoResults = () => (
-        <span className={classes.noResultsLabel}>No Categories</span>
+        <span className={classes.noResultsLabel}>No Locations</span>
     )
 
     return (
         <div className={classes.pageContainer}>
             { renderToolbar() }
             <div className={classes.contentContainer}>
-                <div className={classes.categoriesListContainer}>
+                <div className={classes.locationsListContainer}>
                     { renderSearch() }
-                    <div className={classes.categoriesContainer}>
+                    <div className={classes.locationsContainer}>
                         {
-                            filteredCategories.length ?
-                                renderCategoriesList()
+                            filteredLocations.length ?
+                                renderLocationsList()
                                 :
                                 renderNoResults()
                         }
@@ -152,7 +152,7 @@ const useStyles = makeStyles((theme) => ({
         padding: 20,
         position: 'relative'
     },
-    categoriesListContainer: {
+    locationsListContainer: {
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
@@ -160,7 +160,7 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: 600,
         height: '100%'
     },
-    categoriesContainer: {
+    locationsContainer: {
         width: '100%',
         height: 'calc(100% - 60px)',
         display: 'flex',

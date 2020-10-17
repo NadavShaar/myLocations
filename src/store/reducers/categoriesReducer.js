@@ -11,7 +11,7 @@ const categoriesReducer = (state={data: []}, action) => {
 
             return { data: [ ...state.data ] };
         }
-        case 'DELETE_CATEGORY': {
+        case 'DELETE_CATEGORIES': {
 
             let categoriesIds = action.payload;
             categoriesIds.forEach(categoryId => {

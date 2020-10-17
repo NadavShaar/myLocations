@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { Toolbar, LinkButton } from './../../components/materialUI';
 import { BigInput } from './../../components/ui';
-import { createNewCategory, updateCategory } from './../../store/actions';
+import { addLocation, updateLocation } from './../../store/actions';
 import { useParams } from "react-router-dom";
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 
@@ -19,28 +19,28 @@ const Location = props => {
     const inputRef = useRef(null);
     const buttonRef = useRef(null);
     
-    const { mode, categories } = props;
+    const { mode, locations } = props;
     
-    let categoryIndex = categories.findIndex(category => category.id == id);
-    const selectedCategory = categoryIndex > -1 && useSelector(state => state.categories.data[categoryIndex]);
+    let locationIndex = locations.findIndex(location => location.id == id);
+    const selectedLocation = locationIndex > -1 && useSelector(state => state.locations.data[locationIndex]);
 
-    const [categoryName, setCategoryName] = useState(categoryIndex > -1 ? selectedCategory?.name : "");
-    let isCategoryExist = !!categories.find(category => category.name === categoryName);
+    const [locationName, setLocationName] = useState(locationIndex > -1 ? selectedLocation?.name : "");
+    let isLocationExist = !!locations.find(location => location.name === locationName);
 
-    const createCategory = () => {
-        if(!categoryName) return;
+    const createLocation = () => {
+        if(!locationName) return;
 
-        if(!isCategoryExist) {
-            dispatch(createNewCategory({id: Date.now(), name: categoryName})); 
-            setCategoryName("");
+        if(!isLocationExist) {
+            dispatch(addLocation({id: Date.now(), name: locationName})); 
+            setLocationName("");
         }
 
         const event = new CustomEvent('displaySnackbar', {
             bubbles: true,
             detail: {
                 open: true, 
-                message: isCategoryExist ? `${categoryName} is already exist` : `${categoryName} added successfully`, 
-                type: isCategoryExist ? 'error' : 'success', 
+                message: isLocationExist ? `${locationName} is already exist` : `${locationName} added successfully`, 
+                type: isLocationExist ? 'error' : 'success', 
             }
         });
 
@@ -49,18 +49,18 @@ const Location = props => {
         setTimeout(() => { inputRef.current.focus() }, 0);
     }
 
-    const editCategory = () => {
-        if(!categoryName) return;
+    const editLocation = () => {
+        if(!locationName) return;
 
-        let currentCategory = categories[categoryIndex];
-        if(!isCategoryExist) dispatch(updateCategory({ ...currentCategory, name: categoryName }));
+        let currentLocation = locations[locationIndex];
+        if(!isLocationExist) dispatch(updateLocation({ ...currentLocation, name: locationName }));
 
         const event = new CustomEvent('displaySnackbar', {
             bubbles: true,
             detail: {
                 open: true, 
-                message: isCategoryExist ? `${categoryName} is already exist` : `${categoryName} saved successfully`, 
-                type: isCategoryExist ? 'error' : 'success'
+                message: isLocationExist ? `${locationName} is already exist` : `${locationName} saved successfully`, 
+                type: isLocationExist ? 'error' : 'success'
             } 
         });
 
@@ -71,9 +71,9 @@ const Location = props => {
 
     const getTitleByMode = () => {
         switch (mode) {
-            case 'new': return 'New category'
-            case 'edit': return `Edit category - ${selectedCategory.name}`
-            case 'details': return `Details - ${selectedCategory.name}`
+            case 'new': return 'New location'
+            case 'edit': return `Edit location - ${selectedLocation.name}`
+            case 'details': return `Details - ${selectedLocation.name}`
             default: return null;
         }
     }
@@ -84,10 +84,10 @@ const Location = props => {
             hint={hint}
             inputRef={inputRef}
             buttonRef={buttonRef}
-            value={categoryName}
+            value={locationName}
             callback={callback}
             buttonChildren={buttonChildren}
-            onChange={setCategoryName}
+            onChange={setLocationName}
             disabledSubmit={disabled}
             textFieldProps={{autoFocus: true}}
         />
@@ -95,9 +95,9 @@ const Location = props => {
 
     const renderContentByMode = () => {
         switch (mode) {
-            case 'new': return renderBigInput({callback: createCategory, buttonChildren: '+', disabled: !categoryName, title: 'Add new category', hint: 'Hint: you can also submit using the Enter key.'})
-            case 'edit': return renderBigInput({callback: editCategory, buttonChildren: <React.Fragment>&#10003;</React.Fragment>, disabled: !categoryName, title: 'Update category', hint: 'Hint: you can also submit using the Enter key.'})
-            case 'details': return <div className={classes.paper}><span className={classes.detailType}>Category name:</span><span className={classes.categoryName}>{categoryName}</span></div>;
+            case 'new': return renderBigInput({callback: createLocation, buttonChildren: '+', disabled: !locationName, title: 'Add new location', hint: 'Hint: you can also submit using the Enter key.'})
+            case 'edit': return renderBigInput({callback: editLocation, buttonChildren: <React.Fragment>&#10003;</React.Fragment>, disabled: !locationName, title: 'Update location', hint: 'Hint: you can also submit using the Enter key.'})
+            case 'details': return <div className={classes.paper}><span className={classes.detailType}>Location name:</span><span className={classes.locationName}>{locationName}</span></div>;
             default: return null;
         }
     }
@@ -138,7 +138,7 @@ const useStyles = makeStyles((theme) => ({
     inputWrapper: {
         display: 'inline-flex'
     },
-    categoryName: {
+    locationName: {
         fontSize: 36,
         color: theme.palette.color6,
         padding: '10px 20px',

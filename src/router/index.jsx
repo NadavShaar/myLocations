@@ -5,22 +5,31 @@ import locationsRoutes from './routes/locationsRoutes';
 import { BottomNavigation } from './../components/ui';
 import { useSelector } from 'react-redux';
 
-let routes = [ ...categoriesRoutes, ...locationsRoutes ];
-
 const Router = props => {
 
     const categories = useSelector(state => state.categories.data) || [];
+    const locations = useSelector(state => state.locations.data) || [];
 
     return (
         <BrowserRouter basename='/myLocations'>
             <Switch>
                 { 
-                    routes.map((route, idx) => (
+                    categoriesRoutes.map((route, idx) => (
                         <Route 
                             key={idx} 
                             exact={route.exact} 
                             path={route.path} 
                             component={props => <route.component categories={categories} { ...props } />} 
+                        />
+                    )) 
+                }
+                { 
+                    locationsRoutes.map((route, idx) => (
+                        <Route 
+                            key={idx} 
+                            exact={route.exact} 
+                            path={route.path} 
+                            component={props => <route.component categories={categories} locations={locations} { ...props } />} 
                         />
                     )) 
                 }
