@@ -1,11 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { Toolbar, LinkButton } from './../../components/materialUI';
-import { BigInput } from './../../components/ui';
+import { Toolbar } from './../../components/materialUI';
+import { BigInput, HistoryGoBackButton } from './../../components/ui';
 import { addLocation, updateLocation } from './../../store/actions';
 import { useParams } from "react-router-dom";
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 
 const Location = props => {
 
@@ -105,7 +104,7 @@ const Location = props => {
     const renderToolbar = () => (
         <Toolbar 
             title={getTitleByMode()}
-            buttons={ <LinkButton to="/" startIcon={<KeyboardBackspaceIcon className={classes.icon} />}>BACK</LinkButton> }
+            buttons={ <HistoryGoBackButton /> }
         />
     )
 
@@ -162,10 +161,6 @@ const useStyles = makeStyles((theme) => ({
         background: theme.palette.primary.main,
         backgroundImage: theme.palette.gradient1,
         borderBottom: `1px solid ${theme.palette.border1}` 
-    },
-    icon: {
-        fontSize: 18,
-        marginBottom: 2
     }
 }));
 

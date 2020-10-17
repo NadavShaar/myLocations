@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BottomNavigation as MUIBottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 import LabelIcon from '@material-ui/icons/Label';
 import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router";
 
 const BottomNavigation = props => {
 
-    let initialSelected = location.pathname.indexOf('categor') > -1 ? 1 : 0;
+    let initialSelected = props.location.pathname.startsWith('/categories') ? 1 : 0;
+
     const [value, setValue] = useState(initialSelected);
     
     const history = useHistory();
+
+    useEffect(() => {
+        let currentSelected = props.location.pathname.startsWith('/categories') ? 1 : 0;
+        setValue(currentSelected);
+    }, [props.location.pathname])
     
     let buttons = [
         { label: 'Locations', icon: <LocationSearchingIcon />},
@@ -42,4 +49,4 @@ const BottomNavigation = props => {
     )
 }
 
-export default BottomNavigation;
+export default withRouter(BottomNavigation);

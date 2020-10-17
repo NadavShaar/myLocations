@@ -1,11 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { Toolbar, LinkButton } from './../../components/materialUI';
-import { BigInput } from './../../components/ui';
+import { Toolbar } from './../../components/materialUI';
+import { BigInput, HistoryGoBackButton } from './../../components/ui';
 import { createNewCategory, updateCategory } from './../../store/actions';
 import { useParams } from "react-router-dom";
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 
 const Category = props => {
 
@@ -105,7 +104,7 @@ const Category = props => {
     const renderToolbar = () => (
         <Toolbar 
             title={getTitleByMode()}
-            buttons={ <LinkButton to="/categories" startIcon={<KeyboardBackspaceIcon className={classes.icon} />}>CATEGORIES</LinkButton> }
+            buttons={ <HistoryGoBackButton /> }
         />
     )
 
