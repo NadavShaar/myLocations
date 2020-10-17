@@ -2,12 +2,11 @@ import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { Toolbar } from './../../components/materialUI';
-import { BigInput, HistoryGoBackButton } from './../../components/ui';
+import { BigInput, HistoryGoBackButton, PageNotFoundMessage } from './../../components/ui';
 import { addLocation, updateLocation } from './../../store/actions';
 import { useParams } from "react-router-dom";
 
 const Location = props => {
-
     
     const classes = useStyles();
     
@@ -25,6 +24,8 @@ const Location = props => {
 
     const [locationName, setLocationName] = useState(locationIndex > -1 ? selectedLocation?.name : "");
     let isLocationExist = !!locations.find(location => location.name === locationName);
+
+    let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedLocation;
 
     const createLocation = () => {
         if(!locationName) return;
@@ -71,8 +72,8 @@ const Location = props => {
     const getTitleByMode = () => {
         switch (mode) {
             case 'new': return 'New location'
-            case 'edit': return `Edit location - ${selectedLocation.name}`
-            case 'details': return `Details - ${selectedLocation.name}`
+            case 'edit': return dataIsMissing ? 'Edit location' : `Edit location - ${selectedLocation.name}`
+            case 'details': return dataIsMissing ? 'Details' : `Details - ${selectedLocation.name}`
             default: return null;
         }
     }
@@ -113,7 +114,12 @@ const Location = props => {
             { renderToolbar() }
             <div className={classes.contentContainer}>
                 <div className={classes.inputWrapper}>
-                    { renderContentByMode() }
+                    { 
+                        dataIsMissing ?
+                            <PageNotFoundMessage />
+                            :
+                            renderContentByMode() 
+                    }
                 </div>
             </div>
         </div>

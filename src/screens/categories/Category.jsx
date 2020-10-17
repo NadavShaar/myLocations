@@ -2,12 +2,11 @@ import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { Toolbar } from './../../components/materialUI';
-import { BigInput, HistoryGoBackButton } from './../../components/ui';
+import { BigInput, HistoryGoBackButton, PageNotFoundMessage } from './../../components/ui';
 import { createNewCategory, updateCategory } from './../../store/actions';
 import { useParams } from "react-router-dom";
 
 const Category = props => {
-
     
     const classes = useStyles();
     
@@ -18,14 +17,17 @@ const Category = props => {
     const inputRef = useRef(null);
     const buttonRef = useRef(null);
     
-    const { mode, categories, history } = props;
+    const { mode, categories } = props;
+
     
     let categoryIndex = categories.findIndex(category => category.id == id);
     const selectedCategory = categoryIndex > -1 && useSelector(state => state.categories.data[categoryIndex]);
-
+    
     const [categoryName, setCategoryName] = useState(categoryIndex > -1 ? selectedCategory?.name : "");
     let isCategoryExist = !!categories.find(category => category.name === categoryName);
-
+    
+    let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedCategory;
+    
     const createCategory = () => {
         if(!categoryName) return;
 
@@ -71,8 +73,8 @@ const Category = props => {
     const getTitleByMode = () => {
         switch (mode) {
             case 'new': return 'New category'
-            case 'edit': return `Edit category - ${selectedCategory.name}`
-            case 'details': return `Details - ${selectedCategory.name}`
+            case 'edit': return dataIsMissing ? 'Edit category' : `Edit category - ${selectedCategory.name}`
+            case 'details': return dataIsMissing ? 'Details' : `Details - ${selectedCategory.name}`
             default: return null;
         }
     }
@@ -113,7 +115,12 @@ const Category = props => {
             { renderToolbar() }
             <div className={classes.contentContainer}>
                 <div className={classes.inputWrapper}>
-                    { renderContentByMode() }
+                    { 
+                        dataIsMissing ?
+                            <PageNotFoundMessage />
+                            :
+                            renderContentByMode() 
+                    }
                 </div>
             </div>
         </div>
