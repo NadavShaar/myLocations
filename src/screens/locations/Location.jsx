@@ -48,7 +48,7 @@ const Location = props => {
 
         buttonRef.current.dispatchEvent(event);
 
-        setTimeout(() => { inputRef.current.focus() }, 0);
+        setTimeout(() => { inputRef?.current?.focus?.() }, 0);
     }
 
     const editLocation = () => {
@@ -68,7 +68,7 @@ const Location = props => {
 
         buttonRef.current.dispatchEvent(event);
 
-        setTimeout(() => { inputRef.current.focus() }, 0);
+        setTimeout(() => { inputRef?.current?.focus?.() }, 0);
     }
 
     const getTitleByMode = () => {

@@ -1,27 +1,24 @@
-const categoriesReducer = (state={data: []}, action) => {
+const categoriesReducer = (state={}, action) => {
     switch (action.type) {
         case 'NEW_CATEGORY': {
-            state.data.push(action.payload);
-            return { data: [ ...state.data ] };
+            state[Date.now()] = action.payload;
+
+            return { ...state };
         }
         case 'UPDATE_CATEGORY': {
-            let updatedCategory = action.payload;
-            let updatedCategoryIndex = state.data.findIndex(d => d.id === updatedCategory.id);
-            state.data[updatedCategoryIndex] = updatedCategory;
+            let updatedCategory = action.payload.item;
+            state[action.payload.id] = updatedCategory;
 
-            return { data: [ ...state.data ] };
+            return { ...state };
         }
         case 'DELETE_CATEGORIES': {
 
             let categoriesIds = action.payload;
-            categoriesIds.forEach(categoryId => {
-                let categoryIndex = state.data.findIndex(d => d.id === categoryId);
-                state.data.splice(categoryIndex, 1)
-            })
+            categoriesIds.forEach(categoryId => delete state[categoryId])
             
-            return { data: [ ...state.data ] };
+            return { ...state };
         }
-        default: return state;
+        default: return { ...state };
     }
 }
 

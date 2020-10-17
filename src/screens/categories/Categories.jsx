@@ -23,9 +23,14 @@ const Categories = props => {
     const buttonRef = useRef(null);
     
     const { categories } = props;
-    let filteredCategories = categories.filter(category => category.name.toLowerCase().includes(searchText.toLowerCase()))
 
-    let selectedCategory = selectedCategoryIds.length === 1 && filteredCategories.find(cat => cat.id === selectedCategoryIds[0]);
+    let filteredCategories = {}
+    for (var key in categories) { if(categories[key].name.toLowerCase().includes(searchText.toLowerCase())) filteredCategories[key] = categories[key];}
+    
+    let selectedCategory = selectedCategoryIds.length === 1 && filteredCategories[selectedCategoryIds[0]];
+
+    let categoriesLength = (Object.keys(categories).length);
+    let filteredCategoriesLength = (Object.keys(filteredCategories).length);
 
 
     
@@ -74,7 +79,7 @@ const Categories = props => {
 
     const renderToolbar = () => (
         <Toolbar 
-            title={`Categories${categories.length ? (' (' + categories.length + ')') : ''}`}
+            title={`Categories${categoriesLength ? (' (' + categoriesLength + ')') : ''}`}
             buttons={
                 selectedCategoryIds.length ?
                     <React.Fragment>
@@ -108,10 +113,10 @@ const Categories = props => {
     const renderCategoriesList = () => (
         <CollapsableList 
             listConfig={
-                filteredCategories.map(category => {
+                Object.keys(filteredCategories).map(key => {
                     return {
-                        id: category.id,
-                        text: category.name,
+                        id: key,
+                        text: filteredCategories[key].name,
                     }
                 })
             }
@@ -132,7 +137,7 @@ const Categories = props => {
                     { renderSearch() }
                     <div className={classes.categoriesContainer}>
                         {
-                            filteredCategories.length ?
+                            filteredCategoriesLength ?
                                 renderCategoriesList()
                                 :
                                 renderNoResults()

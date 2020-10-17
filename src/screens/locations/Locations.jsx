@@ -24,7 +24,7 @@ const Locations = props => {
     const buttonRef = useRef(null);
     
     const { locations, categories } = props;
-    let filteredLocations = locations.filter(location => location.name.toLowerCase().includes(searchText.toLowerCase()) || location.categoriesIds.some(categoryId => categories.find(category => category.id === categoryId)?.name.toLowerCase().includes(searchText.toLowerCase()) ))
+    let filteredLocations = locations.filter(location => location.name.toLowerCase().includes(searchText.toLowerCase()) || location.categoriesIds.some(categoryId => !!categories[categoryId]?.name.toLowerCase().includes(searchText.toLowerCase()) ))
 
     let selectedLocation = selectedLocationIds.length === 1 && filteredLocations.find(loc => loc.id === selectedLocationIds[0]);
 
@@ -32,11 +32,11 @@ const Locations = props => {
     const getListConfig = () => {
         switch (groupedBy) {
             case 'categories': {
-                let categorizedList = categories.map(category => { 
+                let categorizedList = Object.keys(categories).map(categoryId => { 
                     return { 
-                        id: category.id, 
-                        text: category.name, 
-                        nestedItems: filteredLocations.filter(loc => !!loc.categoriesIds.find(catId => category.id === catId)).map(location => { return { id: location.id, text: location.name } })
+                        id: categoryId, 
+                        text: categories[categoryId].name, 
+                        nestedItems: filteredLocations.filter(loc => !!loc.categoriesIds.find(catId => categoryId == catId)).map(location => { return { id: location.id, text: location.name } })
                     } 
                 });
 

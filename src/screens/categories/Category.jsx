@@ -19,20 +19,18 @@ const Category = props => {
     
     const { mode, categories } = props;
 
-    
-    let categoryIndex = categories.findIndex(category => category.id == id);
-    const selectedCategory = categoryIndex > -1 && useSelector(state => state.categories.data[categoryIndex]);
+    const selectedCategory = useSelector(state => state.categories[id]);
     
     const [categoryName, setCategoryName] = useState(selectedCategory?.name || "");
-    let isCategoryExist = !!categories.find(category => category.name === categoryName);
-    
+    let isCategoryExist = !!(Object.values(categories)).find(category => category.name === categoryName);
+    console.log(Object.values(categories), categories)
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedCategory;
     
     const createCategory = () => {
         if(!categoryName) return;
 
         if(!isCategoryExist) {
-            dispatch(createNewCategory({id: Date.now(), name: categoryName})); 
+            dispatch(createNewCategory({name: categoryName})); 
             setCategoryName("");
         }
 
@@ -47,14 +45,13 @@ const Category = props => {
 
         buttonRef.current.dispatchEvent(event);
 
-        setTimeout(() => { inputRef.current.focus() }, 0);
+        setTimeout(() => { inputRef?.current?.focus?.() }, 0);
     }
 
     const editCategory = () => {
         if(!categoryName) return;
 
-        let currentCategory = categories[categoryIndex];
-        if(!isCategoryExist) dispatch(updateCategory({ ...currentCategory, name: categoryName }));
+        if(!isCategoryExist) dispatch(updateCategory({id, item: { ...selectedCategory, name: categoryName }}));
 
         const event = new CustomEvent('displaySnackbar', {
             bubbles: true,
@@ -67,7 +64,7 @@ const Category = props => {
 
         buttonRef.current.dispatchEvent(event);
 
-        setTimeout(() => { inputRef.current.focus() }, 0);
+        setTimeout(() => { inputRef?.current?.focus?.() }, 0);
     }
 
     const getTitleByMode = () => {

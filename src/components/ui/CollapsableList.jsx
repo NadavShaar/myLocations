@@ -64,7 +64,7 @@ const CollapsableListItem = props => {
                     listItem, 
                     idx, 
                     { 
-                        className: `${classes.item} ${isCurrentItemSelected && !listItem.nestedItems ? classes.highlightedItem : ''} ${onSelectionChange ? classes.clickable : ''}`.trim(),
+                        className: `${classes.item} ${listItem.nestedItems ? classes.group : isCurrentItemSelected ? classes.highlightedItem : ''} ${onSelectionChange ? classes.clickable : ''}`.trim(),
                         ...selectionClick
                     }
                 ) 
@@ -139,6 +139,9 @@ const useStyles = makeStyles((theme) => ({
             whiteSpace: 'nowrap',
             textOverflow: 'ellipsis',
         }
+    },
+    group: {
+        backgroundColor: `${theme.palette.background2} !important`
     },
     highlightedItem: {
         background: `${theme.palette.highlight1} !important`

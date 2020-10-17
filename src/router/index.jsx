@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 const Router = props => {
 
-    const categories = useSelector(state => state.categories.data) || [];
+    const categories = useSelector(state => state.categories) || {};
     const locations = useSelector(state => state.locations.data) || [];
 
     return (
