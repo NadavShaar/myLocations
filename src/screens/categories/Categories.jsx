@@ -14,7 +14,7 @@ import { Search, CollapsableList } from './../../components/ui';
 const Categories = props => {
     
     
-    const [selectedCategoryIds, setSelectedCategoriesIds] = useState([]);
+    const [selectedCategoriesIds, setSelectedCategoriesIds] = useState([]);
     const [searchText, setSearchText] = useState('');
     
     const classes = useStyles();
@@ -28,7 +28,7 @@ const Categories = props => {
     let filteredCategories = {}
     for (var key in categories) { if(categories[key].name.toLowerCase().includes(searchText.toLowerCase())) filteredCategories[key] = categories[key];}
     
-    let selectedCategory = selectedCategoryIds.length === 1 && filteredCategories[selectedCategoryIds[0]];
+    let selectedCategory = selectedCategoriesIds.length === 1 && filteredCategories[selectedCategoriesIds[0]];
 
     let categoriesLength = (Object.keys(categories).length);
     let filteredCategoriesLength = (Object.keys(filteredCategories).length);
@@ -37,7 +37,7 @@ const Categories = props => {
     
     const selectCategory = (isCurrentCategorySelected, categoryId, categoryIndex) => {
         
-        let selectedCategoryIdsClone = [ ...selectedCategoryIds ];
+        let selectedCategoryIdsClone = [ ...selectedCategoriesIds ];
 
         if(isCurrentCategorySelected) selectedCategoryIdsClone.splice(categoryIndex, 1);
         else selectedCategoryIdsClone.push(categoryId);
@@ -47,7 +47,7 @@ const Categories = props => {
 
     const removeCategory = () => {
 
-        let isSingleCategory = selectedCategoryIds.length === 1;
+        let isSingleCategory = selectedCategoriesIds.length === 1;
 
         const event = new CustomEvent('displayConfirm', {
             bubbles: true,
@@ -59,12 +59,12 @@ const Categories = props => {
                         bubbles: true,
                         detail: {
                             open: true, 
-                            message: `${isSingleCategory ? selectedCategory.name : (selectedCategoryIds.length + ' categories')} deleted successfully`, 
+                            message: `${isSingleCategory ? selectedCategory.name : (selectedCategoriesIds.length + ' categories')} deleted successfully`, 
                             type: 'success',
                         }
                     });
 
-                    dispatch(deleteCategories(selectedCategoryIds));
+                    dispatch(deleteCategories(selectedCategoriesIds));
             
                     setSelectedCategoriesIds([]); 
 
@@ -82,14 +82,14 @@ const Categories = props => {
         <Toolbar 
             title={`Categories${categoriesLength ? (' (' + categoriesLength + ')') : ''}`}
             buttons={
-                selectedCategoryIds.length ?
+                selectedCategoriesIds.length ?
                     <React.Fragment>
-                        <span className={classes.clearSelectionButton}><CloseIcon className={classes.icon} onClick={e => setSelectedCategoriesIds([])} />{`${selectedCategoryIds.length} selected`}</span>
+                        <span className={classes.clearSelectionButton}><CloseIcon className={classes.icon} onClick={e => setSelectedCategoriesIds([])} />{`${selectedCategoriesIds.length} selected`}</span>
                         {
-                            selectedCategoryIds.length === 1 ?
+                            selectedCategoriesIds.length === 1 ?
                                 <React.Fragment>
-                                    <LinkButton className={classes.button} to={`/categories/${selectedCategoryIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
-                                    <LinkButton className={classes.button} to={`/categories/${selectedCategoryIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
+                                    <LinkButton className={classes.button} to={`/categories/${selectedCategoriesIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
+                                    <LinkButton className={classes.button} to={`/categories/${selectedCategoriesIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
                                 </React.Fragment>
                                 :
                                 null
@@ -115,14 +115,17 @@ const Categories = props => {
         <CollapsableList 
             listConfig={
                 Object.keys(filteredCategories).map(key => {
+                    let currentCategory = filteredCategories[key];
+
                     return {
                         id: key,
-                        text: filteredCategories[key].name,
-                        icon: <LabelIcon />
+                        text: currentCategory.name,
+                        icon: <LabelIcon />,
+                        selected: !!selectedCategoriesIds.find(catId => catId === key)
                     }
                 })
             }
-            selectedItemsIds={selectedCategoryIds}
+            selectedItemsIds={selectedCategoriesIds}
             onSelectionChange={selectCategory}
         />
     )

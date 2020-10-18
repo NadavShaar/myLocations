@@ -187,15 +187,19 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'transparent',
     },
     listItemIcon: {
-        minWidth: 35,
+        minWidth: 30,
         "& .MuiSvgIcon-root": {
-            color: theme.palette.background3
+            color: theme.palette.background3,
+            width: 20,
+            height: 20
         }
     },
     nestedListItemIcon: {
-        minWidth: 35,
+        minWidth: 30,
         "& .MuiSvgIcon-root": {
-            color: theme.palette.primary.main
+            color: theme.palette.color7,
+            width: 20,
+            height: 20
         }
     }
 }));
