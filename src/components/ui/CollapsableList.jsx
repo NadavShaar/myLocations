@@ -13,8 +13,7 @@ const CollapsableListItem = props => {
     const [open, setOpen] = useState(props.open);
 
     const { 
-        currentItemIndex,
-        isCurrentItemSelected,
+        selectedItemIndex,
         listItem,
         onSelectionChange,
         classes,
@@ -22,7 +21,7 @@ const CollapsableListItem = props => {
         idx
     } = props;
 
-    let selectionClick = onSelectionChange && !listItem.nestedItems ? { onClick: e =>  onSelectionChange(isCurrentItemSelected, listItem.id, currentItemIndex)} : listItem.nestedItems ? { onClick: e => setOpen(!open)} : {};
+    let selectionClick = onSelectionChange && !listItem.nestedItems ? { onClick: e =>  onSelectionChange(listItem.selected, listItem.id, selectedItemIndex)} : listItem.nestedItems ? { onClick: e => setOpen(!open)} : {};
 
 
     useEffect(() => {
@@ -48,6 +47,12 @@ const CollapsableListItem = props => {
                         null
                 }
                 {
+                    typeof listItem.hasSelection === 'boolean' ?
+                        <span title="Has selected item" className={`${classes.hasSelectionDot} ${listItem.hasSelection ? classes.hasSelectionDotOn : classes.hasSelectionDotOff}`.trim()}></span>
+                        :
+                        null
+                }
+                {
                     listItem.nestedItems ? 
                         open ? 
                             <ExpandLess /> 
@@ -68,7 +73,7 @@ const CollapsableListItem = props => {
                     listItem, 
                     idx, 
                     { 
-                        className: `${classes.item} ${listItem.nestedItems ? classes.group : isCurrentItemSelected ? classes.highlightedItem : ''} ${onSelectionChange ? classes.clickable : ''}`.trim(),
+                        className: `${classes.item} ${listItem.nestedItems ? classes.group : listItem.selected ? classes.highlightedItem : ''} ${onSelectionChange ? classes.clickable : ''}`.trim(),
                         ...selectionClick
                     }
                 ) 
@@ -80,12 +85,11 @@ const CollapsableListItem = props => {
                             { 
                                 listItem.nestedItems.map((nestedListItem, index) => {
 
-                                    const currentNestedItemIndex = selectedItemsIds.findIndex(selectedItemId => selectedItemId === nestedListItem.id);
-                                    const isCurrentNestedItemSelected = currentNestedItemIndex > -1;
+                                    const selectedNestedItemIndex = selectedItemsIds.findIndex(selectedItemId => selectedItemId === nestedListItem.id);
 
-                                    let nestedSelectionClick = onSelectionChange ? { onClick: e =>  onSelectionChange(isCurrentNestedItemSelected, nestedListItem.id, currentNestedItemIndex)} : {};
+                                    let nestedSelectionClick = onSelectionChange ? { onClick: e =>  onSelectionChange(nestedListItem.selected, nestedListItem.id, selectedNestedItemIndex)} : {};
 
-                                    return renderListItem(nestedListItem, index, { ...nestedSelectionClick, className: `${classes.item} ${isCurrentNestedItemSelected ? classes.highlightedItem : ''} ${onSelectionChange ? classes.clickable : ''}`.trim() })
+                                    return renderListItem(nestedListItem, index, { ...nestedSelectionClick, className: `${classes.item} ${nestedListItem.selected ? classes.highlightedItem : ''} ${onSelectionChange ? classes.clickable : ''}`.trim() })
                                 }) 
                             }
                         </List>
@@ -113,10 +117,20 @@ const CollapsableList = props => {
             {
                 listConfig.map((listItem, idx) => {
 
-                    const currentItemIndex = selectedItemsIds.findIndex(selectedItemId => selectedItemId === listItem.id);
-                    const isCurrentItemSelected = currentItemIndex > -1;
+                    const selectedItemIndex = selectedItemsIds.findIndex(selectedItemId => selectedItemId === listItem.id);
                     
-                    return <CollapsableListItem key={idx} idx={idx} open={!!listItem.open} listItem={listItem} classes={classes} selectedItemsIds={selectedItemsIds} onSelectionChange={onSelectionChange} currentItemIndex={currentItemIndex} isCurrentItemSelected={isCurrentItemSelected} />
+                    return (
+                        <CollapsableListItem 
+                            key={idx} 
+                            idx={idx} 
+                            open={!!listItem.open} 
+                            listItem={listItem} 
+                            classes={classes} 
+                            selectedItemsIds={selectedItemsIds} 
+                            onSelectionChange={onSelectionChange} 
+                            selectedItemIndex={selectedItemIndex}
+                        />
+                    )
                 })
             }
         </List>
@@ -137,6 +151,7 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: `1px solid ${theme.palette.border1}`
     },
     text: {
+        marginRight: 40,
         "& .MuiTypography-root": {
             overflow: 'hidden',
             whiteSpace: 'nowrap',
@@ -156,6 +171,20 @@ const useStyles = makeStyles((theme) => ({
     collapseContainer: {
         maxHeight: 300,
         overflowY: 'auto'
+    },
+    hasSelectionDot: {
+        width: 10,
+        height: 10,
+        borderRadius: '50%',
+        cursor: 'help',
+        marginRight: 15,
+        transition: `background-color .15s ${theme.transitions.easing.easeInOut}`
+    },
+    hasSelectionDotOn: {
+        backgroundColor: theme.palette.highlight1,
+    },
+    hasSelectionDotOff: {
+        backgroundColor: 'transparent',
     }
 }));
 

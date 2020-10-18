@@ -47,19 +47,23 @@ const Locations = props => {
 
 
     const getListConfig = () => {
-        if (!groupedByCategories) return filteredLocations.map(location => { return { id: location.id, text: location.name } });
+        if (!groupedByCategories) return filteredLocations.map(location => { return { id: location.id, text: location.name, selected: !!selectedLocationIds.find(locId => locId === location.id) } });
         
         let categorizedList = categoriesArray.map(category => { 
-            let nestedItems = filteredLocations.filter(loc => !!loc.categoriesIds.find(catId => category.id == catId)).map(location => { return { id: location.id, text: location.name } });
+            let nestedItems = filteredLocations.filter(loc => !!loc.categoriesIds.find(catId => category.id == catId)).map(location => { 
+                let selectedNestedLocation = !!selectedLocationIds.find(locId => locId === location.id);
+                return { id: location.id, text: location.name, selected: selectedNestedLocation } 
+            });
             
             return { 
                 id: category.id, 
                 text: category.name, 
                 nestedItems,
-                open: !!(searchText && nestedItems.length)
+                open: !!(searchText && nestedItems.length),
+                hasSelection: !!nestedItems.find(nestedItem => !!selectedLocationIds.find(locId => locId === nestedItem.id))
             } 
         });
-        
+
         return categorizedList.filter(category => !!category.nestedItems.length);
     }
     
