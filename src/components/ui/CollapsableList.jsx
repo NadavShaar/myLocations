@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,7 +10,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 
 const CollapsableListItem = props => {
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(props.open);
 
     const { 
         currentItemIndex,
@@ -24,6 +24,10 @@ const CollapsableListItem = props => {
 
     let selectionClick = onSelectionChange && !listItem.nestedItems ? { onClick: e =>  onSelectionChange(isCurrentItemSelected, listItem.id, currentItemIndex)} : listItem.nestedItems ? { onClick: e => setOpen(!open)} : {};
 
+
+    useEffect(() => {
+        setOpen(props.open);
+    }, [props.open]);
 
     const renderListItem = (listItem, idx, additionalProps) => {
 
@@ -104,7 +108,6 @@ const CollapsableList = props => {
     } = props;
 
     
-
     return (
         <List component="div" className={classes.root}>
             {
@@ -113,7 +116,7 @@ const CollapsableList = props => {
                     const currentItemIndex = selectedItemsIds.findIndex(selectedItemId => selectedItemId === listItem.id);
                     const isCurrentItemSelected = currentItemIndex > -1;
                     
-                    return <CollapsableListItem key={idx} idx={idx} listItem={listItem} classes={classes} selectedItemsIds={selectedItemsIds} onSelectionChange={onSelectionChange} currentItemIndex={currentItemIndex} isCurrentItemSelected={isCurrentItemSelected} />
+                    return <CollapsableListItem key={idx} idx={idx} open={!!listItem.open} listItem={listItem} classes={classes} selectedItemsIds={selectedItemsIds} onSelectionChange={onSelectionChange} currentItemIndex={currentItemIndex} isCurrentItemSelected={isCurrentItemSelected} />
                 })
             }
         </List>
@@ -141,7 +144,8 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     group: {
-        backgroundColor: `${theme.palette.background2} !important`
+        backgroundColor: `${theme.palette.background7} !important`,
+        color: theme.palette.color1
     },
     highlightedItem: {
         background: `${theme.palette.highlight1} !important`

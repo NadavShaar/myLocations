@@ -15,7 +15,7 @@ const Locations = props => {
     
     const [selectedLocationIds, setSelectedLocationsIds] = useState([]);
     const [searchText, setSearchText] = useState('');
-    const [groupedBy, setGroupedBy] = useState(null);
+    const [groupedBy, setGroupedBy] = useState('categories');
     
     const classes = useStyles();
     
@@ -24,6 +24,7 @@ const Locations = props => {
     const buttonRef = useRef(null);
     
     const { locations, categories } = props;
+
     let filteredLocations = locations.filter(location => location.name.toLowerCase().includes(searchText.toLowerCase()) || location.categoriesIds.some(categoryId => !!categories[categoryId]?.name.toLowerCase().includes(searchText.toLowerCase()) ))
 
     let selectedLocation = selectedLocationIds.length === 1 && filteredLocations.find(loc => loc.id === selectedLocationIds[0]);
@@ -33,13 +34,15 @@ const Locations = props => {
         switch (groupedBy) {
             case 'categories': {
                 let categorizedList = Object.keys(categories).map(categoryId => { 
+                    let nestedItems = filteredLocations.filter(loc => !!loc.categoriesIds.find(catId => categoryId == catId)).map(location => { return { id: location.id, text: location.name } });
                     return { 
                         id: categoryId, 
                         text: categories[categoryId].name, 
-                        nestedItems: filteredLocations.filter(loc => !!loc.categoriesIds.find(catId => categoryId == catId)).map(location => { return { id: location.id, text: location.name } })
+                        nestedItems,
+                        open: !!(searchText && nestedItems.length)
                     } 
                 });
-
+                
                 return categorizedList.filter(category => !!category.nestedItems.length);
             }
             default: return filteredLocations.map(location => { return { id: location.id, text: location.name } })
@@ -116,9 +119,9 @@ const Locations = props => {
     const renderSearch = () => (
         <Search 
             autoFocus={true}
-            label="Search location"
-            value={searchText}
-            onChange={e => setSearchText(e.target.value)}
+            label="Search location or category"
+            searchText={searchText}
+            onSearchChange={setSearchText}
         />
     )
 
@@ -139,7 +142,9 @@ const Locations = props => {
             { renderToolbar() }
             <div className={classes.contentContainer}>
                 <div className={classes.locationsListContainer}>
-                    { renderSearch() }
+                    <div className={classes.controlsContainer}>
+                        { renderSearch() }
+                    </div>
                     <div className={classes.locationsContainer}>
                         {
                             filteredLocations.length ?
@@ -168,6 +173,9 @@ const useStyles = makeStyles((theme) => ({
         height: 'calc(100% - 64px)',
         padding: 20,
         position: 'relative'
+    },
+    controlsContainer: {
+        display: 'flex'
     },
     locationsListContainer: {
         display: 'flex',

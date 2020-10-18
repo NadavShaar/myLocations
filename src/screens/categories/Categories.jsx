@@ -105,8 +105,8 @@ const Categories = props => {
         <Search 
             autoFocus={true}
             label="Search category"
-            value={searchText}
-            onChange={e => setSearchText(e.target.value)}
+            searchText={searchText}
+            onSearchChange={setSearchText}
         />
     )
 

@@ -9,23 +9,22 @@ const Search = props => {
     const classes = useStyles();
 
     const {
-        value,
-        onChange,
-        label='Search',
         searchText,
-        setSearchText 
+        onSearchChange,
+        label='Search',
+        ...rest
     } = props;
 
     return (
         <TextField 
             label={label}
             className={classes.search}
-            value={value}
-            onChange={onChange}
+            value={searchText}
+            onChange={e => onSearchChange(e.target.value)}
             InputProps={{
                 startAdornment: (
                     <InputAdornment position="start">
-                        <SearchIcon className={classes.icon} />
+                        <SearchIcon className={classes.searchIcon} />
                     </InputAdornment>
                 ),
                 endAdornment: (
@@ -33,7 +32,7 @@ const Search = props => {
                         {
                             searchText ?
                                 <InputAdornment position="end">
-                                    <CloseIcon className={`${classes.icon} ${classes.clickable}`} onClick={e => setSearchText('')} />
+                                    <CloseIcon className={`${classes.clearIcon} ${classes.clickable}`} onClick={e => onSearchChange('')} />
                                 </InputAdornment>
                                 :
                                 null
@@ -41,19 +40,31 @@ const Search = props => {
                     </React.Fragment>
                 )
             }}
-            { ...props }
+            { ...rest }
         />
     )
 }
 
 const useStyles = makeStyles((theme) => ({
-    icon: {
-        fontSize: 20
+    searchIcon: {
+        fontSize: 20,
+        color: theme.palette.color7,
+    },
+    clearIcon: {
+        fontSize: 20,
+        color: theme.palette.color5,
     },
     search: {
         marginBottom: 10,
+        flex: 1,
+        "& .MuiInput-underline:before": {
+            borderColor: theme.palette.border2
+        },
         "& .MuiInput-underline:after": {
             borderColor: theme.palette.secondary.main
+        },
+        "& .MuiInputLabel-root": {
+            color: theme.palette.color5
         }
     },
     clickable: {
