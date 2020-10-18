@@ -15,7 +15,7 @@ const Locations = props => {
     
     const [selectedLocationIds, setSelectedLocationsIds] = useState([]);
     const [searchText, setSearchText] = useState('');
-    const [groupedBy, setGroupedBy] = useState('categories');
+    const [groupedBy, setGroupedBy] = useState(null);
     
     const classes = useStyles();
     
