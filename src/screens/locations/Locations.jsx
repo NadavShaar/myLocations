@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
-import { Button, Toolbar, LinkButton } from './../../components/materialUI';
+import { Button, Toolbar, LinkButton, Checkbox, Select } from './../../components/materialUI';
 import { deleteLocations } from './../../store/actions';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -15,7 +15,8 @@ const Locations = props => {
     
     const [selectedLocationIds, setSelectedLocationsIds] = useState([]);
     const [searchText, setSearchText] = useState('');
-    const [groupedBy, setGroupedBy] = useState(null);
+    const [groupedByCategories, setGroupByCategories] = useState(false);
+    const [sort, setSort] = useState(false);
     
     const classes = useStyles();
     
@@ -23,30 +24,43 @@ const Locations = props => {
 
     const buttonRef = useRef(null);
     
-    const { locations, categories } = props;
+    let { locations, categories } = props;
+    let categoriesArray = Object.keys(categories).map(categoryId => { return {id: categoryId, ...categories[categoryId]} });
 
     let filteredLocations = locations.filter(location => location.name.toLowerCase().includes(searchText.toLowerCase()) || location.categoriesIds.some(categoryId => !!categories[categoryId]?.name.toLowerCase().includes(searchText.toLowerCase()) ))
+
+    const getSortedItems = (items) => {
+        items = items.sort((a,b) => {
+            if(a.name.toLowerCase() > b.name.toLowerCase()) return sort === 'asc' ? 1 : -1;
+            else if(a.name.toLowerCase() < b.name.toLowerCase()) return sort === 'asc' ? -1 : 1;
+            return 0;
+        })
+        return items;
+    }
+
+    if(sort) {
+        filteredLocations = getSortedItems(filteredLocations);
+        categoriesArray = getSortedItems(categoriesArray);
+    }
 
     let selectedLocation = selectedLocationIds.length === 1 && filteredLocations.find(loc => loc.id === selectedLocationIds[0]);
 
 
     const getListConfig = () => {
-        switch (groupedBy) {
-            case 'categories': {
-                let categorizedList = Object.keys(categories).map(categoryId => { 
-                    let nestedItems = filteredLocations.filter(loc => !!loc.categoriesIds.find(catId => categoryId == catId)).map(location => { return { id: location.id, text: location.name } });
-                    return { 
-                        id: categoryId, 
-                        text: categories[categoryId].name, 
-                        nestedItems,
-                        open: !!(searchText && nestedItems.length)
-                    } 
-                });
-                
-                return categorizedList.filter(category => !!category.nestedItems.length);
-            }
-            default: return filteredLocations.map(location => { return { id: location.id, text: location.name } })
-        }
+        if (!groupedByCategories) return filteredLocations.map(location => { return { id: location.id, text: location.name } });
+        
+        let categorizedList = categoriesArray.map(category => { 
+            let nestedItems = filteredLocations.filter(loc => !!loc.categoriesIds.find(catId => category.id == catId)).map(location => { return { id: location.id, text: location.name } });
+            
+            return { 
+                id: category.id, 
+                text: category.name, 
+                nestedItems,
+                open: !!(searchText && nestedItems.length)
+            } 
+        });
+        
+        return categorizedList.filter(category => !!category.nestedItems.length);
     }
     
     const selectLocation = (isCurrentLocationSelected, locationId, locationIndex) => {
@@ -125,6 +139,29 @@ const Locations = props => {
         />
     )
 
+    const renderGroupByCategories = () => (
+        <Checkbox
+            label="Group by categories"
+            checked={groupedByCategories}
+            onChange={e => setGroupByCategories(!groupedByCategories)}
+        />
+    )
+
+    const renderSort = () => (
+        <div className={classes.selectContainer}>
+            <span className={classes.selectLabel}>Sort: </span>
+            <Select
+                value={sort}
+                onSelectioChange={setSort}
+                options={[
+                    {label: 'Ascending', value: 'asc'},
+                    {label: 'Descending', value: 'desc'},
+                    {label: 'None', value: false},
+                ]}
+            />
+        </div>
+    )
+
     const renderLocationsList = () => (
         <CollapsableList 
             listConfig={ getListConfig() }
@@ -144,6 +181,11 @@ const Locations = props => {
                 <div className={classes.locationsListContainer}>
                     <div className={classes.controlsContainer}>
                         { renderSearch() }
+                        <div className={classes.bottomControlsContainer}>
+                            { renderGroupByCategories() }
+                            <span className={classes.bottomControlsSeperator}>|</span>
+                            { renderSort() }
+                        </div>
                     </div>
                     <div className={classes.locationsContainer}>
                         {
@@ -175,7 +217,13 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative'
     },
     controlsContainer: {
-        display: 'flex'
+        display: 'flex',
+        flexDirection: 'column',
+        marginBottom: 10
+    },
+    bottomControlsContainer: {
+        display: 'flex',
+        alignItems: 'center'
     },
     locationsListContainer: {
         display: 'flex',
@@ -221,6 +269,22 @@ const useStyles = makeStyles((theme) => ({
         "& > svg": {
             cursor: 'pointer'
         }
+    },
+    selectContainer: {
+        display: 'flex', 
+        alignItems: 'center', 
+        flex: 1
+    },
+    selectLabel: {
+        marginRight: 10, 
+        fontSize: 14, 
+        color: theme.palette.color3
+    },
+    bottomControlsSeperator: {
+        marginRight: 20, 
+        marginLeft: 4, 
+        fontSize: 16, 
+        color: theme.palette.color6
     }
 }));
 

@@ -27,7 +27,9 @@ const lightTheme = createMuiTheme({
         border1: '#eee',
         border2: '#B0BEC5',
         gradient1: 'linear-gradient(315deg, #3edc8b 0%, #009688 74%)',
-        highlight1: '#ffdb07'
+        highlight1: '#ffdb07',
+        icon1: '#B0BEC5',
+        icon2: '#3edc8b',
     },
     shadow: {
         insetShadow1: 'inset 1px 1px 2px 1px rgb(0 0 0 / 0.3)'

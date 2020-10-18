@@ -4,6 +4,8 @@ import Confirm from './Confirm';
 import Snackbar from './Snackbar';
 import TextField from './TextField';
 import Toolbar from './Toolbar';
+import Checkbox from './Checkbox';
+import Select from './Select';
 
 export { 
     Button,
@@ -11,5 +13,7 @@ export {
     Confirm,
     Snackbar,
     TextField,
-    Toolbar
+    Toolbar,
+    Checkbox,
+    Select
 };

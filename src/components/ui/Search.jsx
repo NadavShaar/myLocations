@@ -52,10 +52,10 @@ const useStyles = makeStyles((theme) => ({
     },
     clearIcon: {
         fontSize: 20,
-        color: theme.palette.color5,
+        color: theme.palette.color3,
     },
     search: {
-        marginBottom: 10,
+        marginBottom: 5,
         flex: 1,
         "& .MuiInput-underline:before": {
             borderColor: theme.palette.border2
@@ -64,7 +64,11 @@ const useStyles = makeStyles((theme) => ({
             borderColor: theme.palette.secondary.main
         },
         "& .MuiInputLabel-root": {
-            color: theme.palette.color5
+            color: theme.palette.color3
+        },
+        "& .MuiInputLabel-shrink": {
+            transform: 'translate(0, 1.5px) scale(1)',
+            fontSize: 14
         }
     },
     clickable: {
