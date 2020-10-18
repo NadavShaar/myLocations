@@ -36,7 +36,7 @@ const CollapsableListItem = props => {
             <ListItem key={idx} { ...additionalProps } button={isClickable}>
                 {
                     listItem.icon ? 
-                        <ListItemIcon>{ listItem.icon }</ListItemIcon>
+                        <ListItemIcon className={listItem.nestedItems ? classes.listItemIcon : classes.nestedListItemIcon}>{ listItem.icon }</ListItemIcon>
                         :
                         null
                 }
@@ -185,6 +185,18 @@ const useStyles = makeStyles((theme) => ({
     },
     hasSelectionDotOff: {
         backgroundColor: 'transparent',
+    },
+    listItemIcon: {
+        minWidth: 35,
+        "& .MuiSvgIcon-root": {
+            color: theme.palette.background3
+        }
+    },
+    nestedListItemIcon: {
+        minWidth: 35,
+        "& .MuiSvgIcon-root": {
+            color: theme.palette.primary.main
+        }
     }
 }));
 

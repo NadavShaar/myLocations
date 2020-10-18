@@ -8,6 +8,8 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
+import LabelIcon from '@material-ui/icons/Label';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { Search, CollapsableList } from './../../components/ui';
 
 const Locations = props => {
@@ -47,17 +49,18 @@ const Locations = props => {
 
 
     const getListConfig = () => {
-        if (!groupedByCategories) return filteredLocations.map(location => { return { id: location.id, text: location.name, selected: !!selectedLocationIds.find(locId => locId === location.id) } });
+        if (!groupedByCategories) return filteredLocations.map(location => { return { id: location.id, text: location.name, icon: <LocationOnIcon />, selected: !!selectedLocationIds.find(locId => locId === location.id) } });
         
         let categorizedList = categoriesArray.map(category => { 
             let nestedItems = filteredLocations.filter(loc => !!loc.categoriesIds.find(catId => category.id == catId)).map(location => { 
                 let selectedNestedLocation = !!selectedLocationIds.find(locId => locId === location.id);
-                return { id: location.id, text: location.name, selected: selectedNestedLocation } 
+                return { id: location.id, text: location.name, selected: selectedNestedLocation, icon: <LocationOnIcon /> } 
             });
             
             return { 
                 id: category.id, 
                 text: category.name, 
+                icon: <LabelIcon />,
                 nestedItems,
                 open: !!(searchText && nestedItems.length),
                 hasSelection: !!nestedItems.find(nestedItem => !!selectedLocationIds.find(locId => locId === nestedItem.id))

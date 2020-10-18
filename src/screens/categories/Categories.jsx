@@ -8,6 +8,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
+import LabelIcon from '@material-ui/icons/Label';
 import { Search, CollapsableList } from './../../components/ui';
 
 const Categories = props => {
@@ -117,6 +118,7 @@ const Categories = props => {
                     return {
                         id: key,
                         text: filteredCategories[key].name,
+                        icon: <LabelIcon />
                     }
                 })
             }
