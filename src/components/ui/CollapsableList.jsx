@@ -75,7 +75,7 @@ const CollapsableListItem = props => {
             }
             {
                 listItem.nestedItems ? 
-                    <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Collapse className={classes.collapseContainer} in={open} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             { 
                                 listItem.nestedItems.map((nestedListItem, index) => {
@@ -152,6 +152,10 @@ const useStyles = makeStyles((theme) => ({
     },
     clickable: {
         cursor: 'pointer'
+    },
+    collapseContainer: {
+        maxHeight: 300,
+        overflowY: 'auto'
     }
 }));
 

@@ -223,7 +223,8 @@ const useStyles = makeStyles((theme) => ({
     },
     bottomControlsContainer: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 5
     },
     locationsListContainer: {
         display: 'flex',
