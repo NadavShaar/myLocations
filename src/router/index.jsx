@@ -33,7 +33,7 @@ const Router = props => {
                         />
                     )) 
                 }
-                <Redirect to='/locations' />
+                <Redirect to='/' />
             </Switch>
             <BottomNavigation />
         </BrowserRouter>

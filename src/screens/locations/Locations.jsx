@@ -123,8 +123,8 @@ const Locations = props => {
                         {
                             selectedLocationIds.length === 1 ?
                                 <React.Fragment>
-                                    <LinkButton className={classes.button} to={`/locations/${selectedLocationIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
-                                    <LinkButton className={classes.button} to={`/locations/${selectedLocationIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
+                                    <LinkButton className={classes.button} to={`/${selectedLocationIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
+                                    <LinkButton className={classes.button} to={`/${selectedLocationIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
                                 </React.Fragment>
                                 :
                                 null
@@ -132,7 +132,7 @@ const Locations = props => {
                         <Button ref={buttonRef} className={classes.button} color="inherit" onClick={removeLocation} startIcon={<DeleteIcon className={classes.icon} />}>DELETE</Button>
                     </React.Fragment>
                     :
-                    <LinkButton className={classes.button} to="/locations/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
+                    <LinkButton className={classes.button} to="/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
             }
         />
     )

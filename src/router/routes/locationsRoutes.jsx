@@ -4,22 +4,22 @@ import Location from './../../screens/locations/Location';
 
 export default [
     {
-        path: '/locations',
+        path: '/',
         exact: true,
         component: Locations
     },
     {
-        path: '/locations/new',
+        path: '/new',
         exact: true,
         component: props => <Location mode="new" { ...props } />
     },
     {
-        path: '/locations/:id/edit',
+        path: '/:id/edit',
         exact: false,
         component: props => <Location mode="edit" { ...props } />
     },
     {
-        path: '/locations/:id/details',
+        path: '/:id/details',
         exact: false,
         component: props => <Location mode="details" { ...props } />
     }
