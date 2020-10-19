@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import { BottomNavigation as MUIBottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 import LabelIcon from '@material-ui/icons/Label';
@@ -13,6 +14,8 @@ const BottomNavigation = props => {
     
     const history = useHistory();
 
+    const classes = useStyles();
+
     useEffect(() => {
         let currentSelected = props.location.pathname.startsWith('/categories') ? 1 : 0;
         setValue(currentSelected);
@@ -25,6 +28,7 @@ const BottomNavigation = props => {
 
     return (
         <MUIBottomNavigation
+            className={classes.root}
             value={value}
             onChange={(e, val) => {
                 setValue(val);
@@ -48,5 +52,15 @@ const BottomNavigation = props => {
         </MUIBottomNavigation>
     )
 }
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        zIndex: 9,
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0
+    }
+}));
 
 export default withRouter(BottomNavigation);

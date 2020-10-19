@@ -1,0 +1,23 @@
+.leaflet-popup-content-wrapper {
+    border-radius: 4px;
+}
+
+.leaflet-popup-content {
+    margin: 10px;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+    top: -9px;
+    right: -9px;
+    background: #009688;
+    height: 18px;
+    padding: 2px;
+    color: white;
+    width: 18px;
+    border-radius: 50%;
+    box-shadow: -2px 1px 6px 1px rgb(0 0 0 / .2);
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+    color: #ECEFF1;
+}

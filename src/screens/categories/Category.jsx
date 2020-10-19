@@ -23,7 +23,7 @@ const Category = props => {
     
     const [categoryName, setCategoryName] = useState(selectedCategory?.name || "");
     let isCategoryExist = !!(Object.values(categories)).find(category => category.name === categoryName);
-    console.log(Object.values(categories), categories)
+
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedCategory;
     
     const createCategory = () => {
@@ -132,7 +132,6 @@ const useStyles = makeStyles((theme) => ({
     },
     contentContainer: {
         flex: 1, 
-        height: 'calc(100% - 64px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

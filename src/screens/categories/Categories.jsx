@@ -164,8 +164,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        flex: 1, 
-        height: 'calc(100% - 64px)',
+        flex: 1,
         padding: 20,
         position: 'relative'
     },

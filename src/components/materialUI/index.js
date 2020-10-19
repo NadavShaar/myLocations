@@ -6,6 +6,7 @@ import TextField from './TextField';
 import Toolbar from './Toolbar';
 import Checkbox from './Checkbox';
 import Select from './Select';
+import SelectMultiChip from './SelectMultiChip';
 
 export { 
     Button,
@@ -15,5 +16,6 @@ export {
     TextField,
     Toolbar,
     Checkbox,
-    Select
+    Select,
+    SelectMultiChip
 };
