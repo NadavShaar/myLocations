@@ -52,21 +52,24 @@ const Map = props => {
         const { current={} } = mapRef;
         const { leafletElement: map } = current;
 
-        const geocoder = L.Control.Geocoder.nominatim();
+        const geocoder = L.Control.Geocoder.nominatim({reverseQueryParams: {"accept-language": "en"}});
 
         setCoords(Object.values(event.latlng));
-
         geocoder.reverse(
             event.latlng,
-            map.options.crs.scale(map.getZoom()),
+            map.options.crs.scale(20),
             results => {
                 let result = results[0];
                 if(!result) return;
 
-                if (!marker) {marker = L.marker(result.center).bindPopup(result.html || result.name).addTo(map).openPopup();}
-                else marker.setLatLng(result.center).setPopupContent(result.html || result.name).openPopup();
+                let rgx = /no, |no |no|  /g;
+                let html = result.html.replace(rgx, '');
+                let name = result.name.replace(rgx, '');
 
-                setAddress(result.name);
+                if (!marker) {marker = L.marker(result.center).bindPopup(html || name).addTo(map).openPopup();}
+                else marker.setLatLng(result.center).setPopupContent(result.html.replaceAll('no', '') || name).openPopup();
+
+                setAddress(name);
             }
         );
     }

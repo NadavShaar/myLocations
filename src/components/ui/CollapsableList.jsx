@@ -189,7 +189,7 @@ const useStyles = makeStyles((theme) => ({
     listItemIcon: {
         minWidth: 30,
         "& .MuiSvgIcon-root": {
-            color: theme.palette.icon2,
+            color: theme.palette.icon3,
             width: 20,
             height: 20
         }

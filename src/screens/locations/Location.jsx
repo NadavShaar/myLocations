@@ -28,13 +28,14 @@ const Location = props => {
 
     const [coords, setCoords] = useState([0,0]);
     const [address, setAddress] = useState("");
+    const [selectedCategories, setSelectedCategories] = useState([]);
     
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedLocation;
 
     
 
     const createLocation = () => {
-        if(!locationName) return;
+        if(!locationName || !address || !coords?.length === 2 || !selectedCategories.length) return;
 
         if(!isLocationExist) {
             dispatch(addLocation({id: Date.now(), name: locationName, address: '', coords: [], categoriesIds: []})); 
@@ -114,7 +115,8 @@ const Location = props => {
             buttons={ <HistoryGoBackButton /> }
         />
     )
-console.log(coords, address)
+    console.log(address)
+
     return (
         <div className={classes.pageContainer}>
             { renderToolbar() }
@@ -151,7 +153,7 @@ const useStyles = makeStyles((theme) => ({
         height: 'calc(100% - 64px)',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
+        // justifyContent: 'center',
         padding: 20
     },
     inputWrapper: {
