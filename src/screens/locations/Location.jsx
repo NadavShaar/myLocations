@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { Toolbar } from './../../components/materialUI';
 import { BigInput, HistoryGoBackButton, PageNotFoundMessage } from './../../components/ui';
+import Map from './../../components/map/Map';
 import { addLocation, updateLocation } from './../../store/actions';
 import { useParams } from "react-router-dom";
 
@@ -24,6 +25,9 @@ const Location = props => {
     
     const [locationName, setLocationName] = useState(locationIndex > -1 ? selectedLocation?.name : "");
     let isLocationExist = !!locations.find(location => location.name === locationName);
+
+    const [coords, setCoords] = useState([0,0]);
+    const [address, setAddress] = useState("");
     
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedLocation;
 
@@ -110,11 +114,18 @@ const Location = props => {
             buttons={ <HistoryGoBackButton /> }
         />
     )
-
+console.log(coords, address)
     return (
         <div className={classes.pageContainer}>
             { renderToolbar() }
             <div className={classes.contentContainer}>
+                <div className={classes.mapContainer}>
+                    <Map 
+                        coords={coords}
+                        setCoords={setCoords}
+                        setAddress={setAddress}
+                    />
+                </div>
                 <div className={classes.inputWrapper}>
                     { 
                         dataIsMissing ?
@@ -136,6 +147,7 @@ const useStyles = makeStyles((theme) => ({
     },
     contentContainer: {
         flex: 1, 
+        flexDirection: 'column',
         height: 'calc(100% - 64px)',
         display: 'flex',
         alignItems: 'center',
@@ -169,6 +181,16 @@ const useStyles = makeStyles((theme) => ({
         background: theme.palette.primary.main,
         backgroundImage: theme.palette.gradient1,
         borderBottom: `1px solid ${theme.palette.border1}` 
+    },
+    mapContainer: {
+        maxWidth: 1200, 
+        maxHeight: 700, 
+        flex: 1, 
+        width: '100%',
+        padding: 5,
+        backgroundColor: theme.palette.background1,
+        borderRadius: 4,
+        boxShadow: theme.shadows[1],
     }
 }));
 

@@ -45,6 +45,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "leaflet": "^1.7.1",
+    "leaflet-control-geocoder": "^1.13.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-leaflet": "^2.7.0",
