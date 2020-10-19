@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import { Button, Toolbar, LinkButton } from './../../components/materialUI';
 import { deleteCategories } from './../../store/actions';
@@ -23,7 +23,7 @@ const Categories = props => {
 
     const buttonRef = useRef(null);
     
-    const { categories } = props;
+    const categories = useSelector(state => state.categories) || {};
 
     let filteredCategories = {}
     for (var key in categories) { if(categories[key].name.toLowerCase().includes(searchText.toLowerCase())) filteredCategories[key] = categories[key];}

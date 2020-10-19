@@ -18,17 +18,20 @@ const Location = props => {
     const inputRef = useRef(null);
     const buttonRef = useRef(null);
     
-    const { mode, locations, categories } = props;
+    const categories = useSelector(state => state.categories) || {};
+    const locations = useSelector(state => state.locations.data) || [];
     
     let locationIndex = locations.findIndex(location => location.id == id);
     const selectedLocation = locationIndex > -1 && useSelector(state => state.locations.data[locationIndex]);
     
     const [locationName, setLocationName] = useState(locationIndex > -1 ? selectedLocation?.name : "");
     let isLocationExist = !!locations.find(location => location.name === locationName);
-
+    
     const [coords, setCoords] = useState([0,0]);
     const [address, setAddress] = useState("");
     const [assignedCategories, setAssignedCategories] = useState([]);
+    
+    const { mode } = props;
     
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedLocation;
 

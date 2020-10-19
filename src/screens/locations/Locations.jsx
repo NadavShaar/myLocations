@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import { Button, Toolbar, LinkButton, Checkbox, Select } from './../../components/materialUI';
 import { deleteLocations } from './../../store/actions';
@@ -26,7 +26,9 @@ const Locations = props => {
 
     const buttonRef = useRef(null);
     
-    let { locations, categories } = props;
+    const categories = useSelector(state => state.categories) || {};
+    const locations = useSelector(state => state.locations.data) || [];
+
     let categoriesArray = Object.keys(categories).map(categoryId => { return {id: categoryId, ...categories[categoryId]} });
 
     let filteredLocations = locations.filter(location => location.name.toLowerCase().includes(searchText.toLowerCase()) || location.categoriesIds.some(categoryId => !!categories[categoryId]?.name.toLowerCase().includes(searchText.toLowerCase()) ))

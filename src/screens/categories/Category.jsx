@@ -17,14 +17,18 @@ const Category = props => {
     const inputRef = useRef(null);
     const buttonRef = useRef(null);
     
-    const { mode, categories } = props;
-
+    const categories = useSelector(state => state.categories) || {};
+    
     const selectedCategory = useSelector(state => state.categories[id]);
     
     const [categoryName, setCategoryName] = useState(selectedCategory?.name || "");
     let isCategoryExist = !!(Object.values(categories)).find(category => category.name === categoryName);
+    
+    const { mode } = props;
 
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedCategory;
+
+    
     
     const createCategory = () => {
         if(!categoryName) return;
