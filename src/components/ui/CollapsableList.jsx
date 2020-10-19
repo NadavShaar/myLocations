@@ -189,7 +189,7 @@ const useStyles = makeStyles((theme) => ({
     listItemIcon: {
         minWidth: 30,
         "& .MuiSvgIcon-root": {
-            color: theme.palette.background3,
+            color: theme.palette.icon2,
             width: 20,
             height: 20
         }
@@ -197,7 +197,7 @@ const useStyles = makeStyles((theme) => ({
     nestedListItemIcon: {
         minWidth: 30,
         "& .MuiSvgIcon-root": {
-            color: theme.palette.color7,
+            color: theme.palette.primary.main,
             width: 20,
             height: 20
         }
