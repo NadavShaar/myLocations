@@ -65,8 +65,8 @@ const Map = props => {
                 let rgx = /no, |no |no|  /g;
                 let html = result.html.replace(rgx, '');
                 let name = result.name.replace(rgx, '');
-                console.log(marker)
-                if (!marker) {marker = L.marker(result.center).bindPopup(html || name).addTo(map).openPopup();}
+          
+                if (!marker) marker = L.marker(result.center).bindPopup(html || name).addTo(map).openPopup();
                 else marker.setLatLng(result.center).setPopupContent(result.html.replaceAll('no', '') || name).openPopup();
                 
                 setCoords(Object.values(event.latlng));

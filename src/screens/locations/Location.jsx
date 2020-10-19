@@ -6,7 +6,6 @@ import { BigInput, HistoryGoBackButton, PageNotFoundMessage } from './../../comp
 import Map from './../../components/map/Map';
 import { addLocation, updateLocation } from './../../store/actions';
 import { useParams } from "react-router-dom";
-import { keys } from '@material-ui/core/styles/createBreakpoints';
 
 const Location = props => {
     
@@ -33,7 +32,6 @@ const Location = props => {
     
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedLocation;
 
-    
 
     const createLocation = () => {
         if(!locationName) return;
