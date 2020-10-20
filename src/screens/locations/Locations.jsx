@@ -61,7 +61,7 @@ const Locations = props => {
                     id: location.id, 
                     text: location.name, 
                     icon: <LocationOnIcon />, 
-                    helperIcon: assinedCategories ? {icon: <LabelIcon />, helperText: `Assigned categories: ${assinedCategories}`} : null,
+                    helperText: assinedCategories ? `Assigned categories: ${assinedCategories}` : '',
                     selected: !!selectedLocationIds.find(locId => locId === location.id) 
                 } 
             });

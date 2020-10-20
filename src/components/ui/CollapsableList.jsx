@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import HelpIcon from '@material-ui/icons/Help';
 
 const CollapsableListItem = props => {
 
@@ -53,8 +54,8 @@ const CollapsableListItem = props => {
                         null
                 }
                 {
-                    listItem.helperIcon ? 
-                        <ListItemIcon title={listItem.helperIcon.helperText} className={classes.helperIcon}>{ listItem.helperIcon.icon }</ListItemIcon>
+                    listItem.helperText ? 
+                        <ListItemIcon title={listItem.helperText} className={classes.helperIcon}><HelpIcon /></ListItemIcon>
                         :
                         null
                 }
@@ -215,7 +216,7 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.icon5,
         cursor: 'help',
         "& svg": {
-            fontSize: 20,
+            fontSize: 18,
             pointerEvents: 'none'
         }
     }

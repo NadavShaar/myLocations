@@ -140,7 +140,7 @@ const Categories = props => {
                         id: key,
                         text: currentCategory.name,
                         icon: <LabelIcon />,
-                        helperIcon: assinedLocations ? {icon: <NotListedLocationIcon />, helperText: `Assigned to locations: ${assinedLocations}`} : null,
+                        helperText: assinedLocations ? `Assigned to locations: ${assinedLocations}` : '',
                         selected: !!selectedCategoriesIds.find(catId => catId === key)
                     }
                 })

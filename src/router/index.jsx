@@ -10,20 +10,20 @@ const Router = props => {
     return (
         <BrowserRouter basename='/myLocations'>
             <Switch>
-            <Switch>
-                { 
-                    allRoutes.map((route, idx) => (
-                        <Route 
-                            key={idx} 
-                            exact={route.exact} 
-                            path={route.path} 
-                            component={route.component} 
-                        />
-                    )) 
-                }
-                <Redirect to='/' />
-            </Switch>
-            <Redirect to='/myLocations' />
+                <Switch>
+                    { 
+                        allRoutes.map((route, idx) => (
+                            <Route 
+                                key={idx} 
+                                exact={route.exact} 
+                                path={route.path} 
+                                component={route.component} 
+                            />
+                        )) 
+                    }
+                    <Redirect to='/' />
+                </Switch>
+                <Redirect to='/myLocations' />
             </Switch>
             <BottomNavigation />
         </BrowserRouter>
