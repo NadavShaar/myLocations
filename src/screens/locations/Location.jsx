@@ -164,7 +164,8 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         display: 'flex',
         alignItems: 'center',
-        padding: 20
+        padding: 20,
+        overflow: 'auto'
     },
     inputWrapper: {
         display: 'inline-flex'
@@ -197,7 +198,9 @@ const useStyles = makeStyles((theme) => ({
     mapContainer: {
         maxWidth: 1200, 
         maxHeight: 700, 
+        minHeight: 300, 
         flex: 1, 
+        zIndex: 0,
         width: '100%',
         padding: 5,
         backgroundColor: theme.palette.background1,

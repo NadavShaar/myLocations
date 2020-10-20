@@ -139,7 +139,8 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20
+        padding: 20,
+        overflow: 'auto'
     },
     inputWrapper: {
         display: 'inline-flex'

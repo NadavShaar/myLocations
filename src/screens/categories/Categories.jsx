@@ -166,7 +166,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         flex: 1,
         padding: 20,
-        position: 'relative'
+        position: 'relative',
+        overflow: 'auto'
     },
     categoriesListContainer: {
         display: 'flex',
