@@ -5,9 +5,10 @@ import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 import L from "leaflet";
 import './leaflet.css';
 
-var marker;
 
 const Map = props => {
+    
+    var marker;
 
     const {
         coords=[0,0],
@@ -73,6 +74,7 @@ const Map = props => {
                 setAddress(name);
             }
         );
+
     }
 
     return (

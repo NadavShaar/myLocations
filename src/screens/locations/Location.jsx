@@ -146,7 +146,7 @@ const Location = props => {
                                 callback: createLocation, 
                                 buttonChildren: '+', 
                                 disabled: (!locationName), 
-                                title: 'Add new location', 
+                                title: 'Location name', 
                                 hint: 'Hint: you can also submit using the Enter key.'
                             })
                         } 
