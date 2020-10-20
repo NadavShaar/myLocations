@@ -4,7 +4,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { TextField } from './';
 
-const SelectMultiChip = props => {
+const ChipInput = props => {
 
     const classes = useStyles();
 
@@ -15,11 +15,11 @@ const SelectMultiChip = props => {
         selectedOptions=[],
         options=[],
         getFormattedSelectedOption,
-        classesExtension
+        
     } = props;
 
     return (
-        <FormControl className={`${classes.root} ${classesExtension.root}`.trim()}>
+        <FormControl className={classes.root}>
             <span className={classes.autoCompleteLabel}>{label}</span>
             <Autocomplete
                 multiple
@@ -85,4 +85,4 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export  default SelectMultiChip;
+export  default ChipInput;

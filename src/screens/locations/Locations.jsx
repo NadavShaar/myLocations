@@ -245,7 +245,7 @@ const useStyles = makeStyles((theme) => ({
     },
     locationsContainer: {
         width: '100%',
-        height: 'calc(100% - 60px)',
+        height: 'calc(100% - 104px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

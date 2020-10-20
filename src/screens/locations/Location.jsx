@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { Toolbar, SelectMultiChip } from './../../components/materialUI';
+import { Toolbar, ChipInput } from './../../components/materialUI';
 import { BigInput, HistoryGoBackButton, PageNotFoundMessage } from './../../components/ui';
 import Map from './../../components/map/Map';
 import { addLocation, updateLocation } from './../../store/actions';
@@ -24,15 +24,14 @@ const Location = props => {
     let locationIndex = locations.findIndex(location => location.id == id);
     const selectedLocation = locationIndex > -1 && useSelector(state => state.locations.data[locationIndex]);
     
-    const [locationName, setLocationName] = useState(locationIndex > -1 ? selectedLocation?.name : "");
-    let isLocationExist = !!locations.find(location => location.name === locationName);
-    
-    const [coords, setCoords] = useState([0,0]);
-    const [address, setAddress] = useState("");
-    const [assignedCategories, setAssignedCategories] = useState([]);
+    const [locationName, setLocationName] = useState(selectedLocation?.name || "");
+    const [coords, setCoords] = useState(selectedLocation?.coords || [0,0]);
+    const [address, setAddress] = useState(selectedLocation?.address || "");
+    const [assignedCategories, setAssignedCategories] = useState(selectedLocation?.categoriesIds || []);
     
     const { mode } = props;
     
+    let isLocationExist = !!locations.find(location => location.name === locationName);
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedLocation;
 
 
@@ -50,17 +49,18 @@ const Location = props => {
             bubbles: true,
             detail: {
                 open: true, 
-                message: isLocationExist ? 
-                    `${locationName} is already exist` 
-                    :
-                    !coords.length === 2 || !address ?
-                        `Location cannot be found` 
+                message: 
+                    isLocationExist ? 
+                        `${locationName} is already exist` 
                         :
-                        !assignedCategories.length ? 
-                            `Select at least one category`
+                        !coords.length === 2 || !address ?
+                            `Location cannot be found` 
                             :
-                            `${locationName} added successfully`, 
-                type: successCondition ? 'success' : 'error', 
+                            !assignedCategories.length ? 
+                                `Select at least one category`
+                                :
+                                `${locationName} added successfully`, 
+                type: successCondition ? 'success' : 'error'
             }
         });
 
@@ -71,16 +71,26 @@ const Location = props => {
 
     const editLocation = () => {
         if(!locationName) return;
+        let successCondition = !isLocationExist && address && coords?.length === 2 && assignedCategories.length;
 
         let currentLocation = locations[locationIndex];
-        if(!isLocationExist) dispatch(updateLocation({ ...currentLocation, name: locationName }));
+        if(successCondition) dispatch(updateLocation({ ...currentLocation, name: locationName }));
 
         const event = new CustomEvent('displaySnackbar', {
             bubbles: true,
             detail: {
                 open: true, 
-                message: isLocationExist ? `${locationName} is already exist` : `${locationName} saved successfully`, 
-                type: isLocationExist ? 'error' : 'success'
+                message: isLocationExist ? 
+                    `${locationName} is already exist` 
+                    :
+                    !coords.length === 2 || !address ?
+                        `Location cannot be found` 
+                        :
+                        !assignedCategories.length ? 
+                            `Select at least one category`
+                            :
+                            `${locationName} saved successfully`, 
+                type: successCondition ? 'success' : 'error'
             } 
         });
 
@@ -114,9 +124,8 @@ const Location = props => {
     )
 
     const renderChipInput = () => (
-        <SelectMultiChip 
+        <ChipInput 
             label='Select Categories'
-            classesExtension={{root: classes.selectMultiRoot}}
             selectedOptions={assignedCategories}
             handleChange={setAssignedCategories}
             getFormattedSelectedOption={(option, value) => option.id === value.id}
@@ -134,12 +143,20 @@ const Location = props => {
         </div>
     )
 
+    const renderAddress = () => (
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+            <span>Address:</span>
+            <span>&nbsp;{address}</span>
+        </div>
+    )
+
     const renderContentByMode = () => {
         switch (mode) {
             case 'new': return (
                 <div className={classes.mapInputsContainer}>
                     { renderMap() }
                     <div className={classes.inputsContainer}>
+                        { renderAddress() }
                         { renderChipInput() }
                         { 
                             renderBigInput({
@@ -153,7 +170,24 @@ const Location = props => {
                     </div>
                 </div>
             )
-            case 'edit': return renderBigInput({callback: editLocation, buttonChildren: <React.Fragment>&#10003;</React.Fragment>, disabled: !locationName, title: 'Update location', hint: 'Hint: you can also submit using the Enter key.'})
+            case 'edit': return (
+                <div className={classes.mapInputsContainer}>
+                    { renderMap() }
+                    <div className={classes.inputsContainer}>
+                        { renderAddress() }
+                        { renderChipInput() }
+                        { 
+                            renderBigInput({
+                                callback: editLocation, 
+                                buttonChildren: <React.Fragment>&#10003;</React.Fragment>, 
+                                disabled: !locationName, 
+                                title: 'Update location', 
+                                hint: 'Hint: you can also submit using the Enter key.'
+                            })
+                        } 
+                    </div>
+                </div>
+            )
             case 'details': return <div className={classes.paper}><span className={classes.detailType}>Location name:</span><span className={classes.locationName}>{locationName}</span></div>;
             default: return null;
         }
@@ -238,9 +272,7 @@ const useStyles = makeStyles((theme) => ({
     inputsContainer: {
         display: 'flex',
         flexDirection: 'column',
-        marginLeft: 40
-    },
-    selectMultiRoot: {
+        marginLeft: 40,
         maxWidth: 300
     }
 }));
