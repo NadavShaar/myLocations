@@ -286,9 +286,9 @@ const useStyles = makeStyles((theme) => ({
             marginBottom: 10
         },
         [theme.breakpoints.down('xs')]: {
-            flexDirection: 'column',
-            marginTop: 10,
-            marginBottom: 30
+            flexDirection: 'column-reverse',
+            marginTop: 0,
+            marginBottom: 20
         }
     },
     locationDetailsTitle: {
@@ -316,7 +316,10 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('xs')]: {
             flex: 1,
             maxWidth: 'unset',
-            marginRight: 0
+            marginRight: 0,
+            marginTop: 10,
+            minHeight: 233,
+            justifyContent: 'space-between'
         }
     }
 }));

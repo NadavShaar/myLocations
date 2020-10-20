@@ -28,7 +28,7 @@ const Categories = props => {
     const locations = useSelector(state => state.locations.data) || [];
 
     let filteredCategories = {}
-    for (var key in categories) { if(categories[key].name.toLowerCase().includes(searchText.toLowerCase())) filteredCategories[key] = categories[key];}
+    for (var key in categories) { if(categories[key]?.name?.toLowerCase?.().includes(searchText.toLowerCase())) filteredCategories[key] = categories[key];}
     
     let selectedCategory = selectedCategoriesIds.length === 1 && filteredCategories[selectedCategoriesIds[0]];
 
