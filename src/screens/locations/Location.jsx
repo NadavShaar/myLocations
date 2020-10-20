@@ -39,7 +39,8 @@ const Location = props => {
     const createLocation = () => {
         if(!locationName) return;
 
-        if(!isLocationExist) {
+        let successCondition = !isLocationExist && address && coords?.length === 2 && assignedCategories.length;
+        if(successCondition) {
             dispatch(addLocation({id: Date.now(), name: locationName, address, coords, categoriesIds: assignedCategories})); 
             setLocationName("");
             setAssignedCategories([]);
@@ -49,8 +50,17 @@ const Location = props => {
             bubbles: true,
             detail: {
                 open: true, 
-                message: isLocationExist ? `${locationName} is already exist` : `${locationName} added successfully`, 
-                type: isLocationExist ? 'error' : 'success', 
+                message: isLocationExist ? 
+                    `${locationName} is already exist` 
+                    :
+                    !coords.length === 2 || !address ?
+                        `Location cannot be found` 
+                        :
+                        !assignedCategories.length ? 
+                            `Select at least one category`
+                            :
+                            `${locationName} added successfully`, 
+                type: successCondition ? 'success' : 'error', 
             }
         });
 
@@ -103,9 +113,46 @@ const Location = props => {
         />
     )
 
+    const renderChipInput = () => (
+        <SelectMultiChip 
+            label='Select Categories'
+            classesExtension={{root: classes.selectMultiRoot}}
+            selectedOptions={assignedCategories}
+            handleChange={setAssignedCategories}
+            getFormattedSelectedOption={(option, value) => option.id === value.id}
+            options={Object.keys(categories).map(key => { return { id: key, name: categories[key].name } })}
+        />
+    )
+
+    const renderMap = () => (
+        <div className={classes.mapContainer}>
+            <Map 
+                coords={coords}
+                setCoords={setCoords}
+                setAddress={setAddress}
+            />
+        </div>
+    )
+
     const renderContentByMode = () => {
         switch (mode) {
-            case 'new': return renderBigInput({callback: createLocation, buttonChildren: '+', disabled: (!locationName || !address || !coords?.length === 2 || !assignedCategories.length), title: 'Add new location', hint: 'Hint: you can also submit using the Enter key.'})
+            case 'new': return (
+                <div className={classes.mapInputsContainer}>
+                    { renderMap() }
+                    <div className={classes.inputsContainer}>
+                        { renderChipInput() }
+                        { 
+                            renderBigInput({
+                                callback: createLocation, 
+                                buttonChildren: '+', 
+                                disabled: (!locationName), 
+                                title: 'Add new location', 
+                                hint: 'Hint: you can also submit using the Enter key.'
+                            })
+                        } 
+                    </div>
+                </div>
+            )
             case 'edit': return renderBigInput({callback: editLocation, buttonChildren: <React.Fragment>&#10003;</React.Fragment>, disabled: !locationName, title: 'Update location', hint: 'Hint: you can also submit using the Enter key.'})
             case 'details': return <div className={classes.paper}><span className={classes.detailType}>Location name:</span><span className={classes.locationName}>{locationName}</span></div>;
             default: return null;
@@ -123,31 +170,12 @@ const Location = props => {
         <div className={classes.pageContainer}>
             { renderToolbar() }
             <div className={classes.contentContainer}>
-                <div className={classes.mapContainer}>
-                    <Map 
-                        coords={coords}
-                        setCoords={setCoords}
-                        setAddress={setAddress}
-                    />
-                </div>
-                <div className={classes.inputsContainer}>
-                    <div className={classes.inputWrapper}>
-                        { 
-                            dataIsMissing ?
-                            <PageNotFoundMessage />
-                            :
-                            renderContentByMode() 
-                        }
-                    </div>
-                    <SelectMultiChip 
-                        label='Add Categories'
-                        classesExtension={{root: classes.selectMultiRoot}}
-                        selectedOptions={assignedCategories}
-                        handleChange={setAssignedCategories}
-                        getFormattedChipLabel={value => categories[value].name}
-                        options={Object.keys(categories).map(key => { return { id: key, name: categories[key].name } })}
-                    />
-                </div>
+                { 
+                    dataIsMissing ?
+                        <PageNotFoundMessage />
+                        :
+                        renderContentByMode() 
+                }
             </div>
         </div>
     )
@@ -161,14 +189,10 @@ const useStyles = makeStyles((theme) => ({
     },
     contentContainer: {
         flex: 1, 
-        flexDirection: 'column',
         display: 'flex',
-        alignItems: 'center',
+        justifyContent: 'center',
         padding: 20,
         overflow: 'auto'
-    },
-    inputWrapper: {
-        display: 'inline-flex'
     },
     locationName: {
         fontSize: 36,
@@ -196,8 +220,6 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: `1px solid ${theme.palette.border1}` 
     },
     mapContainer: {
-        maxWidth: 1200, 
-        maxHeight: 700, 
         minHeight: 300, 
         flex: 1, 
         zIndex: 0,
@@ -207,14 +229,19 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 4,
         boxShadow: theme.shadows[1],
     },
-    inputsContainer: {
-        width: '100%',
+    mapInputsContainer: {
         maxWidth: 1200,
+        width: '100%',
         display: 'flex',
-        justifyContent: 'space-around'
+        height: '100%'
+    },
+    inputsContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        marginLeft: 40
     },
     selectMultiRoot: {
-        maxWidth: 400
+        maxWidth: 300
     }
 }));
 

@@ -13,9 +13,9 @@ import Theme from "./theme";
 import Router from "./router";
 
 const createStoreWithMiddleware = applyMiddleware(
-    save({ states: ["categories", "locations"], namespace: "myLocations" })
+    save({ states: ["categories", "locations"], namespace: "myLocations", disableWarnings: true })
 )(createStore);
-const store = createStoreWithMiddleware(reducers, load({ states: ["categories", "locations"], namespace: "myLocations" }), composeWithDevTools());
+const store = createStoreWithMiddleware(reducers, load({ states: ["categories", "locations"], namespace: "myLocations", disableWarnings: true }), composeWithDevTools());
 
 const App = () => (
     <Theme>

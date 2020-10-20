@@ -10,6 +10,7 @@ const Router = props => {
     return (
         <BrowserRouter basename='/myLocations'>
             <Switch>
+            <Switch>
                 { 
                     allRoutes.map((route, idx) => (
                         <Route 
@@ -21,6 +22,8 @@ const Router = props => {
                     )) 
                 }
                 <Redirect to='/' />
+            </Switch>
+            <Redirect to='/myLocations' />
             </Switch>
             <BottomNavigation />
         </BrowserRouter>

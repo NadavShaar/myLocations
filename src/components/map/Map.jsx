@@ -49,14 +49,14 @@ const Map = props => {
         updateMarker(e);
     }
     
-    const updateMarker = event => {
+    const updateMarker = ev => {
         const { current={} } = mapRef;
         const { leafletElement: map } = current;
 
         const geocoder = L.Control.Geocoder.nominatim({reverseQueryParams: {"accept-language": "en"}});
 
         geocoder.reverse(
-            event.latlng,
+            ev.latlng,
             map.options.crs.scale(20),
             results => {
                 let result = results[0];
@@ -65,11 +65,11 @@ const Map = props => {
                 let rgx = /no, |no |no|  /g;
                 let html = result.html.replace(rgx, '');
                 let name = result.name.replace(rgx, '');
-          
+                
                 if (!marker) marker = L.marker(result.center).bindPopup(html || name).addTo(map).openPopup();
                 else marker.setLatLng(result.center).setPopupContent(result.html.replaceAll('no', '') || name).openPopup();
                 
-                setCoords(Object.values(event.latlng));
+                setCoords(Object.values(ev.latlng));
                 setAddress(name);
             }
         );

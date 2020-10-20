@@ -1,11 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Chip from '@material-ui/core/Chip';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { TextField } from './';
 
 const SelectMultiChip = props => {
 
@@ -13,83 +10,75 @@ const SelectMultiChip = props => {
 
     const {
         label='',
-        placeholder='Select',
+        placeholder='Search...',
         handleChange,
         selectedOptions=[],
         options=[],
-        getFormattedChipLabel,
+        getFormattedSelectedOption,
         classesExtension
     } = props;
 
     return (
         <FormControl className={`${classes.root} ${classesExtension.root}`.trim()}>
-            <span className={classes.selectLabel}>{label}</span>
-            <Select
+            <span className={classes.autoCompleteLabel}>{label}</span>
+            <Autocomplete
                 multiple
+                openOnFocus
+                className={classes.root}
+                options={options}
+                getOptionLabel={option => option.name}
+                getOptionSelected={getFormattedSelectedOption}
                 value={selectedOptions}
-                onChange={e => handleChange(e.target.value)}
-                className={classes.input}
-                input={<Input disableUnderline={true} placeholder={placeholder} />}
-                renderValue={selected => (
-                    <div className={classes.chips}>
-                        {
-                            selected.map((value) => (
-                                <Chip key={value} label={getFormattedChipLabel?.(value) || value} className={classes.chip} />
-                            ))
-                        }
-                    </div>
+                onChange={(e, value, reason) => handleChange(value)}
+                filterSelectedOptions
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        InputProps={{ ...params.InputProps, disableUnderline: true }}
+                        className={classes.input}
+                        label=""
+                        placeholder={placeholder}
+                    />
                 )}
-            >
-                {
-                    options.map((option) => (
-                        <MenuItem key={option.id} value={option.id}>
-                            {option.name}
-                        </MenuItem>
-                    ))
-                }
-            </Select>
+            />
         </FormControl>
     )
 }
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flex: 1,
         width: '100%',
-        "& .MuiSelect-icon": {
-            right: 14,
-            color: theme.palette.icon1
+        "& .MuiAutocomplete-endAdornment": {
+            right: 10
         },
-        "& .MuiSelect-select:focus": {
-            backgroundColor: 'transparent'
+        "& .MuiAutocomplete-popupIndicator .MuiSvgIcon-root, .MuiAutocomplete-clearIndicator": {
+            color: theme.palette.icon1
         }
     },
-    chips: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    chip: {
-      margin: 2,
-    },
     input: {
-        minHeight: 60,
+        minHeight: 96,
         background: theme.palette.background1,
-        maxWidth: 400,
         width: '100%',
         borderRadius: 4,
         boxShadow: theme.shadow.insetShadow1,
-        "& .MuiSelect-select.MuiSelect-select": {
-            paddingLeft: 10
-        },
         "& .MuiInputBase-root": {
             height: '100%',
-            fontSize: 24
+            fontSize: 16,
+            padding: '10px 60px 10px 10px'
         },
-        "& .MuiInputBase-input": {
-            textAlign: 'center'
+        "& .MuiChip-root": {
+            background: theme.palette.primary.main,
+            color: theme.palette.color1,
+            boxShadow: theme.shadows[2]
+        },
+        "& .MuiChip-label": {
+            fontWeight: 500
+        },
+        "& .MuiChip-deleteIcon": {
+            color: theme.palette.icon4
         },
     },
-    selectLabel: {
+    autoCompleteLabel: {
         padding: '7px 0',
         color: theme.palette.color4,
         fontSize: 18

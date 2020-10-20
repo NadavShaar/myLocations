@@ -55,14 +55,14 @@ const BigInput = props => {
 const useStyles = makeStyles((theme) => ({
     input: {
         height: 60,
+        flex: 1,
         background: theme.palette.background1,
-        maxWidth: 400,
         width: '100%',
         borderRadius: '4px 0 0 4px',
         boxShadow: theme.shadow.insetShadow1,
         "& .MuiInputBase-root": {
             height: '100%',
-            fontSize: 24
+            fontSize: 20
         },
         "& .MuiInputBase-input": {
             textAlign: 'center'
@@ -76,6 +76,8 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '0 4px 4px 0'
     },
     bigInputWrapper: {
+        maxWidth: 300,
+        width: '100%',
         display: 'flex', 
         flexDirection: 'column'
     },
@@ -91,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.color5,
     },
     bigInputContainer: {
+        width: '100%',
         display: 'flex'
     }
 }));
