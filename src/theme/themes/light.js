@@ -32,6 +32,7 @@ const lightTheme = createMuiTheme({
         icon2: '#3edc8b',
         icon3: '#ECEFF1',
         icon4: '#fff',
+        icon5: '#455A64',
     },
     shadow: {
         insetShadow1: 'inset 1px 1px 2px 1px rgb(0 0 0 / 0.3)'

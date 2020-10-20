@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     input: {
-        minHeight: 96,
+        minHeight: 60,
         background: theme.palette.background1,
         width: '100%',
         borderRadius: 4,
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
         "& .MuiInputBase-root": {
             height: '100%',
             fontSize: 16,
-            padding: '10px 60px 10px 10px'
+            padding: '11px 60px 11px 10px'
         },
         "& .MuiChip-root": {
             background: theme.palette.primary.main,
@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     },
     autoCompleteLabel: {
         padding: '7px 0',
-        color: theme.palette.color4,
+        color: theme.palette.primary.main,
         fontSize: 18
     }
 }));

@@ -9,6 +9,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import LabelIcon from '@material-ui/icons/Label';
+import NotListedLocationIcon from '@material-ui/icons/NotListedLocation';
 import { Search, CollapsableList } from './../../components/ui';
 
 const Categories = props => {
@@ -24,6 +25,7 @@ const Categories = props => {
     const buttonRef = useRef(null);
     
     const categories = useSelector(state => state.categories) || {};
+    const locations = useSelector(state => state.locations.data) || [];
 
     let filteredCategories = {}
     for (var key in categories) { if(categories[key].name.toLowerCase().includes(searchText.toLowerCase())) filteredCategories[key] = categories[key];}
@@ -48,6 +50,22 @@ const Categories = props => {
     const removeCategory = () => {
 
         let isSingleCategory = selectedCategoriesIds.length === 1;
+        let hasAssignedCategory = locations.some(location => location.categoriesIds.some(catId => selectedCategoriesIds.indexOf(catId) !== -1))
+
+        if(hasAssignedCategory) {
+            const event = new CustomEvent('displayConfirm', {
+                bubbles: true,
+                detail: {
+                    cancelLabel: 'OK',
+                    description: isSingleCategory ?
+                            'The selected category is assigned to location and cannot be deleted'
+                            : 
+                            'Some categories are assigned to locations and cannot be deleted',
+                }
+            });
+            
+            return buttonRef.current.dispatchEvent(event);
+        }
 
         const event = new CustomEvent('displayConfirm', {
             bubbles: true,
@@ -116,11 +134,13 @@ const Categories = props => {
             listConfig={
                 Object.keys(filteredCategories).map(key => {
                     let currentCategory = filteredCategories[key];
-
+                    let assinedLocations = locations.filter(location => location.categoriesIds.indexOf(key) !== -1).map(loc => loc.name).join(', ');
+                    
                     return {
                         id: key,
                         text: currentCategory.name,
                         icon: <LabelIcon />,
+                        helperIcon: assinedLocations ? {icon: <NotListedLocationIcon />, helperText: `Assigned to locations: ${assinedLocations}`} : null,
                         selected: !!selectedCategoriesIds.find(catId => catId === key)
                     }
                 })

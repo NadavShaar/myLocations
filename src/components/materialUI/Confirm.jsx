@@ -43,7 +43,12 @@ const Confirm = props => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">{cancelLabel}</Button>
-                <Button onClick={handleSubmit} color="primary" autoFocus>{submitLabel}</Button>
+                {
+                    onSubmit ?
+                        <Button onClick={handleSubmit} color="primary" autoFocus>{submitLabel}</Button>
+                        :
+                        null
+                }
             </DialogActions>
         </Dialog>
     )

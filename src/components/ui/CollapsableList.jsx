@@ -53,6 +53,12 @@ const CollapsableListItem = props => {
                         null
                 }
                 {
+                    listItem.helperIcon ? 
+                        <ListItemIcon title={listItem.helperIcon.helperText} className={classes.helperIcon}>{ listItem.helperIcon.icon }</ListItemIcon>
+                        :
+                        null
+                }
+                {
                     listItem.nestedItems ? 
                         open ? 
                             <ExpandLess /> 
@@ -189,7 +195,7 @@ const useStyles = makeStyles((theme) => ({
     listItemIcon: {
         minWidth: 30,
         "& .MuiSvgIcon-root": {
-            color: theme.palette.icon3,
+            color: theme.palette.icon1,
             width: 20,
             height: 20
         }
@@ -197,9 +203,20 @@ const useStyles = makeStyles((theme) => ({
     nestedListItemIcon: {
         minWidth: 30,
         "& .MuiSvgIcon-root": {
-            color: theme.palette.primary.main,
+            color: theme.palette.icon1,
             width: 20,
             height: 20
+        }
+    },
+    helperIcon: {
+        position: 'absolute',
+        right: 20,
+        minWidth: 'fit-content',
+        color: theme.palette.icon5,
+        cursor: 'help',
+        "& svg": {
+            fontSize: 20,
+            pointerEvents: 'none'
         }
     }
 }));

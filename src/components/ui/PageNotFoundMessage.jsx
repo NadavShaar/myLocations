@@ -19,15 +19,16 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex', 
         flexDirection: 'column', 
         alignItems: 'center', 
+        justifyContent: 'center',
         color: theme.palette.color5
     },
     topText: {
-        fontSize: 90, 
+        fontSize: 100, 
         borderBottom: `5px solid ${theme.palette.color7}`, 
         marginBottom: 20
     },
     bottomText: {
-        fontSize: 28, 
+        fontSize: 32, 
         fontWeight: 500, 
         fontStyle: 'italic'
     }

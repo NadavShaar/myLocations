@@ -27,69 +27,59 @@ const Location = props => {
     const [locationName, setLocationName] = useState(selectedLocation?.name || "");
     const [coords, setCoords] = useState(selectedLocation?.coords || [0,0]);
     const [address, setAddress] = useState(selectedLocation?.address || "");
-    const [assignedCategories, setAssignedCategories] = useState(selectedLocation?.categoriesIds || []);
-    
+    const [assignedCategories, setAssignedCategories] = useState(selectedLocation?.categoriesIds?.map?.(catId => {return { id: catId, name: categories[catId]?.name }}) || []);
     const { mode } = props;
-    
-    let isLocationExist = !!locations.find(location => location.name === locationName);
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedLocation;
-
-
+    
+    
     const createLocation = () => {
         if(!locationName) return;
-
-        let successCondition = !isLocationExist && address && coords?.length === 2 && assignedCategories.length;
+        
+        let successCondition = address && coords?.length === 2 && assignedCategories.length;
         if(successCondition) {
-            dispatch(addLocation({id: Date.now(), name: locationName, address, coords, categoriesIds: assignedCategories})); 
+            dispatch(addLocation({id: Date.now(), name: locationName, address, coords, categoriesIds: assignedCategories.map(cat => cat.id)})); 
             setLocationName("");
             setAssignedCategories([]);
         }
-
+        
         const event = new CustomEvent('displaySnackbar', {
             bubbles: true,
             detail: {
                 open: true, 
-                message: 
-                    isLocationExist ? 
-                        `${locationName} is already exist` 
-                        :
-                        !coords.length === 2 || !address ?
-                            `Location cannot be found` 
-                            :
-                            !assignedCategories.length ? 
-                                `Select at least one category`
-                                :
-                                `${locationName} added successfully`, 
+                message: !coords.length === 2 || !address ?
+                `Location cannot be found` 
+                :
+                !assignedCategories.length ? 
+                `Select at least one category`
+                :
+                `${locationName} added successfully`, 
                 type: successCondition ? 'success' : 'error'
             }
         });
-
+        
         buttonRef.current.dispatchEvent(event);
-
+        
         setTimeout(() => { inputRef?.current?.focus?.() }, 0);
     }
-
+    
     const editLocation = () => {
         if(!locationName) return;
-        let successCondition = !isLocationExist && address && coords?.length === 2 && assignedCategories.length;
-
+        let successCondition = address && coords?.length === 2 && assignedCategories.length;
+        
         let currentLocation = locations[locationIndex];
-        if(successCondition) dispatch(updateLocation({ ...currentLocation, name: locationName }));
+        if(successCondition) dispatch(updateLocation({ ...currentLocation, name: locationName, address, coords, categoriesIds: assignedCategories.map(cat => cat.id) }));
 
         const event = new CustomEvent('displaySnackbar', {
             bubbles: true,
             detail: {
                 open: true, 
-                message: isLocationExist ? 
-                    `${locationName} is already exist` 
+                message: !coords.length === 2 || !address ?
+                    `Location cannot be found` 
                     :
-                    !coords.length === 2 || !address ?
-                        `Location cannot be found` 
+                    !assignedCategories.length ? 
+                        `Select at least one category`
                         :
-                        !assignedCategories.length ? 
-                            `Select at least one category`
-                            :
-                            `${locationName} saved successfully`, 
+                        `${locationName} saved successfully`, 
                 type: successCondition ? 'success' : 'error'
             } 
         });
@@ -108,7 +98,7 @@ const Location = props => {
         }
     }
 
-    const renderBigInput = ({callback, buttonChildren, disabled, title, hint}) => (
+    const renderBigInput = ({callback, buttonChildren, disabled, title, hint, props}) => (
         <BigInput 
             title={title}
             hint={hint}
@@ -120,6 +110,7 @@ const Location = props => {
             onChange={setLocationName}
             disabledSubmit={disabled}
             textFieldProps={{autoFocus: true}}
+            { ...props }
         />
     )
 
@@ -143,10 +134,17 @@ const Location = props => {
         </div>
     )
 
-    const renderAddress = () => (
-        <div style={{display: 'flex', flexDirection: 'column'}}>
-            <span>Address:</span>
-            <span>&nbsp;{address}</span>
+    const renderLocation = () => (
+        <div className={classes.flexColumn}>
+            <div className={classes.flexColumn}>
+                <span className={classes.locationDetailsTitle}>Address:</span>
+                <span className={classes.locationDetails}>{address}</span>
+            </div>
+            <div className={classes.flexColumn}>
+                <span className={classes.locationDetailsTitle}>Coordinates:</span>
+                <span className={classes.locationDetails}>{`Longitude: ${coords[0]}`}</span>
+                <span className={classes.locationDetails}>{`Latitude: ${coords[1]}`}</span>
+            </div>
         </div>
     )
 
@@ -156,17 +154,19 @@ const Location = props => {
                 <div className={classes.mapInputsContainer}>
                     { renderMap() }
                     <div className={classes.inputsContainer}>
-                        { renderAddress() }
-                        { renderChipInput() }
-                        { 
-                            renderBigInput({
-                                callback: createLocation, 
-                                buttonChildren: '+', 
-                                disabled: (!locationName), 
-                                title: 'Location name', 
-                                hint: 'Hint: you can also submit using the Enter key.'
-                            })
-                        } 
+                        <div className={`${classes.flexColumn} ${classes.inputs}`}>
+                            { renderChipInput() }
+                            { 
+                                renderBigInput({
+                                    callback: createLocation, 
+                                    buttonChildren: '+', 
+                                    disabled: (!locationName), 
+                                    title: 'Location name', 
+                                    hint: 'Hint: you can also submit using the Enter key.',
+                                })
+                            } 
+                        </div>
+                        { renderLocation() }
                     </div>
                 </div>
             )
@@ -174,17 +174,19 @@ const Location = props => {
                 <div className={classes.mapInputsContainer}>
                     { renderMap() }
                     <div className={classes.inputsContainer}>
-                        { renderAddress() }
-                        { renderChipInput() }
-                        { 
-                            renderBigInput({
-                                callback: editLocation, 
-                                buttonChildren: <React.Fragment>&#10003;</React.Fragment>, 
-                                disabled: !locationName, 
-                                title: 'Update location', 
-                                hint: 'Hint: you can also submit using the Enter key.'
-                            })
-                        } 
+                        <div className={`${classes.flexColumn} ${classes.inputs}`}>
+                            { renderChipInput() }
+                            { 
+                                renderBigInput({
+                                    callback: editLocation, 
+                                    buttonChildren: <React.Fragment>&#10003;</React.Fragment>, 
+                                    disabled: !locationName, 
+                                    title: 'Update location', 
+                                    hint: 'Hint: you can also submit using the Enter key.'
+                                })
+                            } 
+                        </div>
+                        { renderLocation() }
                     </div>
                 </div>
             )
@@ -254,7 +256,7 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: `1px solid ${theme.palette.border1}` 
     },
     mapContainer: {
-        minHeight: 300, 
+        minHeight: 350, 
         flex: 1, 
         zIndex: 0,
         width: '100%',
@@ -267,13 +269,55 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 1200,
         width: '100%',
         display: 'flex',
-        height: '100%'
+        height: '100%',
+        [theme.breakpoints.down('md')]: {
+            flexDirection: 'column'
+        }
     },
     inputsContainer: {
         display: 'flex',
         flexDirection: 'column',
         marginLeft: 40,
-        maxWidth: 300
+        maxWidth: 300,
+        [theme.breakpoints.down('md')]: {
+            marginLeft: 0,
+            flexDirection: 'row',
+            maxWidth: 'unset',
+            marginTop: 20,
+            marginBottom: 10
+        },
+        [theme.breakpoints.down('xs')]: {
+            flexDirection: 'column',
+            marginBottom: 30
+        }
+    },
+    locationDetailsTitle: {
+        padding: '3px 0', 
+        color: theme.palette.primary.main, 
+        fontSize: 16,
+        marginTop: 10
+    },
+    locationDetails: {
+        color: theme.palette.color3, 
+        fontSize: 14
+    },
+    flexColumn: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    inputs: {
+        maxWidth: 300,
+        minWidth: 300,
+        [theme.breakpoints.down('md')]: {
+            flex: 1,
+            maxWidth: 500,
+            marginRight: 40
+        },
+        [theme.breakpoints.down('xs')]: {
+            flex: 1,
+            maxWidth: 'unset',
+            marginRight: 0
+        }
     }
 }));
 

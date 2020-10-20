@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { BottomNavigation as MUIBottomNavigation, BottomNavigationAction } from '@material-ui/core';
-import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
+import MapIcon from '@material-ui/icons/Map';
 import LabelIcon from '@material-ui/icons/Label';
 import { useHistory } from "react-router-dom";
 import { withRouter } from "react-router";
@@ -22,7 +22,7 @@ const BottomNavigation = props => {
     }, [props.location.pathname])
     
     let buttons = [
-        { label: 'Locations', icon: <LocationSearchingIcon />},
+        { label: 'Locations', icon: <MapIcon />},
         { label: 'Categories', icon: <LabelIcon />}
     ];
 

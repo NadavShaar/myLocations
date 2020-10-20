@@ -18,11 +18,12 @@ const BigInput = props => {
         inputRef,
         buttonRef,
         disabledSubmit,
-        buttonChildren
+        buttonChildren,
+        ...rest
     } = props;
 
     return (
-        <div className={classes.bigInputWrapper}>
+        <div className={classes.bigInputWrapper} { ...rest }>
             <span className={classes.bigInputTitle}>{title}</span>
             <div className={classes.bigInputContainer}>
                 <TextField
@@ -76,14 +77,13 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '0 4px 4px 0'
     },
     bigInputWrapper: {
-        maxWidth: 300,
         width: '100%',
         display: 'flex', 
         flexDirection: 'column'
     },
     bigInputTitle: {
         padding: '7px 0',
-        color: theme.palette.color4,
+        color: theme.palette.primary.main,
         fontSize: 18
     },
     bigInputHint: {
