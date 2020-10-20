@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     input: {
-        minHeight: 60,
+        minHeight: 98,
         background: theme.palette.background1,
         width: '100%',
         borderRadius: 4,
