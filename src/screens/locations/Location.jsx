@@ -109,7 +109,6 @@ const Location = props => {
             buttonChildren={buttonChildren}
             onChange={setLocationName}
             disabledSubmit={disabled}
-            textFieldProps={{autoFocus: true}}
             { ...props }
         />
     )
