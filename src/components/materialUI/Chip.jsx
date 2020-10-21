@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: theme.shadows[2],
         minWidth: 60, 
         height: 26,
-        margin: '5px 10px 0 0',
+        margin: '5px 10px 2px 0',
         "& .MuiChip-label": {
             fontWeight: 500
         },

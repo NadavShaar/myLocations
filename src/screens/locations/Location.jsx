@@ -251,8 +251,12 @@ const useStyles = makeStyles((theme) => ({
         flex: 1, 
         display: 'flex',
         justifyContent: 'center',
+        alignItems: 'center',
         padding: 20,
-        overflow: 'auto'
+        overflow: 'auto',
+        [theme.breakpoints.down('xs')]: {
+            alignItems: 'unset'
+        }
     },
     paper: {
         display: 'inline-flex',
@@ -265,13 +269,12 @@ const useStyles = makeStyles((theme) => ({
         },
         [theme.breakpoints.down('xs')]: {
             width: '100%',
-            height: '100%'
+            // height: '100%'
         }
     },
     detailsWrapper: {
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center'
+        height: 'fit-content',
+        maxWidth: '100%'
     },
     detailsMapContainer: {
         width: 300, 
@@ -281,9 +284,7 @@ const useStyles = makeStyles((theme) => ({
             width: 500
         },
         [theme.breakpoints.down('xs')]: {
-            width: '100%',
-            height: 'unset',
-            minHeight: 300
+            width: '100%'
         }
     },
     detailsContainer: {
@@ -310,6 +311,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 14,
         color: theme.palette.color3,
         marginBottom: 15,
+        wordBreak: 'break-word'
     },
     detailType: {
         fontSize: 16,
@@ -387,11 +389,7 @@ const useStyles = makeStyles((theme) => ({
     },
     chipsWrapper: {
         display: 'flex',
-        flexWrap: 'wrap',
-        maxHeight: 66,
-        minHeight: 36,
-        overflow: 'auto',
-        paddingBottom: 8
+        flexWrap: 'wrap'
     }
 }));
 

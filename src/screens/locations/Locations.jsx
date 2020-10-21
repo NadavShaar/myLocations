@@ -246,7 +246,10 @@ const useStyles = makeStyles((theme) => ({
         flex: 1,
         padding: 20,
         position: 'relative',
-        overflow: 'auto'
+        overflow: 'auto',
+        [theme.breakpoints.down('xs')]: {
+            alignItems: 'unset'
+        }
     },
     controlsContainer: {
         display: 'flex',

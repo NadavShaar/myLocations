@@ -158,7 +158,8 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'auto'
     },
     inputWrapper: {
-        display: 'inline-flex'
+        display: 'inline-flex',
+        maxWidth: '100%'
     },
     paper: {
         display: 'inline-flex',
@@ -174,6 +175,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 14,
         color: theme.palette.color3,
         marginBottom: 15,
+        wordBreak: 'break-word'
     },
     detailType: {
         fontSize: 16,
@@ -189,8 +191,7 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: 'wrap',
         maxHeight: 98,
         minHeight: 36,
-        overflow: 'auto',
-        paddingBottom: 8
+        overflow: 'auto'
     }
 }));
 

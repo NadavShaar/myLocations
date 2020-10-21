@@ -40,11 +40,9 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     toolbar: {
-        overflow: 'auto',
         backgroundColor: theme.palette.primary.main,
         backgroundImage: theme.palette.gradient1,
         "& .MuiToolbar-root": {
-            minWidth: 'max-content',
             [theme.breakpoints.down('xs')]: {
                 display: 'flex',
                 flexDirection: props => props.isSingleRow ? 'row' : 'column'
@@ -54,13 +52,18 @@ const useStyles = makeStyles((theme) => ({
     titleWrapper: {
         display: 'flex',
         flexGrow: 1,
+        marginRight: 10,
+        overflow: 'hidden',
         [theme.breakpoints.down('xs')]: {
             width: '100%',
             justifyContent: 'space-between'
         }
     },
     title: {
-        display: 'flex' 
+        display: props => props.isSingleRow ? 'inline-block' : 'flex',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden'
     },
     buttonsWrapper: {
         display: 'flex',
