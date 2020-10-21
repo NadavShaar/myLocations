@@ -209,7 +209,6 @@ const Location = props => {
                             <span className={classes.detailType}>Categories:</span>
                             <span className={classes.chipsWrapper}>
                                 {assignedCategories.map((cat, idx) => <Chip key={idx} label={cat.name} />)}
-                                {assignedCategories.map((cat, idx) => <Chip key={idx} label={cat.name} />)}
                             </span>
                         </div>
                     </div>
@@ -259,7 +258,14 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: theme.shadows[1],
         background: theme.palette.background1,
         borderRadius: 4,
-        padding: 5
+        padding: 5,
+        [theme.breakpoints.down('md')]: {
+            flexDirection: 'column'
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+            height: '100%'
+        }
     },
     detailsWrapper: {
         display: 'flex', 
@@ -268,7 +274,16 @@ const useStyles = makeStyles((theme) => ({
     },
     detailsMapContainer: {
         width: 300, 
-        height: 300
+        height: 300,
+        flex: 1,
+        [theme.breakpoints.down('md')]: {
+            width: 500
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+            height: 'unset',
+            minHeight: 300
+        }
     },
     detailsContainer: {
         padding: '15px 15px 15px 20px',
@@ -276,7 +291,19 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 500,
         minHeight: 300,
         maxHeight: 300,
-        overflowY: 'auto'
+        overflowY: 'auto',
+        [theme.breakpoints.down('md')]: {
+            padding: '0 15px',
+            marginTop: 20,
+            marginBottom: 15,
+            minHeight: 'unset',
+            maxHeight: 'unset'
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+            minWidth: 'unset',
+            maxWidth: 'unset'
+        }
     },
     locationName: {
         fontSize: 14,
@@ -361,7 +388,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexWrap: 'wrap',
         maxHeight: 66,
-        minHeight: 40,
+        minHeight: 36,
         overflow: 'auto',
         paddingBottom: 8
     }

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { Toolbar } from './../../components/materialUI';
+import { Toolbar, Chip } from './../../components/materialUI';
 import { BigInput, HistoryGoBackButton, PageNotFoundMessage } from './../../components/ui';
 import { createNewCategory, updateCategory } from './../../store/actions';
 import { useParams } from "react-router-dom";
@@ -18,6 +18,7 @@ const Category = props => {
     const buttonRef = useRef(null);
     
     const categories = useSelector(state => state.categories) || {};
+    const locations = useSelector(state => state.locations.data) || [];
     
     const selectedCategory = useSelector(state => state.categories[id]);
     
@@ -27,8 +28,7 @@ const Category = props => {
     const { mode } = props;
 
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedCategory;
-
-    
+    let assignedLocations = id && locations.filter(location => location.categoriesIds.indexOf(id) !== -1) || [];
     
     const createCategory = () => {
         if(!categoryName) return;
@@ -99,7 +99,21 @@ const Category = props => {
         switch (mode) {
             case 'new': return renderBigInput({callback: createCategory, buttonChildren: '+', disabled: !categoryName, title: 'Add new category', hint: 'Hint: you can also submit using the Enter key.'})
             case 'edit': return renderBigInput({callback: editCategory, buttonChildren: <React.Fragment>&#10003;</React.Fragment>, disabled: !categoryName, title: 'Update category', hint: 'Hint: you can also submit using the Enter key.'})
-            case 'details': return <div className={classes.paper}><span className={classes.detailType}>Category name:</span><span className={classes.categoryName}>{categoryName}</span></div>;
+            case 'details': return (
+                <div className={classes.paper}>
+                    <span className={classes.detailType}>Category name:</span>
+                    <span className={classes.categoryName}>{categoryName}</span>
+                    <span className={classes.detailType}>Assigned to:</span>
+                    {
+                        assignedLocations.length ?
+                            <div className={classes.chipsWrapper}>
+                                { assignedLocations.map((loc, idx) => <Chip key={idx} label={loc.name} />) }
+                            </div>
+                            :
+                            <span className={classes.categoryName} style={{margin: 0, fontStyle: 'italic'}}>Not assigned yet</span>
+                    }
+                </div>
+            );
             default: return null;
         }
     }
@@ -145,34 +159,37 @@ const useStyles = makeStyles((theme) => ({
     inputWrapper: {
         display: 'inline-flex'
     },
-    categoryName: {
-        fontSize: 36,
-        color: theme.palette.color6,
-        padding: '10px 20px',
-        textAlign: 'center'
-    },
     paper: {
         display: 'inline-flex',
         flexDirection: 'column',
         boxShadow: theme.shadows[1],
         background: theme.palette.background1,
         borderRadius: 4,
-        overflow: 'hidden',
-        minWidth: 250
+        padding: 20,
+        minWidth: 300,
+        maxWidth: 500
+    },
+    categoryName: {
+        fontSize: 14,
+        color: theme.palette.color3,
+        marginBottom: 15,
     },
     detailType: {
-        fontSize: 14,
-        padding: '7px 10px',
-        fontStyle: 'italic',
-        color: theme.palette.color1,
+        fontSize: 16,
+        marginBottom: 2,
         fontWeight: 500,
-        background: theme.palette.primary.main,
-        backgroundImage: theme.palette.gradient1,
-        borderBottom: `1px solid ${theme.palette.border1}` 
     },
     icon: {
         fontSize: 18,
         marginBottom: 2
+    },
+    chipsWrapper: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        maxHeight: 98,
+        minHeight: 36,
+        overflow: 'auto',
+        paddingBottom: 8
     }
 }));
 
