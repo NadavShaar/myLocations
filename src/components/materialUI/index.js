@@ -7,6 +7,7 @@ import Toolbar from './Toolbar';
 import Checkbox from './Checkbox';
 import Select from './Select';
 import ChipInput from './ChipInput';
+import Chip from './Chip';
 
 export { 
     Button,
@@ -17,5 +18,6 @@ export {
     Toolbar,
     Checkbox,
     Select,
-    ChipInput
+    ChipInput,
+    Chip
 };

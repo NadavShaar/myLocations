@@ -26,10 +26,24 @@ const Map = props => {
         const { current={} } = mapRef;
         const { leafletElement: map } = current;
 
-        const geocoder = L.Control.geocoder({
-            defaultMarkGeocode: false
-        }).addTo(map);
-        geocoder.on('markgeocode', e => updateMarker({latlng: e.geocode.center})).addTo(map);
+        map.on('locationfound', onLocationFound);
+
+        if(!readOnly) {
+            const geocoder = L.Control.geocoder({
+                defaultMarkGeocode: false
+            }).addTo(map);
+            geocoder.on('markgeocode', e => updateMarker({latlng: e.geocode.center})).addTo(map);
+            map.on('click', onLocationClicked);
+        } else {
+            map.dragging.disable();
+            map.touchZoom.disable();
+            map.doubleClickZoom.disable();
+            map.scrollWheelZoom.disable();
+            map.boxZoom.disable();
+            map.keyboard.disable();
+            if (map.tap) map.tap.disable();
+            map.removeControl(map.zoomControl);
+        }
 
         if(initLocation) {
             map.locate({
@@ -38,13 +52,14 @@ const Map = props => {
                 maxZoom: 12
             });
         } 
+        else if(readOnly) {
+            if (!marker) marker = L.marker(coords).addTo(map);
+            else marker.setLatLng(coords);
+        }
         else {
             if (!marker) marker = L.marker(coords).bindPopup(address).addTo(map).openPopup();
             else marker.setLatLng(coords).setPopupContent(address).openPopup();
         }
-
-        map.on('locationfound', onLocationFound);
-        if(!readOnly) map.on('click', onLocationClicked);
         
         () => {
             map.off('locationfound', onLocationFound);
@@ -87,7 +102,7 @@ const Map = props => {
     }
 
     return (
-        <LeafletMap ref={mapRef} center={coords} zoom={12}>
+        <LeafletMap ref={mapRef} center={coords} zoom={16}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         </LeafletMap>
     )

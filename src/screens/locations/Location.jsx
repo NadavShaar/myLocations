@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { Toolbar, ChipInput } from './../../components/materialUI';
+import { Toolbar, ChipInput, Chip } from './../../components/materialUI';
 import { BigInput, HistoryGoBackButton, PageNotFoundMessage } from './../../components/ui';
 import Map from './../../components/map/Map';
 import { addLocation, updateLocation } from './../../store/actions';
@@ -120,16 +120,14 @@ const Location = props => {
     )
 
     const renderMap = ({readOnly, initLocation}) => (
-        <div className={classes.mapContainer}>
-            <Map 
-                coords={coords}
-                address={address}
-                setCoords={setCoords}
-                setAddress={setAddress}
-                readOnly={readOnly}
-                initLocation={initLocation}
-            />
-        </div>
+        <Map 
+            coords={coords}
+            address={address}
+            setCoords={setCoords}
+            setAddress={setAddress}
+            readOnly={readOnly}
+            initLocation={initLocation}
+        />
     )
 
     const renderLocation = () => (
@@ -150,7 +148,9 @@ const Location = props => {
         switch (mode) {
             case 'new': return (
                 <div className={classes.mapInputsContainer}>
-                    { renderMap({readOnly: false, initLocation: true}) }
+                    <div className={classes.mapContainer}>
+                        { renderMap({readOnly: false, initLocation: true}) }
+                    </div>
                     <div className={classes.inputsContainer}>
                         <div className={`${classes.flexColumn} ${classes.inputs}`}>
                             { renderChipInput() }
@@ -170,7 +170,9 @@ const Location = props => {
             )
             case 'edit': return (
                 <div className={classes.mapInputsContainer}>
-                    { renderMap({readOnly: false, initLocation: false}) }
+                    <div className={classes.mapContainer}>
+                        { renderMap({readOnly: false, initLocation: false}) }
+                    </div>
                     <div className={classes.inputsContainer}>
                         <div className={`${classes.flexColumn} ${classes.inputs}`}>
                             { renderChipInput() }
@@ -189,11 +191,28 @@ const Location = props => {
                 </div>
             )
             case 'details': return (
-                <div style={{flex:1}}>
-                    {/* <span className={classes.detailType}>Location name:</span>
-                    <span className={classes.locationName}>{locationName}</span> */}
-                    { renderMap({readOnly: true, initLocation: false}) }
-                    {/* { renderLocation() } */}
+                <div className={classes.detailsWrapper}>
+                    <div className={classes.paper}>
+                        <div className={classes.detailsMapContainer}>
+                            { renderMap({readOnly: true, initLocation: false}) }
+                        </div>
+                        <div className={`${classes.flexColumn} ${classes.detailsContainer}`}>
+                            <span className={classes.detailType}>Name:</span>
+                            <span className={classes.locationName}>{locationName}</span>
+                            <span className={classes.detailType}>Address:</span>
+                            <span className={classes.locationName}>{address}</span>
+                            <div className={classes.flexColumn}>
+                                <span className={classes.detailType}>Coordinates:</span>
+                                <span className={classes.locationName} style={{marginBottom: 0}}>{`Longitude: ${coords[0]}`}</span>
+                                <span className={classes.locationName}>{`Latitude: ${coords[1]}`}</span>
+                            </div>
+                            <span className={classes.detailType}>Categories:</span>
+                            <span className={classes.chipsWrapper}>
+                                {assignedCategories.map((cat, idx) => <Chip key={idx} label={cat.name} />)}
+                                {assignedCategories.map((cat, idx) => <Chip key={idx} label={cat.name} />)}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             );
             default: return null;
@@ -235,31 +254,36 @@ const useStyles = makeStyles((theme) => ({
         padding: 20,
         overflow: 'auto'
     },
-    locationName: {
-        fontSize: 36,
-        color: theme.palette.color6,
-        padding: '10px 20px',
-        textAlign: 'center'
-    },
     paper: {
         display: 'inline-flex',
-        flexDirection: 'column',
         boxShadow: theme.shadows[1],
         background: theme.palette.background1,
         borderRadius: 4,
-        overflow: 'hidden',
-        minWidth: 250,
-        height: 'fit-content'
+        padding: 5
+    },
+    detailsWrapper: {
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center'
+    },
+    detailsMapContainer: {
+        width: 300, 
+        height: 300
+    },
+    detailsContainer: {
+        padding: '15px 15px 15px 20px',
+        minWidth: 500,
+        maxWidth: 500,
+    },
+    locationName: {
+        fontSize: 14,
+        color: theme.palette.color3,
+        marginBottom: 10,
     },
     detailType: {
-        fontSize: 14,
-        padding: '7px 10px',
-        fontStyle: 'italic',
-        color: theme.palette.color1,
+        fontSize: 16,
+        marginBottom: 2,
         fontWeight: 500,
-        background: theme.palette.primary.main,
-        backgroundImage: theme.palette.gradient1,
-        borderBottom: `1px solid ${theme.palette.border1}` 
     },
     mapContainer: {
         minHeight: 350, 
@@ -329,6 +353,13 @@ const useStyles = makeStyles((theme) => ({
             minHeight: 233,
             justifyContent: 'space-between'
         }
+    },
+    chipsWrapper: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        maxHeight: 78,
+        overflow: 'auto',
+        paddingBottom: 8
     }
 }));
 
