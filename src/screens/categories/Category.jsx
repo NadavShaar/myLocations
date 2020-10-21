@@ -23,7 +23,7 @@ const Category = props => {
     const selectedCategory = useSelector(state => state.categories[id]);
     
     const [categoryName, setCategoryName] = useState(selectedCategory?.name || "");
-    let isCategoryExist = !!(Object.values(categories)).find(category => category.name.toLowerCase().trim() === categoryName.toLowerCase().trim());
+    let isCategoryExist = !!(Object.values(categories)).find(category => category.name === categoryName.trim());
     
     const { mode } = props;
 
