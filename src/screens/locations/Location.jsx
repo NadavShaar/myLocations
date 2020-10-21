@@ -33,13 +33,14 @@ const Location = props => {
     
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedLocation;
     
+    let isLocationExist = !!locations.find(location => location.name.toLowerCase?.() === locationName.toLowerCase());
     
     const createLocation = () => {
         if(!locationName) return;
         
-        let successCondition = address && coords?.length === 2 && assignedCategories.length;
+        let successCondition = !isLocationExist && address && coords?.length === 2 && assignedCategories.length;
         if(successCondition) {
-            dispatch(addLocation({id: Date.now(), name: locationName, address, coords, categoriesIds: assignedCategories.map(cat => cat.id)})); 
+            dispatch(addLocation({id: Date.now(), name: locationName, address, coords, categoriesIds: assignedCategories.map(cat => cat.id), mapZoomLevel: zoom})); 
             setLocationName("");
             setAssignedCategories([]);
         }
@@ -48,13 +49,16 @@ const Location = props => {
             bubbles: true,
             detail: {
                 open: true, 
-                message: !coords.length === 2 || !address ?
-                `Location cannot be found` 
-                :
-                !assignedCategories.length ? 
-                `Select at least one category`
-                :
-                `${locationName} added successfully`, 
+                message: isLocationExist ?
+                    `${locationName} is already exist`
+                    :
+                    !coords.length === 2 || !address ?
+                        `Location cannot be found` 
+                        :
+                        !assignedCategories.length ? 
+                            `Select at least one category`
+                            :
+                            `${locationName} added successfully`, 
                 type: successCondition ? 'success' : 'error'
             }
         });
