@@ -364,7 +364,8 @@ const useStyles = makeStyles((theme) => ({
     },
     locationDetails: {
         color: theme.palette.color3, 
-        fontSize: 14
+        fontSize: 14,
+        wordBreak: 'break-word'
     },
     flexColumn: {
         display: 'flex',
