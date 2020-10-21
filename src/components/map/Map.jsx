@@ -12,8 +12,11 @@ const Map = props => {
 
     const {
         coords=[0,0],
+        address,
         setCoords,
-        setAddress
+        setAddress,
+        readOnly=false,
+        initLocation
     } = props;
 
 
@@ -28,17 +31,24 @@ const Map = props => {
         }).addTo(map);
         geocoder.on('markgeocode', e => updateMarker({latlng: e.geocode.center})).addTo(map);
 
-        map.locate({
-            setView: true,
-            maxZoom: 12
-        })
+        if(initLocation) {
+            map.locate({
+                setView: true,
+                enableHighAccuracy: true,
+                maxZoom: 12
+            });
+        } 
+        else {
+            if (!marker) marker = L.marker(coords).bindPopup(address).addTo(map).openPopup();
+            else marker.setLatLng(coords).setPopupContent(address).openPopup();
+        }
 
         map.on('locationfound', onLocationFound);
-        map.on('click', onLocationClicked);
+        if(!readOnly) map.on('click', onLocationClicked);
         
         () => {
             map.off('locationfound', onLocationFound);
-            map.off('click', onLocationClicked);
+            if(!readOnly) map.off('click', onLocationClicked);
         }
     }, []);
 
@@ -62,13 +72,12 @@ const Map = props => {
             results => {
                 let result = results[0];
                 if(!result) return;
-                
+
                 let rgx = /no, |no |no|  /g;
-                let html = result.html.replace(rgx, '');
                 let name = result.name.replace(rgx, '');
                 
-                if (!marker) marker = L.marker(result.center).bindPopup(html || name).addTo(map).openPopup();
-                else marker.setLatLng(result.center).setPopupContent(result.html.replaceAll('no', '') || name).openPopup();
+                if (!marker) marker = L.marker(result.center).bindPopup(name).addTo(map).openPopup();
+                else marker.setLatLng(result.center).setPopupContent(name).openPopup();
                 
                 setCoords(Object.values(ev.latlng));
                 setAddress(name);
@@ -78,7 +87,7 @@ const Map = props => {
     }
 
     return (
-        <LeafletMap ref={mapRef} center={coords} >
+        <LeafletMap ref={mapRef} center={coords} zoom={12}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         </LeafletMap>
     )

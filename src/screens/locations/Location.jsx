@@ -15,7 +15,6 @@ const Location = props => {
 
     let { id } = useParams();
     
-    const inputRef = useRef(null);
     const buttonRef = useRef(null);
     
     const categories = useSelector(state => state.categories) || {};
@@ -28,7 +27,9 @@ const Location = props => {
     const [coords, setCoords] = useState(selectedLocation?.coords || [0,0]);
     const [address, setAddress] = useState(selectedLocation?.address || "");
     const [assignedCategories, setAssignedCategories] = useState(selectedLocation?.categoriesIds?.map?.(catId => {return { id: catId, name: categories[catId]?.name }}) || []);
+    
     const { mode } = props;
+    
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedLocation;
     
     
@@ -58,8 +59,6 @@ const Location = props => {
         });
         
         buttonRef.current.dispatchEvent(event);
-        
-        setTimeout(() => { inputRef?.current?.focus?.() }, 0);
     }
     
     const editLocation = () => {
@@ -85,8 +84,6 @@ const Location = props => {
         });
 
         buttonRef.current.dispatchEvent(event);
-
-        setTimeout(() => { inputRef?.current?.focus?.() }, 0);
     }
 
     const getTitleByMode = () => {
@@ -102,7 +99,6 @@ const Location = props => {
         <BigInput 
             title={title}
             hint={hint}
-            inputRef={inputRef}
             buttonRef={buttonRef}
             value={locationName}
             callback={callback}
@@ -123,12 +119,15 @@ const Location = props => {
         />
     )
 
-    const renderMap = () => (
+    const renderMap = ({readOnly, initLocation}) => (
         <div className={classes.mapContainer}>
             <Map 
                 coords={coords}
+                address={address}
                 setCoords={setCoords}
                 setAddress={setAddress}
+                readOnly={readOnly}
+                initLocation={initLocation}
             />
         </div>
     )
@@ -151,7 +150,7 @@ const Location = props => {
         switch (mode) {
             case 'new': return (
                 <div className={classes.mapInputsContainer}>
-                    { renderMap() }
+                    { renderMap({readOnly: false, initLocation: true}) }
                     <div className={classes.inputsContainer}>
                         <div className={`${classes.flexColumn} ${classes.inputs}`}>
                             { renderChipInput() }
@@ -171,7 +170,7 @@ const Location = props => {
             )
             case 'edit': return (
                 <div className={classes.mapInputsContainer}>
-                    { renderMap() }
+                    { renderMap({readOnly: false, initLocation: false}) }
                     <div className={classes.inputsContainer}>
                         <div className={`${classes.flexColumn} ${classes.inputs}`}>
                             { renderChipInput() }
@@ -189,7 +188,14 @@ const Location = props => {
                     </div>
                 </div>
             )
-            case 'details': return <div className={classes.paper}><span className={classes.detailType}>Location name:</span><span className={classes.locationName}>{locationName}</span></div>;
+            case 'details': return (
+                <div style={{flex:1}}>
+                    {/* <span className={classes.detailType}>Location name:</span>
+                    <span className={classes.locationName}>{locationName}</span> */}
+                    { renderMap({readOnly: true, initLocation: false}) }
+                    {/* { renderLocation() } */}
+                </div>
+            );
             default: return null;
         }
     }
@@ -242,7 +248,8 @@ const useStyles = makeStyles((theme) => ({
         background: theme.palette.background1,
         borderRadius: 4,
         overflow: 'hidden',
-        minWidth: 250
+        minWidth: 250,
+        height: 'fit-content'
     },
     detailType: {
         fontSize: 14,
@@ -259,6 +266,7 @@ const useStyles = makeStyles((theme) => ({
         flex: 1, 
         zIndex: 0,
         width: '100%',
+        height: '100%',
         padding: 5,
         backgroundColor: theme.palette.background1,
         borderRadius: 4,
