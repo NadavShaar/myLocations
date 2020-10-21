@@ -274,11 +274,14 @@ const useStyles = makeStyles((theme) => ({
         padding: '15px 15px 15px 20px',
         minWidth: 500,
         maxWidth: 500,
+        minHeight: 300,
+        maxHeight: 300,
+        overflowY: 'auto'
     },
     locationName: {
         fontSize: 14,
         color: theme.palette.color3,
-        marginBottom: 10,
+        marginBottom: 15,
     },
     detailType: {
         fontSize: 16,
@@ -357,7 +360,8 @@ const useStyles = makeStyles((theme) => ({
     chipsWrapper: {
         display: 'flex',
         flexWrap: 'wrap',
-        maxHeight: 78,
+        maxHeight: 66,
+        minHeight: 40,
         overflow: 'auto',
         paddingBottom: 8
     }
