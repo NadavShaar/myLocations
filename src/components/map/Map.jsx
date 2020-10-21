@@ -16,7 +16,9 @@ const Map = props => {
         setCoords,
         setAddress,
         readOnly=false,
-        initLocation
+        initLocation,
+        setZoom,
+        zoom=12
     } = props;
 
 
@@ -27,12 +29,12 @@ const Map = props => {
         const { leafletElement: map } = current;
 
         map.on('locationfound', onLocationFound);
-
         
         if(!readOnly) {
             const geocoder = L.Control.geocoder({ defaultMarkGeocode: false }).addTo(map);
             geocoder.on('markgeocode', e => updateMarker({latlng: e.geocode.center})).addTo(map);
             map.on('click', onLocationClicked);
+            map.on('zoomend', updateZoom);
         } else {
             map.dragging.disable();
             map.touchZoom.disable();
@@ -49,7 +51,9 @@ const Map = props => {
                 setView: true,
                 enableHighAccuracy: true
             });
-        } 
+        } else {
+            map.setView(coords, zoom);
+        }
 
         if(readOnly) {
             if (!marker) marker = L.marker(coords).addTo(map);
@@ -62,9 +66,22 @@ const Map = props => {
         
         () => {
             map.off('locationfound', onLocationFound);
-            if(!readOnly) map.off('click', onLocationClicked);
+            if(!readOnly) {
+                map.off('click', onLocationClicked);
+                map.off('zoomend', updateZoom);
+            }
         }
     }, []);
+
+    const updateZoom = () => {
+        const { current={} } = mapRef;
+        const { leafletElement: map } = current
+
+        let mapZoom = map.getZoom();
+        if(mapZoom === zoom) return;
+        
+        setZoom(map.getZoom())
+    }
 
     const onLocationFound = e => {
         updateMarker(e);
@@ -95,13 +112,14 @@ const Map = props => {
                 
                 setCoords(Object.values(ev.latlng));
                 setAddress(name);
+                setZoom(map.getZoom());
             }
         );
 
     }
 
     return (
-        <LeafletMap ref={mapRef} center={coords} zoom={12}>
+        <LeafletMap ref={mapRef} center={coords} zoom={zoom}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         </LeafletMap>
     )

@@ -27,6 +27,7 @@ const Location = props => {
     const [coords, setCoords] = useState(selectedLocation?.coords || [0,0]);
     const [address, setAddress] = useState(selectedLocation?.address || "");
     const [assignedCategories, setAssignedCategories] = useState(selectedLocation?.categoriesIds?.map?.(catId => {return { id: catId, name: categories[catId]?.name }}) || []);
+    const [zoom, setZoom] = useState(typeof selectedLocation?.mapZoomLevel === 'number' ? selectedLocation.mapZoomLevel : 12);
     
     const { mode } = props;
     
@@ -66,7 +67,7 @@ const Location = props => {
         let successCondition = address && coords?.length === 2 && assignedCategories.length;
         
         let currentLocation = locations[locationIndex];
-        if(successCondition) dispatch(updateLocation({ ...currentLocation, name: locationName, address, coords, categoriesIds: assignedCategories.map(cat => cat.id) }));
+        if(successCondition) dispatch(updateLocation({ ...currentLocation, name: locationName, address, coords, categoriesIds: assignedCategories.map(cat => cat.id), mapZoomLevel: zoom }));
 
         const event = new CustomEvent('displaySnackbar', {
             bubbles: true,
@@ -125,6 +126,8 @@ const Location = props => {
             address={address}
             setCoords={setCoords}
             setAddress={setAddress}
+            zoom={zoom}
+            setZoom={setZoom}
             readOnly={readOnly}
             initLocation={initLocation}
         />
