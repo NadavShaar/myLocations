@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import { Snackbar as MuiSnack } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import useEventListener from './../../hooks/useEventListener';
@@ -6,6 +7,8 @@ import useEventListener from './../../hooks/useEventListener';
 const Alert = props => <MuiAlert elevation={6} variant="filled" {...props} />;
 
 const Snackbar = props => {
+
+    const classes = useStyles();
 
     const [snackbarData, setSnackbarData] = useState(null); 
 
@@ -29,11 +32,17 @@ const Snackbar = props => {
 
     return (
         <MuiSnack key={message} open={open} autoHideDuration={duration} onClose={handleClose}>
-            <Alert onClose={handleClose} severity={type}>
+            <Alert onClose={handleClose} severity={type} className={classes.message}>
                 { message }
             </Alert>
         </MuiSnack>
     )
 }
+
+const useStyles = makeStyles((theme) => ({
+    message: {
+        wordBreak: 'break-word'
+    }
+}));
 
 export default Snackbar;

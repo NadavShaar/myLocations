@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -8,6 +9,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import useEventListener from './../../hooks/useEventListener';
 
 const Confirm = props => {
+
+    const classes = useStyles();
 
     const [confirmData, setConfirmData] = useState({open: false}); 
 
@@ -39,7 +42,7 @@ const Confirm = props => {
         <Dialog onClose={handleClose} open={open}>
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
-                <DialogContentText>{description}</DialogContentText>
+                <DialogContentText className={classes.description}>{description}</DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">{cancelLabel}</Button>
@@ -53,5 +56,11 @@ const Confirm = props => {
         </Dialog>
     )
 }
+
+const useStyles = makeStyles((theme) => ({
+    description: {
+        wordBreak: 'break-word'
+    }
+}));
 
 export default Confirm;
