@@ -221,6 +221,7 @@ const Location = props => {
     const renderToolbar = () => (
         <Toolbar 
             title={getTitleByMode()}
+            isSingleRow={true}
             buttons={ <HistoryGoBackButton /> }
         />
     )

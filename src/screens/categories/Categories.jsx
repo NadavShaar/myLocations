@@ -99,23 +99,24 @@ const Categories = props => {
     const renderToolbar = () => (
         <Toolbar 
             title={`Categories${categoriesLength ? (' (' + categoriesLength + ')') : ''}`}
-            buttons={
-                selectedCategoriesIds.length ?
-                    <React.Fragment>
-                        <span className={classes.clearSelectionButton}><CloseIcon className={classes.icon} onClick={e => setSelectedCategoriesIds([])} />{`${selectedCategoriesIds.length} selected`}</span>
-                        {
-                            selectedCategoriesIds.length === 1 ?
-                                <React.Fragment>
-                                    <LinkButton className={classes.button} to={`/categories/${selectedCategoriesIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
-                                    <LinkButton className={classes.button} to={`/categories/${selectedCategoriesIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
-                                </React.Fragment>
-                                :
-                                null
-                        }
-                        <Button ref={buttonRef} className={classes.button} color="inherit" onClick={removeCategory} startIcon={<DeleteIcon className={classes.icon} />}>DELETE</Button>
-                    </React.Fragment>
-                    :
-                    <LinkButton className={classes.button} to="/categories/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
+            isSingleRow={!selectedCategoriesIds.length}
+            isSingleButton={selectedCategoriesIds.length > 1}
+            leftChildren={ selectedCategoriesIds.length ? <span className={classes.clearSelectionButton}><CloseIcon className={classes.icon} onClick={e => setSelectedCategoriesIds([])} />{`${selectedCategoriesIds.length} selected`}</span> : null }
+            buttons={ selectedCategoriesIds.length ?
+                <React.Fragment>
+                    {
+                        selectedCategoriesIds.length === 1 ?
+                            <React.Fragment>
+                                <LinkButton className={classes.button} to={`/categories/${selectedCategoriesIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
+                                <LinkButton className={classes.button} to={`/categories/${selectedCategoriesIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
+                            </React.Fragment>
+                            :
+                            null
+                    }
+                    <Button ref={buttonRef} className={classes.button} color="inherit" onClick={removeCategory} startIcon={<DeleteIcon className={classes.icon} />}>DELETE</Button>
+                </React.Fragment>
+                :
+                <LinkButton className={classes.button} to="/categories/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
             }
         />
     )
@@ -217,7 +218,10 @@ const useStyles = makeStyles((theme) => ({
         display: 'inline-flex',
         whiteSpace: 'nowrap',
         marginLeft: 10,
-        color: theme.palette.color1
+        color: theme.palette.color1,
+        [theme.breakpoints.down('xs')]: {
+            marginLeft: 0
+        }
     },
     icon: {
         fontSize: 20
@@ -225,8 +229,7 @@ const useStyles = makeStyles((theme) => ({
     clearSelectionButton: {
         display: 'inline-flex',
         alignItems: 'center',
-        marginLeft: 30,
-        marginRight: 8,
+        marginLeft: 20,
         fontWeight: 500,
         textTransform: 'uppercase',
         fontSize: '0.875rem',

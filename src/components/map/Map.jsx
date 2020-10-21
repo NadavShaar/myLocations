@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Map as LeafletMap, TileLayer } from "react-leaflet";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
@@ -28,10 +28,9 @@ const Map = props => {
 
         map.on('locationfound', onLocationFound);
 
+        
         if(!readOnly) {
-            const geocoder = L.Control.geocoder({
-                defaultMarkGeocode: false
-            }).addTo(map);
+            const geocoder = L.Control.geocoder({ defaultMarkGeocode: false }).addTo(map);
             geocoder.on('markgeocode', e => updateMarker({latlng: e.geocode.center})).addTo(map);
             map.on('click', onLocationClicked);
         } else {
@@ -48,11 +47,11 @@ const Map = props => {
         if(initLocation) {
             map.locate({
                 setView: true,
-                enableHighAccuracy: true,
-                maxZoom: 12
+                enableHighAccuracy: true
             });
         } 
-        else if(readOnly) {
+
+        if(readOnly) {
             if (!marker) marker = L.marker(coords).addTo(map);
             else marker.setLatLng(coords);
         }
@@ -102,7 +101,7 @@ const Map = props => {
     }
 
     return (
-        <LeafletMap ref={mapRef} center={coords} zoom={16}>
+        <LeafletMap ref={mapRef} center={coords} zoom={12}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         </LeafletMap>
     )

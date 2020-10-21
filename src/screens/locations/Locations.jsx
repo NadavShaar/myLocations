@@ -140,23 +140,24 @@ const Locations = props => {
     const renderToolbar = () => (
         <Toolbar 
             title={`Locations${locations.length ? (' (' + locations.length + ')') : ''}`}
-            buttons={
-                selectedLocationIds.length ?
-                    <React.Fragment>
-                        <span className={classes.clearSelectionButton}><CloseIcon className={classes.icon} onClick={e => setSelectedLocationsIds([])} />{`${selectedLocationIds.length} selected`}</span>
-                        {
-                            selectedLocationIds.length === 1 ?
-                                <React.Fragment>
-                                    <LinkButton className={classes.button} to={`/${selectedLocationIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
-                                    <LinkButton className={classes.button} to={`/${selectedLocationIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
-                                </React.Fragment>
-                                :
-                                null
-                        }
-                        <Button ref={buttonRef} className={classes.button} color="inherit" onClick={removeLocation} startIcon={<DeleteIcon className={classes.icon} />}>DELETE</Button>
-                    </React.Fragment>
-                    :
-                    <LinkButton className={classes.button} to="/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
+            isSingleRow={!selectedLocationIds.length}
+            isSingleButton={selectedLocationIds.length > 1}
+            leftChildren={ selectedLocationIds.length ? <span className={classes.clearSelectionButton}><CloseIcon className={classes.icon} onClick={e => setSelectedLocationsIds([])} />{`${selectedLocationIds.length} selected`}</span> : null }
+            buttons={ selectedLocationIds.length ?
+                <React.Fragment>
+                    {
+                        selectedLocationIds.length === 1 ?
+                            <React.Fragment>
+                                <LinkButton className={classes.button} to={`/${selectedLocationIds}/edit`} startIcon={<EditIcon className={classes.icon} />}>EDIT</LinkButton>
+                                <LinkButton className={classes.button} to={`/${selectedLocationIds}/details`} startIcon={<VisibilityIcon className={classes.icon} />}>VIEW DETAILS</LinkButton>
+                            </React.Fragment>
+                            :
+                            null
+                    }
+                    <Button ref={buttonRef} className={classes.button} color="inherit" onClick={removeLocation} startIcon={<DeleteIcon className={classes.icon} />}>DELETE</Button>
+                </React.Fragment>
+                :
+                <LinkButton className={classes.button} to="/new" startIcon={<AddIcon className={classes.icon} />}>NEW</LinkButton>
             }
         />
     )
@@ -285,7 +286,10 @@ const useStyles = makeStyles((theme) => ({
         display: 'inline-flex',
         whiteSpace: 'nowrap',
         marginLeft: 10,
-        color: theme.palette.color1
+        color: theme.palette.color1,
+        [theme.breakpoints.down('xs')]: {
+            marginLeft: 0
+        }
     },
     icon: {
         fontSize: 20
@@ -293,8 +297,7 @@ const useStyles = makeStyles((theme) => ({
     clearSelectionButton: {
         display: 'inline-flex',
         alignItems: 'center',
-        marginLeft: 30,
-        marginRight: 8,
+        marginLeft: 20,
         fontWeight: 500,
         textTransform: 'uppercase',
         fontSize: '0.875rem',
