@@ -33,7 +33,7 @@ const Location = props => {
     
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedLocation;
     
-    let isLocationExist = !!locations.find(location => location.name.toLowerCase?.() === locationName.toLowerCase());
+    let isLocationExist = !!locations.find(location => location.name.toLowerCase().trim() === locationName.toLowerCase().trim());
     
     const createLocation = () => {
         if(!locationName) return;
