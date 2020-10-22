@@ -14,7 +14,7 @@ const lightTheme = createMuiTheme({
         color2: '#000',
         color3: '#607D8B',
         color4: '#808080',
-        color5: '#78909C',
+        color5: '#7a8990',
         color6: '#B0BEC5',
         color7: '#3edc8b',
         background1: '#fff',
