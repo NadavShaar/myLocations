@@ -1,6 +1,18 @@
 # myLocations
 > An interview test project.
 
+### Highlights
+- themed
+- Material-ui's components are wrapped to ease future upgrades
+- Custom webpack + babel project setup and configs
+- Global components handling using custom events (Snackbar + Confirm)
+- Custom reusable ui elements
+- Extendable routing system
+- Saving data in local-storage using redux middleware
+- Mobile friendly
+- Saving map with zoom
+And much more...
+
 **[Requirements](#Requirements)**
 
 **Live demo [here](https://nadavshaar.github.io/myLocations/)** 
