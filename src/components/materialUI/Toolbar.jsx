@@ -1,8 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
+import { makeStyles, AppBar, Typography } from '@material-ui/core';
 import AppToolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 
 const Toolbar = props => {
 

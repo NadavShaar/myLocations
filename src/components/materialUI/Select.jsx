@@ -1,9 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
-import { Select as MUISelect } from '@material-ui/core';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
+import { makeStyles, Select as MUISelect, InputLabel, MenuItem, FormControl } from '@material-ui/core';
 
 const Select = props => {
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { BottomNavigation as MUIBottomNavigation, BottomNavigationAction } from '@material-ui/core';
+import { makeStyles, BottomNavigation as MUIBottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import MapIcon from '@material-ui/icons/Map';
 import LabelIcon from '@material-ui/icons/Label';
 import { useHistory } from "react-router-dom";

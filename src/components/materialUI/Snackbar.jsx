@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Snackbar as MuiSnack } from '@material-ui/core';
+import { makeStyles, Snackbar as MuiSnack } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import useEventListener from './../../hooks/useEventListener';
 

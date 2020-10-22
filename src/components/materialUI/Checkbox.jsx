@@ -1,6 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
-import { Checkbox as MUICheckbox, FormControlLabel } from '@material-ui/core';
+import { makeStyles, Checkbox as MUICheckbox, FormControlLabel } from '@material-ui/core';
 
 const Checkbox = props => {
 

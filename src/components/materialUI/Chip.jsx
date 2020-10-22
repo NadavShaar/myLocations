@@ -1,6 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Chip as MUIChip } from '@material-ui/core';
+import { makeStyles, Chip as MUIChip } from '@material-ui/core';
 
 const Chip = props => {
 

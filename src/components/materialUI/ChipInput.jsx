@@ -1,6 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
+import { makeStyles, FormControl } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { TextField } from './';
 
