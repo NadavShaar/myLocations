@@ -29,8 +29,8 @@ const Location = props => {
     const [coords, setCoords] = useState(selectedLocation?.coords || [0,0]);
     const [address, setAddress] = useState(selectedLocation?.address || "");
     const [assignedCategories, setAssignedCategories] = useState(selectedLocation?.categoriesIds?.map?.(catId => {return { id: catId, name: categories[catId]?.name }}) || []);
-    const [zoom, setZoom] = useState(typeof selectedLocation?.mapZoomLevel === 'number' ? selectedLocation.mapZoomLevel : 12);
-    
+    const [zoom, setZoom] = useState(selectedLocation?.mapZoomLevel || 12);
+
     const { mode } = props;
     
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedLocation;

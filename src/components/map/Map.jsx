@@ -25,6 +25,10 @@ const Map = props => {
     const mapRef = useRef();
 
     useEffect(() => {
+        updateZoom();
+    }, [zoom]);
+
+    useEffect(() => {
         const { current={} } = mapRef;
         const { leafletElement: map } = current;
 
@@ -75,12 +79,10 @@ const Map = props => {
 
     const updateZoom = () => {
         const { current={} } = mapRef;
-        const { leafletElement: map } = current
-
-        let mapZoom = map.getZoom();
-        if(mapZoom === zoom) return;
+        const { leafletElement: map } = current;
+        let newZoom = map.getZoom();
         
-        setZoom(map.getZoom())
+        setZoom(newZoom);
     }
 
     const onLocationFound = e => {
@@ -112,7 +114,6 @@ const Map = props => {
                 
                 setCoords(Object.values(ev.latlng));
                 setAddress(name);
-                setZoom(map.getZoom());
             }
         );
 
