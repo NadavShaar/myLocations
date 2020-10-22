@@ -21,7 +21,6 @@ const Map = props => {
         zoom=12
     } = props;
 
-
     const mapRef = useRef();
 
     useEffect(() => {
@@ -31,24 +30,8 @@ const Map = props => {
     useEffect(() => {
         const { current={} } = mapRef;
         const { leafletElement: map } = current;
-
-        map.on('locationfound', onLocationFound);
         
-        if(!readOnly) {
-            const geocoder = L.Control.geocoder({ defaultMarkGeocode: false }).addTo(map);
-            geocoder.on('markgeocode', e => updateMarker({latlng: e.geocode.center})).addTo(map);
-            map.on('click', onLocationClicked);
-            map.on('zoomend', updateZoom);
-        } else {
-            map.dragging.disable();
-            map.touchZoom.disable();
-            map.doubleClickZoom.disable();
-            map.scrollWheelZoom.disable();
-            map.boxZoom.disable();
-            map.keyboard.disable();
-            if (map.tap) map.tap.disable();
-            map.removeControl(map.zoomControl);
-        }
+        map.on('locationfound', onLocationFound);
 
         if(initLocation) {
             map.locate({
@@ -58,14 +41,33 @@ const Map = props => {
         } else {
             map.setView(coords, zoom);
         }
+        
+        if(!readOnly) {
+            const geocoder = L.Control.geocoder({ defaultMarkGeocode: false }).addTo(map);
+            geocoder.on('markgeocode', e => updateMarker({latlng: e.geocode.center})).addTo(map);
+            map.on('click', onLocationClicked);
+            map.on('zoomend', updateZoom);
 
-        if(readOnly) {
-            if (!marker) marker = L.marker(coords).addTo(map);
-            else marker.setLatLng(coords);
-        }
-        else {
+            map.lastClickTimestamp = 0;
+
+            let searchElement = document.querySelector('.leaflet-control-geocoder');
+            searchElement.addEventListener('click', handleSearchOptionClicked);
+
             if (!marker) marker = L.marker(coords).bindPopup(address).addTo(map).openPopup();
             else marker.setLatLng(coords).setPopupContent(address).openPopup();
+
+        } else {
+            map.dragging.disable();
+            map.touchZoom.disable();
+            map.doubleClickZoom.disable();
+            map.scrollWheelZoom.disable();
+            map.boxZoom.disable();
+            map.keyboard.disable();
+            if (map.tap) map.tap.disable();
+            map.removeControl(map.zoomControl);
+
+            if (!marker) marker = L.marker(coords).addTo(map);
+            else marker.setLatLng(coords);
         }
         
         () => {
@@ -73,9 +75,15 @@ const Map = props => {
             if(!readOnly) {
                 map.off('click', onLocationClicked);
                 map.off('zoomend', updateZoom);
+                searchElement.removeEventListener('click', handleSearchOptionClicked);
             }
         }
     }, []);
+
+    const handleSearchOptionClicked = e => {
+        e.stopPropagation();
+        e.preventDefault();
+    }
 
     const updateZoom = () => {
         const { current={} } = mapRef;
@@ -96,6 +104,10 @@ const Map = props => {
     const updateMarker = ev => {
         const { current={} } = mapRef;
         const { leafletElement: map } = current;
+
+        let currentTimestamp = Date.now();
+        if(currentTimestamp - map.lastClickTimestamp < 300) return;
+        map.lastClickTimestamp = currentTimestamp;
 
         const geocoder = L.Control.Geocoder.nominatim({reverseQueryParams: {"accept-language": "en"}});
 
