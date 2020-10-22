@@ -1,6 +1,13 @@
 # myLocations
 > An interview test project.
 
+**Live demo [here](https://nadavshaar.github.io/myLocations/)** 
+
+**Note:** Github pages doesn't support client routing like react router therefor when refreshing the page you'll get a 404 (except in root).
+
+![Categories](https://user-images.githubusercontent.com/8030614/95834903-3d2a8280-0d46-11eb-9ce7-e59273638a4c.gif)
+
+
 ## Requirements
 
 The sample application is called myLocations. It allows the user to maintain a list of categorized
@@ -45,9 +52,3 @@ ui related to this.
 
 Generally, we expect to see a production-ready system.
 Give us your best!
-
-**Live demo [here](https://nadavshaar.github.io/myLocations/)** 
-
-**Note:** Github pages doesn't support client routing like react router therefor when refreshing the page you'll get a 404 (except in root).
-
-![Categories](https://user-images.githubusercontent.com/8030614/95834903-3d2a8280-0d46-11eb-9ce7-e59273638a4c.gif)
