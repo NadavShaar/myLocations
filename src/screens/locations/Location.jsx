@@ -24,6 +24,8 @@ const Location = props => {
     const selectedLocation = locationIndex > -1 && useSelector(state => state.locations.data[locationIndex]);
     
     const [locationName, setLocationName] = useState(selectedLocation?.name || "");
+    let isLocationExist = !!locations.find(location => location.name === locationName.trim());
+    
     const [coords, setCoords] = useState(selectedLocation?.coords || [0,0]);
     const [address, setAddress] = useState(selectedLocation?.address || "");
     const [assignedCategories, setAssignedCategories] = useState(selectedLocation?.categoriesIds?.map?.(catId => {return { id: catId, name: categories[catId]?.name }}) || []);
@@ -33,7 +35,6 @@ const Location = props => {
     
     let dataIsMissing = mode !== 'new' && !id || mode !== 'new' && !selectedLocation;
     
-    let isLocationExist = !!locations.find(location => location.name === locationName.trim());
     
     const createLocation = () => {
         if(!locationName) return;
