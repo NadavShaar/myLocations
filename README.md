@@ -22,9 +22,6 @@ And much more...
 
 ![myLocations](https://user-images.githubusercontent.com/8030614/96838793-fd078600-1450-11eb-81ef-c1ae0e8a520a.gif)
 
-![Categories](https://user-images.githubusercontent.com/8030614/95834903-3d2a8280-0d46-11eb-9ce7-e59273638a4c.gif)
-
-
 ## Requirements
 
 The sample application is called myLocations. It allows the user to maintain a list of categorized
