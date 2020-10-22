@@ -10,7 +10,8 @@
 - Extendable routing system
 - Saving data in local-storage using redux middleware
 - Mobile friendly
-- Saving map with zoom
+- Saving locations with zoom
+
 And much more...
 
 **[Requirements](#Requirements)**
