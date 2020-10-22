@@ -20,8 +20,7 @@ And much more...
 
 **Note:** Github pages doesn't support client routing like react router therefor when refreshing the page you'll get a 404.
 
-![Categories](https://user-images.githubusercontent.com/8030614/95834903-3d2a8280-0d46-11eb-9ce7-e59273638a4c.gif)
-
+![myLocations](https://user-images.githubusercontent.com/8030614/96838793-fd078600-1450-11eb-81ef-c1ae0e8a520a.gif)
 
 ## Requirements
 
