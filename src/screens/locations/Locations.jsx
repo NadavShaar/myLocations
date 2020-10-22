@@ -60,6 +60,7 @@ const Locations = props => {
                 return { 
                     id: location.id, 
                     text: location.name, 
+                    secondaryText: location.address,
                     icon: <LocationOnIcon />, 
                     helperText: assinedCategories ? `Assigned categories: ${assinedCategories}` : '',
                     selected: !!selectedLocationIds.find(locId => locId === location.id) 
@@ -72,10 +73,13 @@ const Locations = props => {
             let nestedItems = filteredLocations.filter(loc => !!loc.categoriesIds.find(catId => category.id == catId)).map(location => { 
                 
                 let selectedNestedLocation = !!selectedLocationIds.find(locId => locId === location.id);
+                let assinedCategories = location.categoriesIds.map(catId => categories[catId].name).join(', ');
                 
                 return { 
                     id: location.id, 
                     text: location.name, 
+                    secondaryText: location.address,
+                    helperText: assinedCategories ? `Assigned categories: ${assinedCategories}` : '',
                     selected: selectedNestedLocation, 
                     icon: <LocationOnIcon />
                 } 

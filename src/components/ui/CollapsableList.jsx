@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core';
+import { Avatar } from '../materialUI';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import HelpIcon from '@material-ui/icons/Help';
@@ -32,13 +33,18 @@ const CollapsableListItem = props => {
             <ListItem key={idx} { ...additionalProps } button={isClickable}>
                 {
                     listItem.icon ? 
-                        <ListItemIcon className={listItem.nestedItems ? classes.listItemIcon : classes.nestedListItemIcon}>{ listItem.icon }</ListItemIcon>
+                        !listItem.nestedItems ?
+                            <Avatar className={classes.avatar}>
+                                <ListItemIcon className={listItem.nestedItems ? classes.listItemIcon : classes.nestedListItemIcon}>{ listItem.icon }</ListItemIcon>
+                            </Avatar>
+                            :
+                            <ListItemIcon className={listItem.nestedItems ? classes.listItemIcon : classes.nestedListItemIcon}>{ listItem.icon }</ListItemIcon>
                         :
                         null
                 }
                 {
                     listItem.text ? 
-                        <ListItemText className={classes.text} primary={listItem.text} />
+                        <ListItemText className={classes.text} primary={listItem.text} secondary={listItem.secondaryText} />
                         :
                         null
                 }
@@ -147,10 +153,13 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'auto'
     },
     item: {
-        padding: 20,
+        padding: '0 20px',
         minHeight: 60,
         maxHeight: 60,
         borderBottom: `1px solid ${theme.palette.border1}`
+    },
+    avatar: {
+        marginRight: 20
     },
     text: {
         marginRight: 40,
@@ -199,7 +208,8 @@ const useStyles = makeStyles((theme) => ({
     nestedListItemIcon: {
         minWidth: 30,
         "& .MuiSvgIcon-root": {
-            color: theme.palette.icon2,
+            margin: '0 auto',
+            color: theme.palette.primary.main,
             width: 20,
             height: 20
         }

@@ -8,6 +8,7 @@ import Checkbox from './Checkbox';
 import Select from './Select';
 import ChipInput from './ChipInput';
 import Chip from './Chip';
+import Avatar from './Avatar';
 
 export { 
     Button,
@@ -19,5 +20,6 @@ export {
     Checkbox,
     Select,
     ChipInput,
-    Chip
+    Chip,
+    Avatar
 };
