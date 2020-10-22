@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTransition, animated } from "react-spring";
 import { makeStyles, List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
