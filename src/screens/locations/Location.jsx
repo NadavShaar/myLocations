@@ -125,7 +125,7 @@ const Location = props => {
         />
     )
 
-    const renderMap = ({readOnly, initLocation}) => (
+    const renderMap = ({readOnly}) => (
         <Map 
             coords={coords}
             address={address}
@@ -134,7 +134,7 @@ const Location = props => {
             zoom={zoom}
             setZoom={setZoom}
             readOnly={readOnly}
-            initLocation={initLocation}
+            initLocation={!address}
         />
     )
 
@@ -157,7 +157,7 @@ const Location = props => {
             case 'new': return (
                 <div className={classes.mapInputsContainer}>
                     <div className={classes.mapContainer}>
-                        { renderMap({readOnly: false, initLocation: true}) }
+                        { renderMap({readOnly: false}) }
                     </div>
                     <div className={classes.inputsContainer}>
                         <div className={`${classes.flexColumn} ${classes.inputs}`}>
@@ -179,7 +179,7 @@ const Location = props => {
             case 'edit': return (
                 <div className={classes.mapInputsContainer}>
                     <div className={classes.mapContainer}>
-                        { renderMap({readOnly: false, initLocation: false}) }
+                        { renderMap({readOnly: false}) }
                     </div>
                     <div className={classes.inputsContainer}>
                         <div className={`${classes.flexColumn} ${classes.inputs}`}>
@@ -202,7 +202,7 @@ const Location = props => {
                 <div className={classes.detailsWrapper}>
                     <div className={classes.paper}>
                         <div className={classes.detailsMapContainer}>
-                            { renderMap({readOnly: true, initLocation: false}) }
+                            { renderMap({readOnly: true}) }
                         </div>
                         <div className={`${classes.flexColumn} ${classes.detailsContainer}`}>
                             <span className={classes.detailType}>Name:</span>
