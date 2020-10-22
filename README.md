@@ -1,6 +1,8 @@
 # myLocations
 > An interview test project.
 
+**[Requirements](#Requirements)**
+
 **Live demo [here](https://nadavshaar.github.io/myLocations/)** 
 
 **Note:** Github pages doesn't support client routing like react router therefor when refreshing the page you'll get a 404 (except in root).
