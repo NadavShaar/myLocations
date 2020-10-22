@@ -41,7 +41,7 @@ const Location = props => {
         
         let successCondition = !isLocationExist && address && coords?.length === 2 && assignedCategories.length;
         if(successCondition) {
-            dispatch(addLocation({id: Date.now(), name: locationName, address, coords, categoriesIds: assignedCategories.map(cat => cat.id), mapZoomLevel: zoom})); 
+            dispatch(addLocation({id: Date.now(), name: locationName.trim(), address, coords, categoriesIds: assignedCategories.map(cat => cat.id), mapZoomLevel: zoom})); 
             setLocationName("");
             setAssignedCategories([]);
         }

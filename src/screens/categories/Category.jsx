@@ -34,7 +34,7 @@ const Category = props => {
         if(!categoryName) return;
 
         if(!isCategoryExist) {
-            dispatch(createNewCategory({name: categoryName})); 
+            dispatch(createNewCategory({name: categoryName.trim()})); 
             setCategoryName("");
         }
 
