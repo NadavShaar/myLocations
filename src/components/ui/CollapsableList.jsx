@@ -167,6 +167,9 @@ const useStyles = makeStyles((theme) => ({
             overflow: 'hidden',
             whiteSpace: 'nowrap',
             textOverflow: 'ellipsis',
+        },
+        "& .MuiTypography-colorTextSecondary": {
+            color: theme.palette.color5
         }
     },
     group: {
