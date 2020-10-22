@@ -23,7 +23,8 @@ const Category = props => {
     const selectedCategory = useSelector(state => state.categories[id]);
     
     const [categoryName, setCategoryName] = useState(selectedCategory?.name || "");
-    let isCategoryExist = !!(Object.values(categories)).find(category => category.name === categoryName.trim());
+    let trimmedCategoryName = categoryName.trim();
+    let isCategoryExist = !!(Object.values(categories)).find(category => category.name === trimmedCategoryName);
     
     const { mode } = props;
 
@@ -31,10 +32,10 @@ const Category = props => {
     let assignedLocations = id && locations.filter(location => location.categoriesIds.indexOf(id) !== -1) || [];
     
     const createCategory = () => {
-        if(!categoryName) return;
+        if(!trimmedCategoryName) return;
 
         if(!isCategoryExist) {
-            dispatch(createNewCategory({name: categoryName.trim()})); 
+            dispatch(createNewCategory({name: trimmedCategoryName})); 
             setCategoryName("");
         }
 
@@ -42,7 +43,7 @@ const Category = props => {
             bubbles: true,
             detail: {
                 open: true, 
-                message: isCategoryExist ? `${categoryName} is already exist` : `${categoryName} added successfully`, 
+                message: isCategoryExist ? `${trimmedCategoryName} is already exist` : `${trimmedCategoryName} added successfully`, 
                 type: isCategoryExist ? 'error' : 'success', 
             }
         });
@@ -53,15 +54,15 @@ const Category = props => {
     }
 
     const editCategory = () => {
-        if(!categoryName) return;
+        if(!trimmedCategoryName) return;
 
-        if(!isCategoryExist) dispatch(updateCategory({id, item: { ...selectedCategory, name: categoryName }}));
+        if(!isCategoryExist) dispatch(updateCategory({id, item: { ...selectedCategory, name: trimmedCategoryName }}));
 
         const event = new CustomEvent('displaySnackbar', {
             bubbles: true,
             detail: {
                 open: true, 
-                message: isCategoryExist ? `${categoryName} is already exist` : `${categoryName} saved successfully`, 
+                message: isCategoryExist ? `${trimmedCategoryName} is already exist` : `${trimmedCategoryName} saved successfully`, 
                 type: isCategoryExist ? 'error' : 'success'
             } 
         });
@@ -102,7 +103,7 @@ const Category = props => {
             case 'details': return (
                 <div className={classes.paper}>
                     <span className={classes.detailType}>Category name:</span>
-                    <span className={classes.categoryName}>{categoryName}</span>
+                    <span className={classes.categoryName}>{trimmedCategoryName}</span>
                     <span className={classes.detailType}>Assigned to:</span>
                     {
                         assignedLocations.length ?

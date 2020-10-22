@@ -24,7 +24,8 @@ const Location = props => {
     const selectedLocation = locationIndex > -1 && useSelector(state => state.locations.data[locationIndex]);
     
     const [locationName, setLocationName] = useState(selectedLocation?.name || "");
-    let isLocationExist = !!locations.find(location => location.name === locationName.trim());
+    let trimmedLocationName = locationName.trim();
+    let isLocationExist = !!locations.find(location => location.name === trimmedLocationName);
     
     const [coords, setCoords] = useState(selectedLocation?.coords || [0,0]);
     const [address, setAddress] = useState(selectedLocation?.address || "");
@@ -37,11 +38,11 @@ const Location = props => {
     
     
     const createLocation = () => {
-        if(!locationName) return;
+        if(!trimmedLocationName) return;
         
         let successCondition = !isLocationExist && address && coords?.length === 2 && assignedCategories.length;
         if(successCondition) {
-            dispatch(addLocation({id: Date.now(), name: locationName.trim(), address, coords, categoriesIds: assignedCategories.map(cat => cat.id), mapZoomLevel: zoom})); 
+            dispatch(addLocation({id: Date.now(), name: trimmedLocationName, address, coords, categoriesIds: assignedCategories.map(cat => cat.id), mapZoomLevel: zoom})); 
             setLocationName("");
             setAssignedCategories([]);
         }
@@ -51,7 +52,7 @@ const Location = props => {
             detail: {
                 open: true, 
                 message: isLocationExist ?
-                    `${locationName} is already exist`
+                    `${trimmedLocationName} is already exist`
                     :
                     !coords.length === 2 || !address ?
                         `Location cannot be found` 
@@ -59,7 +60,7 @@ const Location = props => {
                         !assignedCategories.length ? 
                             `Select at least one category`
                             :
-                            `${locationName} added successfully`, 
+                            `${trimmedLocationName} added successfully`, 
                 type: successCondition ? 'success' : 'error'
             }
         });
@@ -68,11 +69,11 @@ const Location = props => {
     }
     
     const editLocation = () => {
-        if(!locationName) return;
+        if(!trimmedLocationName) return;
         let successCondition = address && coords?.length === 2 && assignedCategories.length;
         
         let currentLocation = locations[locationIndex];
-        if(successCondition) dispatch(updateLocation({ ...currentLocation, name: locationName, address, coords, categoriesIds: assignedCategories.map(cat => cat.id), mapZoomLevel: zoom }));
+        if(successCondition) dispatch(updateLocation({ ...currentLocation, name: trimmedLocationName, address, coords, categoriesIds: assignedCategories.map(cat => cat.id), mapZoomLevel: zoom }));
 
         const event = new CustomEvent('displaySnackbar', {
             bubbles: true,
@@ -84,7 +85,7 @@ const Location = props => {
                     !assignedCategories.length ? 
                         `Select at least one category`
                         :
-                        `${locationName} saved successfully`, 
+                        `${trimmedLocationName} saved successfully`, 
                 type: successCondition ? 'success' : 'error'
             } 
         });
@@ -166,7 +167,7 @@ const Location = props => {
                                 renderBigInput({
                                     callback: createLocation, 
                                     buttonChildren: '+', 
-                                    disabled: (!locationName), 
+                                    disabled: (!trimmedLocationName), 
                                     title: 'Location name', 
                                     hint: 'Hint: you can also submit using the Enter key.',
                                 })
@@ -188,7 +189,7 @@ const Location = props => {
                                 renderBigInput({
                                     callback: editLocation, 
                                     buttonChildren: <React.Fragment>&#10003;</React.Fragment>, 
-                                    disabled: !locationName, 
+                                    disabled: !trimmedLocationName, 
                                     title: 'Update location', 
                                     hint: 'Hint: you can also submit using the Enter key.'
                                 })
