@@ -75,9 +75,6 @@ const useStyles = makeStyles((theme) => ({
         },
         "& .MuiChip-deleteIcon": {
             color: theme.palette.icon4
-        },
-        [theme.breakpoints.down('xs')]: {
-            minHeight: 98
         }
     },
     autoCompleteLabel: {
