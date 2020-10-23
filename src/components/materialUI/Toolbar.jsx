@@ -33,6 +33,7 @@ const Toolbar = props => {
 const useStyles = makeStyles((theme) => ({
     appToolbar: {
         display: 'flex',
+        minHeight: 60,
         [theme.breakpoints.down('xs')]: {
             flexDirection: 'column'
         }
@@ -54,7 +55,8 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'hidden',
         [theme.breakpoints.down('xs')]: {
             width: '100%',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            marginRight: 0
         }
     },
     title: {

@@ -223,6 +223,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 10,
         color: theme.palette.color1,
         [theme.breakpoints.down('xs')]: {
+            padding: '2px 0px',
             marginLeft: 0
         }
     },
