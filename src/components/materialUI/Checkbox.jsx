@@ -15,6 +15,7 @@ const Checkbox = props => {
 
 const useStyles = makeStyles((theme) => ({
     label: {
+        marginRight: 10,
         "& .MuiTypography-root": {
             fontSize: 14,
             color: theme.palette.color3

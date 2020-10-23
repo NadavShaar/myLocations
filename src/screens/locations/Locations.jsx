@@ -324,8 +324,7 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.color3
     },
     bottomControlsSeperator: {
-        marginRight: 20, 
-        marginLeft: 4, 
+        marginRight: 10,
         fontSize: 16, 
         color: theme.palette.color6
     }
