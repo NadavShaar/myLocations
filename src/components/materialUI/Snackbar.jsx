@@ -30,7 +30,7 @@ const Snackbar = props => {
     };
 
     return (
-        <MuiSnack key={message} open={open} autoHideDuration={duration} onClose={handleClose}>
+        <MuiSnack key={message} className={classes.root} open={open} autoHideDuration={duration} onClose={handleClose}>
             <Alert onClose={handleClose} severity={type} className={classes.message}>
                 { message }
             </Alert>
@@ -39,6 +39,9 @@ const Snackbar = props => {
 }
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        bottom: 64
+    },
     message: {
         wordBreak: 'break-word'
     }
