@@ -189,10 +189,7 @@ const useStyles = makeStyles((theme) => ({
     },
     chipsWrapper: {
         display: 'flex',
-        flexWrap: 'wrap',
-        maxHeight: 98,
-        minHeight: 36,
-        overflow: 'auto'
+        flexWrap: 'wrap'
     }
 }));
 
