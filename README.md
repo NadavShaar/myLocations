@@ -8,7 +8,6 @@
 - Global components handling using custom events (Snackbar + Confirm)
 - Custom reusable ui elements
 - Validations
-- Extendable routing system
 - Saving data in local-storage using redux middleware
 - Mobile friendly
 - Saving locations with zoom
