@@ -1,5 +1,5 @@
 # myLocations
-> An interview test project.
+> An interview test project that allows the user to maintain a list of categorized locations.
 
 ### Highlights
 - themed
